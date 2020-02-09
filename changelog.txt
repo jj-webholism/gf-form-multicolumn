@@ -1,0 +1,29 @@
+= 3.0.3 =
+Fix: Removed echo commands as these were causing update issues from within Gutenberg pages. Improvement: Altered CSS to be more specific with class naming implementation.
+
+= 3.0.2 =
+Re-release of version 3.0.0.
+
+= 3.0.1 =
+Restored 2.1.1 as version 3.0.0 appeared to generate an Internal Server Error.
+
+= 3.0.0 =
+Restructured way that columns and rows are added to forms; native UI buttons are now integrated into the Gravity Forms interface. Resolved a few issues that had been highlighted in previous versions: Displaying multiple forms on a single page Correct error handling when form id not present in shortcode * CSS enhancements to align list elements
+
+= 2.1.1 =
+This version removed code that had been used for testing multisite in 2.1.0.
+
+= 2.1.0 =
+This version resolves issues around the plugin providing network only functionality on multisite installations. This plugin will now allow admins to activate or deactivate on individual network sites. A new CSS style has been introduced to remove the left padding and left margin from the first column of each row of the created form, to allow for a form to line up elements as expected. This is achieved with the style: li[class*=\"column-count-1\"] > div > ul Please note that with this version, the title of this plugin has changed and will now likely appear in a new location in your plugin list. Do not be alarmed! This is simply a new naming convention to align with Wordpress recommendations.
+
+= 2.0.1 =
+Code altered to account for web servers with PHP version < 5.4.
+
+= 2.0.0 =
+Introduced new feature to allow for multiple rows. Individual rows will split the columns they contain evenly.
+
+= 1.0.1 =
+Altered details related to the supporting files. No functional alterations. Upgrade optional.
+
+= 1.0.0 =
+Initial Release. Trumpets sound!

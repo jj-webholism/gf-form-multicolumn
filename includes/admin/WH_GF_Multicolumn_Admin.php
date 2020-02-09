@@ -58,8 +58,8 @@ class WH_GF_Multicolumn_Admin {
 		$formCSSChecked          = $this->getCSSEnabledString( $form );
 		$enable_gfmc_css_checked = $formCSSChecked;
 
-		$settings[__( 'Multiple Columns',
-		              'gf-form-multicolumn' )]['gfmc_enable_css']
+		$settings[ __( 'Multiple Columns',
+		               'gf-form-multicolumn' ) ]['gfmc_enable_css']
 			= '<tr><th>' . __( 'Enable CSS',
 			                   'gf-form-multicolumn' ) . ' ' .
 			  gform_tooltip( 'gfmc_enable_css',
@@ -72,8 +72,8 @@ class WH_GF_Multicolumn_Admin {
 
 		$enable_gfmc_js_checked =
 			rgar( $form, 'gfmc_enable_js' ) ? 'checked="checked"' : '';
-		$settings[__( 'Multiple Columns',
-		              'gf-form-multicolumn' )]['gfmc_enable_js']
+		$settings[ __( 'Multiple Columns',
+		               'gf-form-multicolumn' ) ]['gfmc_enable_js']
 		                        = '<tr><th>' . __( 'Enable JS',
 		                                           'gf-form-multicolumn' ) . ' ' .
 		                          gform_tooltip( 'gfmc_enable_js', '', true ) . '</th>
@@ -118,8 +118,7 @@ class WH_GF_Multicolumn_Admin {
 	}
 
 	private function getCSSEnabledString( $form ) {
-		if ( $this->is_new_form( $form ) === false || (string) $form['gfmc_enable_css'] === '1' )
-		{
+		if ( $this->is_new_form( $form ) === false || (string) $form['gfmc_enable_css'] === '1' ) {
 			return 'checked="checked"';
 		}
 

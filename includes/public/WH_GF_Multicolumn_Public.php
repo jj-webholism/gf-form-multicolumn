@@ -39,20 +39,16 @@ class WH_GF_Multicolumn_Public {
 	}
 
 	public function pre_render_form( $form ) {
-		if ( $form !== false )
-		{
+		if ( $form !== false ) {
 
 			$this->form = $form;
 
 			// Test to see if the form contains any type of multicolumn element
-			if ( $this->get_form_version_by_elements( $form ) === 2 )
-			{
+			if ( $this->get_form_version_by_elements( $form ) === 2 ) {
 				$version2Form = new
 				WH_GF_Multicolumn_Public_Form_Deprecated( $this->version,
 				                                          $form );
-			}
-			elseif ( $this->get_form_version_by_elements( $form ) > 2 )
-			{
+			} elseif ( $this->get_form_version_by_elements( $form ) > 2 ) {
 				$version3Form = new
 				WH_GF_Multicolumn_Public_Form_Current( $this->version, $form );
 			}
@@ -62,15 +58,12 @@ class WH_GF_Multicolumn_Public {
 	}
 
 	private function get_form_version_by_elements( $form ) {
-		foreach ( $form['fields'] as $field )
-		{
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_break' || $field['type'] === 'column_end' )
-			{
+		foreach ( $form['fields'] as $field ) {
+			if ( $field['type'] === 'column_start' || $field['type'] === 'column_break' || $field['type'] === 'column_end' ) {
 				return 3;
 			}
 
-			if ( ( $field['cssClass'] === 'split-start' ) || $field['cssClass'] === 'split-end' )
-			{
+			if ( ( $field['cssClass'] === 'split-start' ) || $field['cssClass'] === 'split-end' ) {
 				return 2;
 			}
 		}

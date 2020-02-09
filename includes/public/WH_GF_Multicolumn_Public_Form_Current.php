@@ -28,20 +28,14 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$rowCount       = 1;
 		$columnCount    = 0;
 
-		foreach ( $form['fields'] as $formField )
-		{
-			if ( $formField['type'] === 'column_start' )
-			{
+		foreach ( $form['fields'] as $formField ) {
+			if ( $formField['type'] === 'column_start' ) {
 				// Determine counters based on form state
 				$columnCount = 1;
-			}
-			elseif ( $formField['type'] === 'column_break' )
-			{
+			} elseif ( $formField['type'] === 'column_break' ) {
 				$columnCount ++;
-			}
-			elseif ( $formField['type'] === 'column_end' || $formField['type'] === 'page' )
-			{
-				$rowColumnArray[$rowCount] = $columnCount;
+			} elseif ( $formField['type'] === 'column_end' || $formField['type'] === 'page' ) {
+				$rowColumnArray[ $rowCount ] = $columnCount;
 				$rowCount ++;
 			}
 		}
@@ -61,34 +55,30 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	public function define_output_elements( $field_container, $field ) {
-		if ( $field->type === 'column_start' )
-		{
+		if ( $field->type === 'column_start' ) {
 			$this->columnCounter ++;
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[$this->rowCounter] . $cssClass . '" style="width: ' . floor(
-					100 / $this->rowColumnArray[$this->rowCounter]
+			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor(
+					100 / $this->rowColumnArray[ $this->rowCounter ]
 				) . '%;"><ul>';
 		}
-		if ( $field->type === 'column_break' )
-		{
+		if ( $field->type === 'column_break' ) {
 			$this->columnCounter ++;
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
 			return '</ul></li><li class="gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[$this->rowCounter] . $cssClass . '" style="width: ' . floor(
-				       100 / $this->rowColumnArray[$this->rowCounter]
+			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor(
+				       100 / $this->rowColumnArray[ $this->rowCounter ]
 			       ) . '%;"><ul>';
 		}
-		if ( $field->type === 'column_end' )
-		{
+		if ( $field->type === 'column_end' ) {
 			$this->columnCounter = 0;
 			$this->rowCounter ++;
 
 			return ( '</ul></li>' );
 		}
-		if ( $field->type === 'row_break' || $field->type === 'page' )
-		{
+		if ( $field->type === 'row_break' || $field->type === 'page' ) {
 			$this->columnCounter = 0;
 
 			return '</ul><ul class="gform_fields top_label form_sublabel_below description_below">';
@@ -99,8 +89,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 	public function enqueue_scripts( $form ) {
 		if ( $this->is_javascript_to_be_loaded( $form ) &&
-		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) )
-		{
+		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
 			wp_enqueue_script(
 				'gfmc-scripts',
 				plugins_url( '/js/gf-form-multicolumn.js', __FILE__ ),
@@ -110,8 +99,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			);
 		}
 		if ( $this->is_css_to_be_loaded( $form ) &&
-		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) )
-		{
+		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
 			wp_enqueue_style(
 				'gfmc-styles',
 				plugins_url( '/css/gf-form-multicolumn.css', __FILE__ ),
@@ -131,11 +119,9 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	private function is_gf_form_multicolumn_element_on_page( $form ) {
-		foreach ( $form['fields'] as $field )
-		{
+		foreach ( $form['fields'] as $field ) {
 //			echo ('<pre>'); var_dump ($field['type']); echo ('</pre>');
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' )
-			{
+			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' ) {
 				return true;
 			}
 		}

@@ -133,15 +133,13 @@ class WH_GF_Multicolumn_Loader {
 	 */
 	public function run() {
 
-		foreach ( $this->filters as $hook )
-		{
+		foreach ( $this->filters as $hook ) {
 			add_filter( $hook['hook'],
 			            [ $hook['component'], $hook['callback'] ],
 			            $hook['priority'], $hook['accepted_args'] );
 		}
 
-		foreach ( $this->actions as $hook )
-		{
+		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'],
 			            [ $hook['component'], $hook['callback'] ],
 			            $hook['priority'], $hook['accepted_args'] );

@@ -13,8 +13,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) )
-{
+if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
@@ -37,12 +36,9 @@ add_action( 'gform_loaded', [
  */
 class WH_GF_Multicolumn_Bootstrap {
 	public static function load() {
-		if ( ! method_exists( '\GFForms', 'include_addon_framework' ) )
-		{
+		if ( ! method_exists( '\GFForms', 'include_addon_framework' ) ) {
 			return;
-		}
-		else
-		{
+		} else {
 			GFAddOn::register( 'WH\GF\Multicolumn\Classes\WH_GF_Multicolumn' );
 			WH\GF\Multicolumn\Classes\WH_GF_Multicolumn::get_instance();
 		}

@@ -6,8 +6,7 @@ class WH_GF_Multicolumn_Logger {
 	const fileLocation = WP_CONTENT_DIR . '/gf-form-multicolumn.log';
 
 	public static function log( $logLevel, $logMessage ) {
-		if ( ! file_exists( self::fileLocation ) )
-		{
+		if ( ! file_exists( self::fileLocation ) ) {
 			file_put_contents( self::fileLocation,
 			                   '/*****************************************************************/' . PHP_EOL .
 			                   '/* This is the log file for the Gravity Forms Multicolumn plugin */' . PHP_EOL .

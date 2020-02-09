@@ -34,8 +34,7 @@ class WH_GF_Multicolumn extends
 	private static $_instance = null;
 
 	public static function get_instance() {
-		if ( self::$_instance == null )
-		{
+		if ( self::$_instance == null ) {
 			self::$_instance = new self();
 		}
 
@@ -53,7 +52,7 @@ class WH_GF_Multicolumn extends
 	public function pre_init() {
 		parent::pre_init();
 
-		$this->set_locale();
+		add_action( 'plugins_loaded', [ $this, 'set_locale' ] );
 
 		add_filter( 'gform_preview_styles',
 		            [ $this, 'enqueue_admin_preview_scripts' ], 10, 2 );
@@ -82,15 +81,14 @@ class WH_GF_Multicolumn extends
 
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
-		if ( is_admin() )
-		{
+		if ( is_admin() ) {
 			$this->admin = new WH_GF_Multicolumn_Admin(
 				$this->get_plugin_name(), $this->_short_title, $this->_version
 			);
 		}
 	}
 
-	private function set_locale() {
+	public function set_locale() {
 		$plugin_i18n = new WH_GF_Multicolumn_i18n();
 	}
 

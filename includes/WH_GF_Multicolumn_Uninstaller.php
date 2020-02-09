@@ -19,15 +19,12 @@ use Exception;
 class WH_GF_Multicolumn_Uninstaller {
 	public function uninstall() {
 		$forms = \GFAPI::get_forms();
-		foreach ( $forms as $form )
-		{
+		foreach ( $forms as $form ) {
 			$form = $this->remove_gfmc_fields( $form );
-			try
-			{
+			try {
 				\GFAPI::update_form( $form );
 			}
-			catch ( Exception $e )
-			{
+			catch ( Exception $e ) {
 				WH_GF_Multicolumn_Logger::log( 'ERROR',
 				                               'Uninstall exception ' . $e . ' with form: ' .
 				                               serialize( $form ) );
@@ -36,12 +33,10 @@ class WH_GF_Multicolumn_Uninstaller {
 	}
 
 	private function remove_gfmc_fields( $form ) {
-		if ( isset( $form['gfmc_enable_css'] ) )
-		{
+		if ( isset( $form['gfmc_enable_css'] ) ) {
 			unset( $form['gfmc_enable_css'] );
 		}
-		if ( isset( $form['gfmc_enable_js'] ) )
-		{
+		if ( isset( $form['gfmc_enable_js'] ) ) {
 			unset( $form['gfmc_enable_js'] );
 		}
 
@@ -57,8 +52,7 @@ class WH_GF_Multicolumn_Uninstaller {
 
 	private function is_gfmc_form_field( $formField ) {
 		if ( ! $this->is_column_field_type( $formField )
-		     && ! $this->is_section_column_field_type( $formField ) )
-		{
+		     && ! $this->is_section_column_field_type( $formField ) ) {
 			return $formField;
 		}
 
@@ -72,11 +66,9 @@ class WH_GF_Multicolumn_Uninstaller {
 	}
 
 	private function is_section_column_field_type( $formField ) {
-		if ( $formField['type'] === 'section' )
-		{
+		if ( $formField['type'] === 'section' ) {
 			if ( $formField['cssClass'] === 'split-start' ||
-			     $formField['cssClass'] === 'split-end' )
-			{
+			     $formField['cssClass'] === 'split-end' ) {
 				return true;
 			}
 		}

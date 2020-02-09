@@ -1,29 +1,20 @@
 === Multiple Columns for Gravity Forms ===
-
 Contributors: webholism Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, multi row, multirow, multiple rows
-
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
-
 Requires at least: 4.6 Tested up to: 5.3.2
-
 Requires PHP: 5.6
-
 Stable tag: 3.0.4
-
 License: GPLv3 or later
-
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Introduces new form elements which allow rows to be split into multiple columns when using the Gravity Forms plugin.
 
 == Description ==
-
 When activated this plugin allows Gravity Forms elements to be split into columns. To implement the columns three new elements will be found in the form administration area - Column Start, Column Break, and Column End. All of these are visible in the plugin's Multiple Columns Group.
 
 In the form settings it is possible to enable and disable the associate CSS and JS that coime with the plugin. The CSS file is responsible for ensuring the correct layout of the form, and the JS file is used if using conditional logic to hide form elements. It is advised to keep the CSS enabled at all times, but the JS should only be enabled in the case of hidden elements through the use of conditional logic.
 
 == Installation ==
-
 1. In your WordPress admin panel, go to <em>Plugins > New Plugin</em>, search for “Multiple Columns for Gravity Forms”, find the “Gravity Forms Multi Column” plugin and click “<em>Install now</em>”.
 2. Alternatively download the zip file, unzip, and upload the gf-form-multicolumn folder (and files) to your plugins directory, which usually is /wp-content/plugins/.
 3. Activate the plugin through your <em>Plugins</em> area.
@@ -64,62 +55,19 @@ From version 2.1.0 multisite is supported.
 It has been tested with version 2.0.7 and above, but please do contact us if you’re experiencing a problem with your version of Gravity Forms.
 
 == Screenshots ==
-
 1. New Gravity Form with Multiple Columns Fields floating panel (collapsed).
 2. Multiple Columns Fields floating panel close up (expanded).
 3. Form showing new fields (Column Start, Column Break, Column End) added to form.
 4. Example of a completed form, composed of Multiple Columns Fields and generic Gravity Form fields.
 
 == Changelog ==
-
 = 3.0.4 =
-
 Fix: IE11 CSS styling that was not correctly aligning columns.
 Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list element around conditional logic elements.
 Improvement: Form settings modified which allows the plugin CSS file to be enabled and disabled for inclusion.
 Improvement: Included possibility to allow for CSS classes to be defined for columns
 Improvement: Removes form entries added when the plugin is uninstalled.
 Improvement: Form validation when saving to reduce unequal column start to column end implementations.
-
-= 3.0.3 =
-
-Fix: Removed echo commands as these were causing update issues from within Gutenberg pages. Improvement: Altered CSS to be more specific with class naming implementation.
-
-= 3.0.2 =
-
-Re-release of version 3.0.0.
-
-= 3.0.1 =
-
-Restored 2.1.1 as version 3.0.0 appeared to generate an Internal Server Error.
-
-= 3.0.0 =
-
-Restructured way that columns and rows are added to forms; native UI buttons are now integrated into the Gravity Forms interface. Resolved a few issues that had been highlighted in previous versions: Displaying multiple forms on a single page Correct error handling when form id not present in shortcode * CSS enhancements to align list elements
-
-= 2.1.1 =
-
-This version removed code that had been used for testing multisite in 2.1.0.
-
-= 2.1.0 =
-
-This version resolves issues around the plugin providing network only functionality on multisite installations. This plugin will now allow admins to activate or deactivate on individual network sites. A new CSS style has been introduced to remove the left padding and left margin from the first column of each row of the created form, to allow for a form to line up elements as expected. This is achieved with the style: li[class*=\"column-count-1\"] > div > ul Please note that with this version, the title of this plugin has changed and will now likely appear in a new location in your plugin list. Do not be alarmed! This is simply a new naming convention to align with Wordpress recommendations.
-
-= 2.0.1 =
-
-Code altered to account for web servers with PHP version < 5.4.
-
-= 2.0.0 =
-
-Introduced new feature to allow for multiple rows. Individual rows will split the columns they contain evenly.
-
-= 1.0.1 =
-
-Altered details related to the supporting files. No functional alterations. Upgrade optional.
-
-= 1.0.0 =
-
-Initial Release. Trumpets sound!
 
 == Upgrade Notice ==
 

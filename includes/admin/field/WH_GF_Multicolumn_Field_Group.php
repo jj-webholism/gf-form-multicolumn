@@ -2,8 +2,7 @@
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-if ( ! class_exists( 'GFForms' ) )
-{
+if ( ! class_exists( 'GFForms' ) ) {
 	die();
 }
 
@@ -33,10 +32,8 @@ class WH_GF_Multicolumn_Field_Group extends
 	}
 
 	public function add_custom_field_group( $field_groups ) {
-		foreach ( $field_groups as $field_group )
-		{
-			if ( $field_group['name'] === $this->button_group )
-			{
+		foreach ( $field_groups as $field_group ) {
+			if ( $field_group['name'] === $this->button_group ) {
 				return $field_groups;
 			}
 		}
@@ -51,10 +48,8 @@ class WH_GF_Multicolumn_Field_Group extends
 	}
 }
 
-try
-{
+try {
 	GF_Fields::register( new WH_GF_Multicolumn_Field_Group() );
 }
-catch ( \Exception $e )
-{
+catch ( \Exception $e ) {
 }

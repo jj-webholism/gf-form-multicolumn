@@ -25,31 +25,24 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		$dividerStartCounter = 0;
 		$dividerEndCounter   = 0;
 
-		foreach ( $form['fields'] as $formField )
-		{
-			if ( $formField['type'] === 'section' )
-			{
-				if ( strpos( $formField->cssClass, 'split-start' ) !== false )
-				{
+		foreach ( $form['fields'] as $formField ) {
+			if ( $formField['type'] === 'section' ) {
+				if ( strpos( $formField->cssClass, 'split-start' ) !== false ) {
 					// Set row and column details for later break up based on row and column position
 					$formField->calculationFormula = 'row-' . $rowCount .
 					                                 'column-' . $columnCount ++;
-					$rowColumnArray[$rowCount]     = $columnCount;
+					$rowColumnArray[ $rowCount ]   = $columnCount;
 
 					$formField->type = 'dividerStart';
 					++ $dividerStartCounter;
 					$formField->cssClass .= ' dividerStart-' . $dividerStartCounter;
-				}
-				elseif ( strpos( $formField->cssClass,
-				                 'split-end' ) !== false )
-				{
+				} elseif ( strpos( $formField->cssClass,
+				                   'split-end' ) !== false ) {
 					$formField->type = 'dividerEnd';
 					++ $dividerEndCounter;
 					$formField->cssClass .= ' dividerEnd-' . $dividerEndCounter;
-				}
-				elseif ( strpos( $formField->cssClass,
-				                 'new-row' ) !== false )
-				{
+				} elseif ( strpos( $formField->cssClass,
+				                   'new-row' ) !== false ) {
 					$formField->type = 'row-divider';
 					// Reset column counter
 					$columnCount         = 0;
@@ -60,23 +53,18 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		}
 
 		// Loop again through the field list to ensure that the first and last column are identified, based on the numbers defined in the previous loop
-		foreach ( $form['fields'] as $formField )
-		{
+		foreach ( $form['fields'] as $formField ) {
 			if ( $formField->type === 'dividerStart' && strpos(
 					$formField->cssClass, 'dividerStart-1'
-				) )
-			{
+				) ) {
 				$formField->cssClass .= ' start-divider';
-			}
-			elseif ( $formField->type === 'dividerEnd' && strpos(
+			} elseif ( $formField->type === 'dividerEnd' && strpos(
 					$formField->cssClass, 'dividerEnd-' . $dividerEndCounter
-				) )
-			{
+				) ) {
 				$formField->cssClass .= ' end-divider';
 			}
 			// Add column count to all dividers to ensure that this can be calculated as the split quantity later
-			if ( $formField->type === 'dividerStart' )
-			{
+			if ( $formField->type === 'dividerStart' ) {
 				// Set cssClass details to allow for break up of rows and columns based on
 				// Variable to hold the value stored in the calculationFormula parameter that relates to the row and column count
 				// Not that this will hold the value for the commencement of the column string, and this defines the end of the row count number
@@ -89,9 +77,8 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 				$columnNumber    = substr( $formField->calculationFormula,
 				                           $endOfRowCount + 7 ) + 1;
 				if ( strpos( $formField->cssClass,
-				             'column-count-' ) === false )
-				{
-					$formField->cssClass .= ' column-count-' . $columnNumber . '-of-' . $rowColumnArray[$rowNumber];
+				             'column-count-' ) === false ) {
+					$formField->cssClass .= ' column-count-' . $columnNumber . '-of-' . $rowColumnArray[ $rowNumber ];
 				}
 			}
 		}
@@ -111,8 +98,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	}
 
 	function define_output_elements( $field_container, $field ) {
-		if ( IS_ADMIN )
-		{
+		if ( IS_ADMIN ) {
 			return $field_container;
 		} // only modify HTML on the front end
 
@@ -121,20 +107,16 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 
 		// Calculate width value based on the number of columns in the row, which has been coded into the cssClass
 		$columnCountStartPos = strpos( $field->cssClass, '-of-' );
-		if ( $columnCountStartPos !== false )
-		{
+		if ( $columnCountStartPos !== false ) {
 			$columnTotalForRowTerminator = strpos(
 				substr( $field->cssClass, $columnCountStartPos + 4 ), ' '
 			);
-			if ( $columnTotalForRowTerminator > 0 )
-			{
+			if ( $columnTotalForRowTerminator > 0 ) {
 				$columnTotalForRow = substr(
 					$field->cssClass, $columnCountStartPos + 4,
 					$columnTotalForRowTerminator
 				);
-			}
-			else
-			{
+			} else {
 				$columnTotalForRow = substr(
 					$field->cssClass, $columnCountStartPos + 4
 				);
@@ -145,8 +127,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		$columnSpecificCSSTextPos = strpos( $field->cssClass,
 		                                    'column-count-' );
 		$columnSpecificCSSText    = null;
-		if ( $columnSpecificCSSTextPos !== false )
-		{
+		if ( $columnSpecificCSSTextPos !== false ) {
 			$columnSpecificCSSText = substr(
 				$field->cssClass, $columnSpecificCSSTextPos
 			);
@@ -156,29 +137,22 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		if ( $field->type === 'dividerStart' && strpos(
 			                                        $field->cssClass,
 			                                        'start-divider'
-		                                        ) !== false )
-		{
+		                                        ) !== false ) {
 			$this->cssArray[] = '<style>.' . $columnSpecificCSSText . ' { ' . $columnWidth . ' }</style>';
 			$field_container  = '<li class="' . $columnSpecificCSSText . ' divider-list-item multicolumn-start"><div class="multicolumn-wrapper"><ul>';
-		}
-		elseif ( $field->type === 'dividerStart' )
-		{
+		} elseif ( $field->type === 'dividerStart' ) {
 			$this->cssArray[] = '<style>.' . $columnSpecificCSSText . ' { ' . $columnWidth . ' }</style>';
 			$field_container  = '<li class="' . $columnSpecificCSSText . ' divider-list-item"><div><ul>';
 		}
 		if ( $field->type === 'dividerEnd' && strpos(
 			                                      $field->cssClass,
 			                                      'end-divider'
-		                                      ) !== false )
-		{
+		                                      ) !== false ) {
 			$field_container = '</ul></div></li>';
-		}
-		elseif ( $field->type === 'dividerEnd' )
-		{
+		} elseif ( $field->type === 'dividerEnd' ) {
 			$field_container = '</ul>';
 		}
-		if ( $field->type === 'row-divider' )
-		{
+		if ( $field->type === 'row-divider' ) {
 			$field_container = '<div class="row-divider"></div>';
 		}
 
@@ -186,8 +160,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	}
 
 	public function enqueue_scripts( $form ) {
-		if ( isset( $form['gfmc_enable_js'] ) && $form['gfmc_enable_js'] )
-		{
+		if ( isset( $form['gfmc_enable_js'] ) && $form['gfmc_enable_js'] ) {
 			wp_enqueue_script(
 				'gfmc-scripts',
 				plugins_url( '/js/gf-form-multicolumn.js', __FILE__ ),
@@ -196,8 +169,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 				'all'
 			);
 		}
-		if ( isset( $form['gfmc_enable_css'] ) && $form['gfmc_enable_css'] )
-		{
+		if ( isset( $form['gfmc_enable_css'] ) && $form['gfmc_enable_css'] ) {
 			wp_enqueue_style(
 				'gfmc-styles',
 				plugins_url( '/css/gf-form-multicolumn-v2.css', __FILE__ ),

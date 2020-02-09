@@ -18,15 +18,12 @@ use GFAPI;
 class WH_GF_Multicolumn_Activator {
 	public function activate() {
 		$forms = GFAPI::get_forms();
-		foreach ( $forms as $form )
-		{
-			if ( ! isset ( $form['gfmc_enable_css'] ) )
-			{
+		foreach ( $forms as $form ) {
+			if ( ! isset ( $form['gfmc_enable_css'] ) ) {
 				// Add the gfmc_enable_css option and set it to 1
 				$form['gfmc_enable_css'] = 1;
 			}
-			if ( ! isset ( $form['gfmc_enable_js'] ) )
-			{
+			if ( ! isset ( $form['gfmc_enable_js'] ) ) {
 				// Add the gfmc_enable_js option and set it to 1
 				$form['gfmc_enable_js'] = 0;
 			}

@@ -2,8 +2,7 @@
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-if ( ! class_exists( 'GFForms' ) )
-{
+if ( ! class_exists( 'GFForms' ) ) {
 	die();
 }
 
@@ -49,11 +48,9 @@ class WH_GF_Multicolumn_Field_Column_Separator extends
 	}
 }
 
-try
-{
+try {
 	GF_Fields::register( new WH_GF_Multicolumn_Field_Column_Separator() );
 }
-catch ( \Exception $e )
-{
+catch ( \Exception $e ) {
 	// Debug this.
 }
