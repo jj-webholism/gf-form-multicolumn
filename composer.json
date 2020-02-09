@@ -1,0 +1,20 @@
+{
+  "name": "webholism/gf-form-multicolumn",
+  "description": "Allows addition of multiple columns (and multiple rows of multiple columns) to Gravity Forms.",
+  "autoload": {
+    "psr-4": {
+      "WH\\GF\\Multicolumn\\": "./",
+      "WH\\GF\\Multicolumn\\Admin\\": "includes/admin/",
+      "WH\\GF\\Multicolumn\\Admin\\Field\\": "includes/admin/field/",
+      "WH\\GF\\Multicolumn\\Classes\\": "includes/",
+      "WH\\GF\\Multicolumn\\Site\\": "includes/public/"
+    }
+  },
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "jj-webholism",
+      "email": "jj@webholism.com"
+    }
+  ]
+}

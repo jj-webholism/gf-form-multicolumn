@@ -5,29 +5,68 @@
  * Description: Allows addition of multiple columns (and multiple rows of multiple columns) to Gravity Forms. <p>GDPR Compliance: this plugin does not collect data.</p>
  * Author: WebHolism
  * Author URI: http://www.webholism.com
- * Version: 3.0.3
- * Text Domain: gfmulticolumn
+ * Version: 3.0.4
+ * Text Domain: gf-form-multicolumn
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0
+ * Domain Path: /languages
  */
 
-    define( 'GF_MULTICOLUMN_VERSION', '3.0.3' );
-    define( 'GF_MULTICOLUMN_TITLE', 'Multiple Columns' );
-    define( 'GF_MULTICOLUMN_FIELD_GROUP_TITLE', 'Multiple Columns Fields' );
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) )
+{
+	die;
+}
 
-	add_action( 'gform_loaded', [ 'GF_MultiColumn_Bootstrap', 'load' ], 5 );
+define( 'LOG_PATH', __DIR__ . '/log/' );
+define( 'LOG_LEVEL', 'DEBUG' );
 
-	class GF_MultiColumn_Bootstrap {
+require __DIR__ . '/vendor/autoload.php';
 
-		public static function load() {
-			if ( ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
-				return;
-			}
-			require_once 'class-gf-multicolumn.php';
-			GFAddOn::register( 'GFMultiColumn' );
+use WH\GF\Multicolumn;
+use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Activator;
+use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Uninstaller;
+
+add_action( 'gform_loaded', [
+	'WH_GF_Multicolumn_Bootstrap',
+	'load',
+], 5 );
+
+/**
+ * Class GFMC_Bootstrap
+ */
+class WH_GF_Multicolumn_Bootstrap {
+	public static function load() {
+		if ( ! method_exists( '\GFForms', 'include_addon_framework' ) )
+		{
+			return;
+		}
+		else
+		{
+			GFAddOn::register( 'WH\GF\Multicolumn\Classes\WH_GF_Multicolumn' );
+			WH\GF\Multicolumn\Classes\WH_GF_Multicolumn::get_instance();
 		}
 	}
+}
 
-	function gf_simple_addon() {
-		return GFMultiColumn::get_instance();
-	}
+WH_GF_Multicolumn_Bootstrap::load();
+
+/**
+ * Activation is responsible for adding form options
+ * gfmc_enable_css and gfmc_enable_js.
+ * Uninstall will remove those settings and delete all multicolumn form entries.
+ */
+register_activation_hook( __FILE__, 'activate' );
+register_uninstall_hook( __FILE__, 'uninstall' );
+
+function activate() {
+	$activator = new WH_GF_Multicolumn_Activator();
+	$activator->activate();
+}
+
+function uninstall() {
+	// The Gravity Forms AddOns automatically deletes: Form settings, Plugin
+	// settings, Entry meta & Version information
+	$uninstaller = new WH_GF_Multicolumn_Uninstaller();
+	$uninstaller->uninstall();
+}
