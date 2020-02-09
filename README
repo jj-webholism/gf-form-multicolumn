@@ -1,11 +1,17 @@
 === Multiple Columns for Gravity Forms ===
 
 Contributors: webholism Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, multi row, multirow, multiple rows
+
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
+
 Requires at least: 4.6 Tested up to: 5.3.2
+
 Requires PHP: 5.6
+
 Stable tag: 3.0.4
+
 License: GPLv3 or later
+
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Introduces new form elements which allow rows to be split into multiple columns when using the Gravity Forms plugin.
