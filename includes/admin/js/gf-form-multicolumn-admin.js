@@ -2,9 +2,11 @@ function gfmc_validate_form_columns (error, form, has_product, has_option) {
   let result = check_start_and_end_quantities(form)
   if (result !== 0) {
     if (result > 0) {
-      return result + ' too many Column Starts to Column Ends. Please review and remove the excess Column Starts.'
+      //return result + ' too many Column Starts to Column Ends. Please review and remove the excess Column Starts.'
+      return result + gfmc.tooManyColumnStarts
     } else {
-      return -result + ' too many Column Ends to Column Starts. Please review and remove the excess Column Ends.'
+      //return -result + ' too many Column Ends to Column Starts. Please review and remove the excess Column Ends.'
+      return -result + gfmc.tooManyColumnEnds
     }
   }
 }

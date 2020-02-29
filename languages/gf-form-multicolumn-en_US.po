@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Multiple Columns for Gravity Forms\n"
-"POT-Creation-Date: 2020-02-09 21:12+0100\n"
-"PO-Revision-Date: 2020-02-09 21:13+0100\n"
+"POT-Creation-Date: 2020-02-16 20:32+0100\n"
+"PO-Revision-Date: 2020-02-16 20:50+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -22,59 +22,96 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 
-#: includes/admin/WH_GF_Multicolumn_Admin.php:61
-#: includes/admin/WH_GF_Multicolumn_Admin.php:75
+#: includes/admin/WH_GF_Multicolumn_Admin.php:57
+#: includes/admin/WH_GF_Multicolumn_Admin.php:72
 msgid "Multiple Columns"
-msgstr "Multiple Columns"
+msgstr ""
 
-#: includes/admin/WH_GF_Multicolumn_Admin.php:63
+#: includes/admin/WH_GF_Multicolumn_Admin.php:59
 msgid "Enable CSS"
-msgstr "Enable CSS"
+msgstr ""
 
-#: includes/admin/WH_GF_Multicolumn_Admin.php:70
+#: includes/admin/WH_GF_Multicolumn_Admin.php:67
 msgid "Load CSS Stylesheet"
-msgstr "Load CSS Stylesheet"
+msgstr ""
 
-#: includes/admin/WH_GF_Multicolumn_Admin.php:77
+#: includes/admin/WH_GF_Multicolumn_Admin.php:74
 msgid "Enable JS"
-msgstr "Enable JS"
+msgstr ""
 
-#: includes/admin/WH_GF_Multicolumn_Admin.php:83
+#: includes/admin/WH_GF_Multicolumn_Admin.php:80
 msgid "Load JS Stylesheet"
-msgstr "Load JS Stylesheet"
+msgstr ""
+
+#: includes/admin/WH_GF_Multicolumn_Admin.php:94
+msgid ""
+"Load MultiColumn specific CSS file (note that deactivating this may result "
+"in the plugin layout breaking)."
+msgstr ""
+
+#: includes/admin/WH_GF_Multicolumn_Admin.php:96
+msgid ""
+"Load MultiColumn specific JS file which alters spacing when using "
+"conditional logic elements."
+msgstr ""
+
+#: includes/admin/WH_GF_Multicolumn_Admin.php:98
+msgid "Use elements to construct column divisions in the form."
+msgstr ""
+
+#: includes/admin/WH_GF_Multicolumn_Admin.php:112
+msgid ""
+" too many Column Starts to Column Ends. Please review and remove the excess "
+"Column Starts."
+msgstr ""
+
+#: includes/admin/WH_GF_Multicolumn_Admin.php:113
+msgid ""
+" too many Column Ends to Column Starts. Please review and remove the excess "
+"Column Ends."
+msgstr ""
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Column_End.php:26
 msgid "Column End"
-msgstr "Column End (US)"
+msgstr ""
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Column_Separator.php:26
 msgid "Column Break"
-msgstr "Column Break (US)"
+msgstr ""
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Column_Start.php:26
 msgid "Column Start"
-msgstr "Column Start (US)"
+msgstr ""
+
+#: includes/admin/field/WH_GF_Multicolumn_Field_Group.php:53
+msgid "Multiple Columns Fields"
+msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "Multiple Columns for Gravity Forms"
-msgstr "Multiple Columns for Gravity Forms"
+msgstr ""
 
 #. Plugin URI of the plugin/theme
 msgid "https://wordpress.org/plugins/gf-form-multicolumn/"
-msgstr "https://wordpress.org/plugins/gf-form-multicolumn/"
+msgstr ""
 
 #. Description of the plugin/theme
-msgid ""
-"Allows addition of multiple columns (and multiple rows of multiple columns) "
-"to Gravity Forms. <p>GDPR Compliance: this plugin does not collect data.</p>"
+msgid "Provides Gravity Form fields to allow for form columns."
 msgstr ""
-"Allows addition of multiple columns (and multiple rows of multiple columns) "
-"to Gravity Forms. <p>GDPR Compliance: this plugin does not collect data.</p>"
 
 #. Author of the plugin/theme
 msgid "WebHolism"
-msgstr "WebHolism"
+msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "http://www.webholism.com"
-msgstr "http://www.webholism.com"
+msgstr ""
+
+#~ msgid ""
+#~ "Allows addition of multiple columns (and multiple rows of multiple "
+#~ "columns) to Gravity Forms. <p>GDPR Compliance: this plugin does not "
+#~ "collect data.</p>"
+#~ msgstr ""
+#~ "Allows addition of multiple columns (and multiple rows of multiple "
+#~ "columns) to Gravity Forms. <p>GDPR Compliance: this plugin does not "
+#~ "collect data.</p>"

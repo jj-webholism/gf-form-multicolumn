@@ -9,7 +9,7 @@ use GFAPI;
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since       3.0.4
+ * @since       3.1.0
  * Class        WH_GF_Multicolumn_Activator
  * @package     WH\GF\Multicolumn\Classes
  * @subpackage  gf-form-multicolumn/includes

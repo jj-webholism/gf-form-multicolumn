@@ -17,16 +17,11 @@ class WH_GF_Multicolumn extends
 	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '3.0.4';
+	protected $_version = '3.1.0';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
 	protected $_full_path = __FILE__;
-	/**
-	 * These relate to the administrator new elements - Move to ADMIN
-	 */
-	protected $_short_title = 'Multiple Columns';
-	protected $_title = 'Multi Columns for Gravity Forms';
 
 	private $admin;
 	private $public;
@@ -83,7 +78,7 @@ class WH_GF_Multicolumn extends
 		// features to the Gravity Forms GUI.
 		if ( is_admin() ) {
 			$this->admin = new WH_GF_Multicolumn_Admin(
-				$this->get_plugin_name(), $this->_short_title, $this->_version
+				$this->get_plugin_name(), $this->_version
 			);
 		}
 	}

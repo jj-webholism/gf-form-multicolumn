@@ -10,7 +10,7 @@ use Exception;
  * This class defines all code necessary to run during the plugin's
  * deletion.
  *
- * @since       3.0.4
+ * @since       3.1.0
  * Class        WH_GF_Multicolumn_Uninstaller
  * @package     WH\GF\Multicolumn\Classes
  * @subpackage  gf-form-multicolumn/includes

@@ -2,10 +2,10 @@
 /*
  * Plugin Name: Multiple Columns for Gravity Forms
  * Plugin URI: https://wordpress.org/plugins/gf-form-multicolumn/
- * Description: Allows addition of multiple columns (and multiple rows of multiple columns) to Gravity Forms. <p>GDPR Compliance: this plugin does not collect data.</p>
+ * Description: Provides Gravity Form fields to allow for form columns.
  * Author: WebHolism
  * Author URI: http://www.webholism.com
- * Version: 3.0.4
+ * Version: 3.1.0
  * Text Domain: gf-form-multicolumn
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0
@@ -50,7 +50,8 @@ WH_GF_Multicolumn_Bootstrap::load();
 /**
  * Activation is responsible for adding form options
  * gfmc_enable_css and gfmc_enable_js.
- * Uninstall will remove those settings and delete all multicolumn form entries.
+ * Uninstall will remove those settings and delete all multicolumn form
+ * element entries.
  */
 register_activation_hook( __FILE__, 'activate' );
 register_uninstall_hook( __FILE__, 'uninstall' );

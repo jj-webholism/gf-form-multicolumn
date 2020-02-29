@@ -3,7 +3,7 @@ Contributors: webholism Tags: gravityforms, gravity forms, multiple columns, mul
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6 Tested up to: 5.3.2
 Requires PHP: 5.6
-Stable tag: 3.0.4
+Stable tag: 3.1.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -61,7 +61,7 @@ It has been tested with version 2.0.7 and above, but please do contact us if you
 4. Example of a completed form, composed of Multiple Columns Fields and generic Gravity Form fields.
 
 == Changelog ==
-= 3.0.4 =
+= 3.1.0 =
 Fix: IE11 CSS styling that was not correctly aligning columns.
 Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list element around conditional logic elements.
 Improvement: Form settings modified which allows the plugin CSS file to be enabled and disabled for inclusion.

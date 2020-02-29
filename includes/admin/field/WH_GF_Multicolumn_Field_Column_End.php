@@ -2,13 +2,13 @@
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-if ( ! class_exists( 'GFForms' ) )
-{
+if ( ! class_exists( 'GFForms' ) ) {
 	die();
 }
 
 use GF_Field;
 use GF_Fields;
+use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Logger;
 
 class WH_GF_Multicolumn_Field_Column_End extends
 	GF_Field {
@@ -17,14 +17,13 @@ class WH_GF_Multicolumn_Field_Column_End extends
 	public function get_form_editor_inline_script_on_page_render() {
 		$script = sprintf( "function SetDefaultValues_%s(field) {field.label = '%s';}",
 		                   $this->type,
-		                   esc_attr__( $this->get_form_editor_field_title(),
-		                               'gf-form-multicolumn' ) ) . PHP_EOL;
+		                   $this->get_form_editor_field_title() ) . PHP_EOL;
 
 		return $script;
 	}
 
 	public function get_form_editor_field_title() {
-		return esc_attr__( 'Column End', 'gf-form-multicolumn' );
+		return __( 'Column End', 'gf-form-multicolumn' );
 	}
 
 	public function get_form_editor_field_settings() {
@@ -49,11 +48,10 @@ class WH_GF_Multicolumn_Field_Column_End extends
 	}
 }
 
-try
-{
+try {
 	GF_Fields::register( new WH_GF_Multicolumn_Field_Column_End() );
 }
-catch ( \Exception $e )
-{
-	// Debug this.
+catch ( \Exception $e ) {
+	WH_GF_Multicolumn_Logger::log( 'ERROR',
+	                               'Register WH_GF_Multicolumn_Field_Column_End exception ' . $e );
 }

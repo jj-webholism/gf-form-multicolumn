@@ -120,7 +120,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 	private function is_gf_form_multicolumn_element_on_page( $form ) {
 		foreach ( $form['fields'] as $field ) {
-//			echo ('<pre>'); var_dump ($field['type']); echo ('</pre>');
 			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' ) {
 				return true;
 			}

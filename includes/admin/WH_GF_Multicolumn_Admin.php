@@ -15,14 +15,10 @@ class WH_GF_Multicolumn_Admin {
 
 	private $version;
 
-	protected $_short_title; // Naming in the admin menu
-	protected $_title = 'Multi Columns for Gravity Forms'; // Title on the admin page
+	public function __construct( $plugin_name, $version ) {
 
-	public function __construct( $plugin_name, $short_title, $version ) {
-
-		$this->plugin_name  = $plugin_name;
-		$this->_short_title = $short_title;
-		$this->version      = $version;
+		$this->plugin_name = $plugin_name;
+		$this->version     = $version;
 
 		$this->add_fields();
 
@@ -65,9 +61,10 @@ class WH_GF_Multicolumn_Admin {
 			  gform_tooltip( 'gfmc_enable_css',
 			                 '', true ) .
 			  '</th><td>
-		                      <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_css"
-		                      value="1" ' . $enable_gfmc_css_checked . '>
-		                      <label for="gfmc_enable_css">' . __( 'Load CSS Stylesheet' ) .
+		       <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_css"
+		       value="1" ' . $enable_gfmc_css_checked . '>
+		       <label for="gfmc_enable_css">' .
+			  __( 'Load CSS Stylesheet', 'gf-form-multicolumn' ) .
 			  '</label></td></tr>';
 
 		$enable_gfmc_js_checked =
@@ -78,12 +75,10 @@ class WH_GF_Multicolumn_Admin {
 		                                           'gf-form-multicolumn' ) . ' ' .
 		                          gform_tooltip( 'gfmc_enable_js', '', true ) . '</th>
 		    <td>
-		        <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_js"
+		    <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_js"
 		    value="1" ' . $enable_gfmc_js_checked . '>
-		        <label for="gfmc_enable_js">' . __( 'Load JS Stylesheet' ) .
-		                          '</label>
-		    </td>
-		</tr>';
+		    <label for="gfmc_enable_js">' . __( 'Load JS Stylesheet',
+		                                        'gf-form-multicolumn' ) . '</label></td></tr>';
 
 		return $settings;
 	}
@@ -96,24 +91,35 @@ class WH_GF_Multicolumn_Admin {
 	}
 
 	public function gfmc_tooltips() {
-		$tooltips['gfmc_enable_css']              = 'Load MultiColumn specific CSS file (note that deactivating this may result in the plugin layout breaking).';
-		$tooltips['gfmc_enable_js']               = 'Load MultiColumn specific JS file which alters spacing when using conditional logic elements.';
-		$tooltips['form_multiple_columns_fields'] = 'Use elements to construct column divisions in the form.';
+		$tooltips['gfmc_enable_css']              = __( 'Load MultiColumn specific CSS file (note that deactivating this may result in the plugin layout breaking).',
+		                                                'gf-form-multicolumn' );
+		$tooltips['gfmc_enable_js']               = __( 'Load MultiColumn specific JS file which alters spacing when using conditional logic elements.',
+		                                                'gf-form-multicolumn' );
+		$tooltips['form_multiple_columns_fields'] = __( 'Use elements to construct column divisions in the form.',
+		                                                'gf-form-multicolumn' );
 
 		return $tooltips;
 	}
 
 	public function enqueue_admin_scripts( $form ) {
+		wp_register_script( 'gfmc-admin-scripts',
+		                    plugins_url( '/js/gf-form-multicolumn-admin.js',
+		                                 __FILE__ ),
+		                    100,
+		                    $this->version,
+		                    'all' );
+		$gfmcTranslationArray = [
+			'tooManyColumnStarts' => __( ' too many Column Starts to Column Ends. Please review and remove the excess Column Starts.', 'gf-form-multicolumn' ),
+			'tooManyColumnEnds'   => __( ' too many Column Ends to Column Starts. Please review and remove the excess Column Ends.', 'gf-form-multicolumn' ),
+		];
+		wp_localize_script( 'gfmc-admin-scripts', 'gfmc',
+		                    $gfmcTranslationArray );
 		wp_enqueue_script(
-			'gfmc-admin-scripts',
-			plugins_url( '/js/gf-form-multicolumn-admin.js', __FILE__ ),
-			100,
-			$this->version,
-			'all'
+			'gfmc-admin-scripts'
 		);
 	}
 
-	private function is_new_form( $form ): bool {
+	private function is_new_form( $form ) {
 		return ( isset ( $form['gfmc_enable_css'] ) ) ? true : false;
 	}
 
