@@ -13,7 +13,6 @@ use WH\GF\Multicolumn\Site\WH_GF_Multicolumn_Public;
  */
 class WH_GF_Multicolumn extends
 	GFAddOn {
-	protected $loader;
 	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
@@ -98,10 +97,6 @@ class WH_GF_Multicolumn extends
 
 	public function get_plugin_name() {
 		return $this->plugin_name;
-	}
-
-	public function run() {
-		$this->loader->run();
 	}
 
 	public function get_version() {
