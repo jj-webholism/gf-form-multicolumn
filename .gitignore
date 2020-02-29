@@ -1,7 +1,0 @@
-bin/
-includes/WH_GF_Multicolumn_i18n.php
-languages/
-tests/
-.phpcs.xml.dist
-phpunit.xml.dist
-.travis.yml
