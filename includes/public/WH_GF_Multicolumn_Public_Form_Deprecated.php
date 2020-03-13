@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * The public-specific functionality of the plugin which covers original form
+ * creation style.
+ *
+ * @link       https://wordpress.org/plugins/gf-form-multicolumn/
+ * @since      3.1.0
+ *
+ * @package    gf-form-multicolumn
+ * @subpackage gf-form-multicolumn/includes/public
+ */
+
 namespace WH\GF\Multicolumn\Site;
 
 class WH_GF_Multicolumn_Public_Form_Deprecated {
@@ -12,14 +23,14 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	public function __construct( $version, $form ) {
 		$this->version = $version;
 		add_action( 'gform_enqueue_scripts',
-		            [ $this, 'enqueue_scripts' ] );
+		            array( $this, 'enqueue_scripts' ) );
 		$this->rowColumnArray =
 			$this->calculate_row_and_column_count( $form );
 		$this->structure_form_elements();
 	}
 
 	private function calculate_row_and_column_count( $form ) {
-		$rowColumnArray      = [];
+		$rowColumnArray      = array();
 		$rowCount            = 1;
 		$columnCount         = 0;
 		$dividerStartCounter = 0;
@@ -91,7 +102,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		$this->columnCounter = 0;
 
 		add_filter(
-			'gform_field_container', [ $this, 'define_output_elements' ],
+			'gform_field_container', array( $this, 'define_output_elements' ),
 			10, 6
 		);
 
@@ -160,18 +171,10 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	}
 
 	public function enqueue_scripts( $form ) {
-		if ( isset( $form['gfmc_enable_js'] ) && $form['gfmc_enable_js'] ) {
-			wp_enqueue_script(
-				'gfmc-scripts',
-				plugins_url( '/js/gf-form-multicolumn.js', __FILE__ ),
-				100,
-				$this->version,
-				'all'
-			);
-		}
+		wp_dequeue_style( 'gfmc-styles' );
 		if ( isset( $form['gfmc_enable_css'] ) && $form['gfmc_enable_css'] ) {
 			wp_enqueue_style(
-				'gfmc-styles',
+				'gfmc-styles-v2',
 				plugins_url( '/css/gf-form-multicolumn-v2.css', __FILE__ ),
 				false,
 				$this->version,

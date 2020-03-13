@@ -1,13 +1,13 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
+ * The public-specific functionality of the plugin.
  *
- * @link       http://example.com
- * @since      1.0.0
+ * @link       https://wordpress.org/plugins/gf-form-multicolumn/
+ * @since      3.1.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/admin
+ * @package    gf-form-multicolumn
+ * @subpackage gf-form-multicolumn/public
  */
 
 namespace WH\GF\Multicolumn\Site;
@@ -17,9 +17,6 @@ class WH_GF_Multicolumn_Public {
 	private $version;
 
 	private $form;
-	private $rowCount;
-	private $rowNumber;
-	private $columnCount;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -38,9 +35,13 @@ class WH_GF_Multicolumn_Public {
 		add_filter( 'gform_pre_render', [ $this, 'pre_render_form' ], 10, 4 );
 	}
 
+	public function get_style() {
+		return $this->form['id'];
+
+	}
+
 	public function pre_render_form( $form ) {
 		if ( $form !== false ) {
-
 			$this->form = $form;
 
 			// Test to see if the form contains any type of multicolumn element

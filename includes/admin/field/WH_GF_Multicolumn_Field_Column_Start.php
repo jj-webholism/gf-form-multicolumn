@@ -27,9 +27,9 @@ class WH_GF_Multicolumn_Field_Column_Start extends
 	}
 
 	public function get_form_editor_field_settings() {
-		return [
+		return array(
 			'css_class_setting',
-		];
+		);
 	}
 
 	public function is_conditional_logic_supported() {
@@ -41,10 +41,10 @@ class WH_GF_Multicolumn_Field_Column_Start extends
 	}
 
 	public function get_form_editor_button() {
-		return [
+		return array(
 			'group' => GF_MULTICOLUMN_FIELD_GROUP_TITLE,
 			'text'  => $this->get_form_editor_field_title(),
-		];
+		);
 	}
 }
 

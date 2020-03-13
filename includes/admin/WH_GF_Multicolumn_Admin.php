@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * The admin-specific functionality of the plugin.
+ *
+ * @link       https://wordpress.org/plugins/gf-form-multicolumn/
+ * @since      3.1.0
+ *
+ * @package    gf-form-multicolumn
+ * @subpackage gf-form-multicolumn/includes/admin
+ */
+
 namespace WH\GF\Multicolumn\Admin;
 
 use GFAPI;
@@ -23,21 +33,23 @@ class WH_GF_Multicolumn_Admin {
 		$this->add_fields();
 
 		add_action( 'gform_admin_pre_render',
-		            [ $this, 'admin_pre_render_function' ] );
+		            array ( $this, 'admin_pre_render_function' ) );
 		add_action( 'admin_enqueue_scripts',
-		            [ $this, 'enqueue_admin_scripts' ] );
+		            array ( $this, 'enqueue_admin_scripts' ) );
 		add_filter( 'gform_form_settings',
-		            [ $this, 'display_gfmc_form_settings' ],
+		            array ( $this, 'display_gfmc_form_settings' ),
 		            10, 2 );
 		add_filter( 'gform_pre_form_settings_save',
-		            [ $this, 'save_gfmc_form_setting' ] );
-		add_filter( 'gform_tooltips', [ $this, 'gfmc_tooltips' ] );
+		            array ( $this, 'save_gfmc_form_setting' ) );
+		add_filter( 'gform_tooltips', array ( $this, 'gfmc_tooltips' ) );
 	}
 
 	public function admin_pre_render_function( $form ) {
-		echo \GFCommon::is_form_editor() ? "<script type='text/javascript'>
-        gform.addFilter( 'gform_validation_error_form_editor', 'gfmc_validate_form_columns');
+		if ( wp_script_is( 'gfmc-admin-scripts' ) ) {
+			echo \GFCommon::is_form_editor() ? "<script type='text/javascript'>
+        gform.addFilter( 'gform_validation_error_form_editor', 'gfmc_validate_form_columns', 10, 'gfmc_validate_form_columns_" . $form['id'] . "');
         </script>" : '';
+		}
 
 		return $form;
 	}
@@ -77,7 +89,7 @@ class WH_GF_Multicolumn_Admin {
 		    <td>
 		    <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_js"
 		    value="1" ' . $enable_gfmc_js_checked . '>
-		    <label for="gfmc_enable_js">' . __( 'Load JS Stylesheet',
+		    <label for="gfmc_enable_js">' . __( 'Load JS Script',
 		                                        'gf-form-multicolumn' ) . '</label></td></tr>';
 
 		return $settings;
@@ -103,15 +115,17 @@ class WH_GF_Multicolumn_Admin {
 
 	public function enqueue_admin_scripts( $form ) {
 		wp_register_script( 'gfmc-admin-scripts',
-		                    plugins_url( '/js/gf-form-multicolumn-admin.js',
+		                    plugins_url( '/js/gf-form-multicolumn-admin.min.js',
 		                                 __FILE__ ),
 		                    100,
 		                    $this->version,
 		                    'all' );
-		$gfmcTranslationArray = [
-			'tooManyColumnStarts' => __( ' too many Column Starts to Column Ends. Please review and remove the excess Column Starts.', 'gf-form-multicolumn' ),
-			'tooManyColumnEnds'   => __( ' too many Column Ends to Column Starts. Please review and remove the excess Column Ends.', 'gf-form-multicolumn' ),
-		];
+		$gfmcTranslationArray = array (
+			'tooManyColumnStarts' => __( ' too many Column Starts to Column Ends. Please review and remove the excess Column Starts.',
+			                             'gf-form-multicolumn' ),
+			'tooManyColumnEnds'   => __( ' too many Column Ends to Column Starts. Please review and remove the excess Column Ends.',
+			                             'gf-form-multicolumn' ),
+		);
 		wp_localize_script( 'gfmc-admin-scripts', 'gfmc',
 		                    $gfmcTranslationArray );
 		wp_enqueue_script(

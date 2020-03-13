@@ -40,11 +40,11 @@ class WH_GF_Multicolumn_Field_Group extends
 			}
 		}
 
-		$field_groups[] = [
+		$field_groups[] = array(
 			'name'   => $this->button_group,
 			'label'  => __( $this->buttonLabel, 'gf-form-multicolumn' ),
-			'fields' => [],
-		];
+			'fields' => array(),
+		);
 
 		return $field_groups;
 	}
