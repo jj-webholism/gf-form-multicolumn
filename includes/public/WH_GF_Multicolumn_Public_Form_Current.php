@@ -20,6 +20,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 	public function __construct( $version, $form ) {
 		$this->version = $version;
+
 		// Set row and column counts
 		$this->rowCount    = 1;
 		$this->rowNumber   = 1;
@@ -32,7 +33,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	private function calculate_row_and_column_count( $form ) {
-		$rowColumnArray = array();
+		$rowColumnArray = array ();
 		$rowCount       = 1;
 		$columnCount    = 0;
 
@@ -56,7 +57,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$this->columnCounter = 0;
 
 		add_filter(
-			'gform_field_container', array( $this, 'define_output_elements' ),
+			'gform_field_container', array ( $this, 'define_output_elements' ),
 			10, 6
 		);
 

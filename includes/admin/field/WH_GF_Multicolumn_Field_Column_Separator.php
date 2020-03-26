@@ -27,7 +27,7 @@ class WH_GF_Multicolumn_Field_Column_Separator extends
 	}
 
 	public function get_form_editor_field_settings() {
-		return array(
+		return array (
 			'css_class_setting',
 		);
 	}
@@ -41,7 +41,7 @@ class WH_GF_Multicolumn_Field_Column_Separator extends
 	}
 
 	public function get_form_editor_button() {
-		return array(
+		return array (
 			'group' => GF_MULTICOLUMN_FIELD_GROUP_TITLE,
 			'text'  => $this->get_form_editor_field_title(),
 		);

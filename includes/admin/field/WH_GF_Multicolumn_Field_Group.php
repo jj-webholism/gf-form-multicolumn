@@ -40,10 +40,10 @@ class WH_GF_Multicolumn_Field_Group extends
 			}
 		}
 
-		$field_groups[] = array(
+		$field_groups[] = array (
 			'name'   => $this->button_group,
 			'label'  => __( $this->buttonLabel, 'gf-form-multicolumn' ),
-			'fields' => array(),
+			'fields' => array (),
 		);
 
 		return $field_groups;

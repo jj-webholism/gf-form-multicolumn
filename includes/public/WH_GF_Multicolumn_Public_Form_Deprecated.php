@@ -23,14 +23,14 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	public function __construct( $version, $form ) {
 		$this->version = $version;
 		add_action( 'gform_enqueue_scripts',
-		            array( $this, 'enqueue_scripts' ) );
+		            array ( $this, 'enqueue_scripts' ) );
 		$this->rowColumnArray =
 			$this->calculate_row_and_column_count( $form );
 		$this->structure_form_elements();
 	}
 
 	private function calculate_row_and_column_count( $form ) {
-		$rowColumnArray      = array();
+		$rowColumnArray      = array ();
 		$rowCount            = 1;
 		$columnCount         = 0;
 		$dividerStartCounter = 0;
@@ -102,7 +102,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		$this->columnCounter = 0;
 
 		add_filter(
-			'gform_field_container', array( $this, 'define_output_elements' ),
+			'gform_field_container', array ( $this, 'define_output_elements' ),
 			10, 6
 		);
 

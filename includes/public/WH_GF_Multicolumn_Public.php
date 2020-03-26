@@ -35,11 +35,6 @@ class WH_GF_Multicolumn_Public {
 		add_filter( 'gform_pre_render', [ $this, 'pre_render_form' ], 10, 4 );
 	}
 
-	public function get_style() {
-		return $this->form['id'];
-
-	}
-
 	public function pre_render_form( $form ) {
 		if ( $form !== false ) {
 			$this->form = $form;
