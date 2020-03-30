@@ -64,4 +64,38 @@ class WH_GF_Multicolumn_Public {
 			}
 		}
 	}
+
+	public function enqueue_selected_scripts( $form = '', $is_ajax = false ) {
+		if ( ! ( $this->is_javascript_to_be_loaded( $form ) &&
+		         ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) ) {
+			wp_dequeue_script( 'gfmc-scripts-public' );
+		}
+		if ( ! ( $this->is_css_to_be_loaded( $form ) &&
+		         ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) ) {
+			wp_dequeue_style( 'gfmc-styles-v2' );
+			wp_dequeue_style( 'gfmc-styles-v3' );
+		}
+	}
+
+	private function is_javascript_to_be_loaded( $form ) {
+		return isset( $form['gfmc_enable_js'] ) && $form['gfmc_enable_js'] ?
+			1 : 0;
+	}
+
+	private function is_css_to_be_loaded( $form ) {
+		return isset( $form['gfmc_enable_css'] ) && $form['gfmc_enable_css']
+			? 1 : 0;
+	}
+
+	private function is_gf_form_multicolumn_element_on_page( $form ) {
+		foreach ( $form['fields'] as $field ) {
+			//echo ('<br>is_gf_form_multicolumn_element_on_page<br><pre
+			//>$field[\'type\']:'.$field['type'].', $field[\'cssClass\']: '.$field['cssClass'].'</pre>');
+			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' || ($field['type'] === 'section' && (strpos($field['cssClass'], 'split-start') !== false) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

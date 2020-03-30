@@ -22,8 +22,8 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 
 	public function __construct( $version, $form ) {
 		$this->version = $version;
-		add_action( 'gform_enqueue_scripts',
-		            array ( $this, 'enqueue_scripts' ) );
+		/*add_action( 'gform_enqueue_scripts',
+		            array ( $this, 'enqueue_scripts' ) );*/
 		$this->rowColumnArray =
 			$this->calculate_row_and_column_count( $form );
 		$this->structure_form_elements();

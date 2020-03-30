@@ -32,7 +32,7 @@ We’ve tested 2, 3, 4 and 5 columns. Theoretically you can have more, although 
 
 = Could you give an example of how I would create 3 columns on a single row? =
 
-Add a Column Start field. Add the field/s that are to be contained in the first column. Add a Column Break field. Add the field/s that are to be contained in the second column. Add a Column Break field. Add the field/s that are to be contained in the third column. Add a Column End field
+Add a Column Start field. Add the field/s that are to be contained in the first column. Add a Column Break field. Add the field/s that are to be contained in the second column. Add a Column Break field. Add the field/s that are to be contained in the third column. Add a Column End field.
 
 = Could you give an example of how I would create 1 row with 2 columns, then a second row with 3 columns? =
 

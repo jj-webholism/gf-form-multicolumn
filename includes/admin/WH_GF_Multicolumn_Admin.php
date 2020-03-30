@@ -132,7 +132,7 @@ class WH_GF_Multicolumn_Admin {
 			'gfmc-admin-scripts'
 		);
 		wp_dequeue_script( 'gfmc-scripts-public' );
-		wp_dequeue_style( 'gfmc-styles' );
+//		wp_dequeue_style( 'gfmc-styles' );
 	}
 
 	private function is_new_form( $form ) {
