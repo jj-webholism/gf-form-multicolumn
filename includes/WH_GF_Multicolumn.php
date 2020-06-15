@@ -98,11 +98,11 @@ class WH_GF_Multicolumn extends
 	}
 
 	public function scripts() {
-		echo ('scripts function called<br>');
+		echo( 'scripts function called<br>' );
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc-scripts-public',
-				'src'       => plugins_url( '/public/js/gf-form-multicolumn.js',
+				'src'       => plugins_url( '/public/js/gf-form-multicolumn.min.js',
 				                            __FILE__ ),
 				'version'   => $this->get_version(),
 				'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
@@ -115,7 +115,7 @@ class WH_GF_Multicolumn extends
 							'column_end',
 						),
 					),
-				)
+				),
 			);
 
 		$scripts[] =
@@ -128,7 +128,7 @@ class WH_GF_Multicolumn extends
 					array (
 						'admin_page' => array ( 'form_settings' ),
 					),
-				)
+				),
 			);
 
 		return array_merge( parent::scripts(), $scripts );

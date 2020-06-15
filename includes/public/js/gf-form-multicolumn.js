@@ -2,7 +2,7 @@ function gfFormsAddConditionalColumns () {
   var gfieldCollection = document.getElementsByClassName('gfield')
   for (var i = 0; i < gfieldCollection.length; i++) {
     var config = { attributes: true, childList: true, subtree: true }
-
+    
     const callback = function (mutationsList, observer) {
       for (var j = 0; j < mutationsList.length; j++) {
         var gfmcWrapper = mutationsList[j].target.parentElement.parentElement

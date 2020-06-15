@@ -72,10 +72,10 @@ class WH_GF_Multicolumn_Public {
 	}
 
 	public function dequeue_selected_scripts( $form = '', $is_ajax = false ) {
-		if (! rgar ( $form,  'gfmcEnableJS' ) ) {
+		if ( ! rgar( $form, 'gfmcEnableJS' ) ) {
 			wp_dequeue_script( 'gfmc-scripts-public' );
 		}
-		if (! rgar ( $form,  'gfmcEnableCSS' ) ) {
+		if ( ! rgar( $form, 'gfmcEnableCSS' ) ) {
 			wp_dequeue_style( 'gfmc-styles-v2' );
 			wp_dequeue_style( 'gfmc-styles-v3' );
 		}
@@ -83,7 +83,8 @@ class WH_GF_Multicolumn_Public {
 
 	private function is_gf_form_multicolumn_element_on_page( $form ) {
 		foreach ( $form['fields'] as $field ) {
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' || ( $field['type'] === 'section' && ( strpos( $field['cssClass'],'split-start' ) !== false ) ) ) {
+			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' || ( $field['type'] === 'section' && ( strpos( $field['cssClass'],
+			                                                                                                                         'split-start' ) !== false ) ) ) {
 				return true;
 			}
 		}
@@ -94,7 +95,7 @@ class WH_GF_Multicolumn_Public {
 	/* This is used for running the conditional logic mutator within AJAX
 	forms. */
 	public function run_conditional_function( $form ) {
-		if ( rgar ( $form,  'gfmcEnableJS' ) &&
+		if ( rgar( $form, 'gfmcEnableJS' ) &&
 		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
 			$script = 'gfFormsAddConditionalColumns();';
 
