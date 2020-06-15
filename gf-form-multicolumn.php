@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Multiple Columns for Gravity Forms
  * Plugin URI: https://wordpress.org/plugins/gf-form-multicolumn/
- * Description: Provides Gravity Form fields to allow for form columns.
+ * Description: Introduces new form elements into Gravity Forms which allow rows to be split into multiple columns.
  * Author: WebHolism
  * Author URI: http://www.webholism.com
  * Version: 3.1.0

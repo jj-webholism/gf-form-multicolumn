@@ -21,11 +21,11 @@ class WH_GF_Multicolumn_Activator {
 		foreach ( $forms as $form ) {
 			if ( ! isset ( $form['gfmc_enable_css'] ) ) {
 				// Add the gfmc_enable_css option and set it to 1
-				$form['gfmc_enable_css'] = 1;
+				$form['gfmc_enable_css'] = true;
 			}
 			if ( ! isset ( $form['gfmc_enable_js'] ) ) {
 				// Add the gfmc_enable_js option and set it to 1
-				$form['gfmc_enable_js'] = 0;
+				$form['gfmc_enable_js'] = false;
 			}
 			GFAPI::update_form( $form );
 		}

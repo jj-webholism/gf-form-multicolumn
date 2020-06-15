@@ -21,9 +21,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	public function __construct( $version, $form ) {
 		$this->version = $version;
 
-		/*add_action( 'gform_enqueue_scripts',
-		            array ( $this, 'enqueue_scripts' ) );*/
-
 		// Set row and column counts
 		$this->rowCount    = 1;
 		$this->rowNumber   = 1;
@@ -33,41 +30,9 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			$this->calculate_row_and_column_count( $form );
 
 		$this->structure_form_elements();
-	}
 
-	public function enqueue_scripts( $form = '', $is_ajax = true ) {
-
-		echo ('<pre>WH_GF_Multicolumn_Public_Form_Current enqueue_public_scripts</pre>');
-
-		if ( ! ( $this->is_javascript_to_be_loaded( $form ) &&
-		         ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) ) {
-			wp_dequeue_script( 'gfmc-scripts-public' );
-		}
-		wp_dequeue_script( 'gfmc-scripts-admin' );
-		if ( ! ( $this->is_css_to_be_loaded( $form ) &&
-		         ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) ) {
-			wp_dequeue_style( 'gfmc-styles' );
-		}
-	}
-
-	private function is_javascript_to_be_loaded( $form ) {
-		return isset( $form['gfmc_enable_js'] ) && $form['gfmc_enable_js'] ?
-			1 : 0;
-	}
-
-	private function is_css_to_be_loaded( $form ) {
-		return isset( $form['gfmc_enable_css'] ) && $form['gfmc_enable_css']
-			? 1 : 0;
-	}
-
-	private function is_gf_form_multicolumn_element_on_page( $form ) {
-		foreach ( $form['fields'] as $field ) {
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' ) {
-				return true;
-			}
-		}
-
-		return false;
+		add_action( 'gform_enqueue_scripts',
+		            array ( $this, 'dequeue_v2_style' ) );
 	}
 
 	private function calculate_row_and_column_count( $form ) {
@@ -132,5 +97,9 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		}
 
 		return ( $field_container );
+	}
+
+	public function dequeue_v2_style() {
+		wp_dequeue_style( 'gfmc-styles-v2' );
 	}
 }

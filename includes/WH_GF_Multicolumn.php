@@ -16,8 +16,6 @@ use GFAddOn;
 use WH\GF\Multicolumn\Admin\WH_GF_Multicolumn_Admin;
 use WH\GF\Multicolumn\Site\WH_GF_Multicolumn_Public;
 
-//use function get_current_form;
-
 \GFForms::include_addon_framework();
 
 class WH_GF_Multicolumn extends
@@ -56,9 +54,6 @@ class WH_GF_Multicolumn extends
 		parent::pre_init();
 
 		add_action( 'plugins_loaded', array ( $this, 'set_locale' ) );
-
-		add_filter( 'gform_preview_styles',
-		            array ( $this, 'enqueue_admin_preview_scripts' ), 10, 2 );
 	}
 
 	public function init() {
@@ -71,8 +66,9 @@ class WH_GF_Multicolumn extends
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
 		if ( is_admin() ) {
-			/*add_action( 'gform_enqueue_scripts',
-			            array ( $this, 'enqueue_admin_scripts' ) );*/
+			add_filter( 'gform_preview_styles',
+			            array ( $this, 'enqueue_admin_preview_scripts' ), 10,
+			            2 );
 
 			$this->admin = new WH_GF_Multicolumn_Admin(
 				$this->get_plugin_name(), $this->_version
@@ -87,7 +83,7 @@ class WH_GF_Multicolumn extends
 			$this->get_plugin_name(), $this->get_version() );
 
 		add_action( 'gform_enqueue_scripts',
-		            array ( $this->public, 'enqueue_selected_scripts' ) );
+		            array ( $this->public, 'dequeue_selected_scripts' ), 11 );
 
 		$this->public->display();
 	}
@@ -102,6 +98,7 @@ class WH_GF_Multicolumn extends
 	}
 
 	public function scripts() {
+		echo ('scripts function called<br>');
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc-scripts-public',
@@ -109,8 +106,7 @@ class WH_GF_Multicolumn extends
 				                            __FILE__ ),
 				'version'   => $this->get_version(),
 				'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
-				'in_footer' => true, // DOM needs to be rendered before this
-				// script runs.
+				'in_footer' => true,
 				'enqueue'   => array (
 					array (
 						'field_types' => array (
@@ -119,7 +115,7 @@ class WH_GF_Multicolumn extends
 							'column_end',
 						),
 					),
-				),
+				)
 			);
 
 		$scripts[] =
@@ -132,7 +128,7 @@ class WH_GF_Multicolumn extends
 					array (
 						'admin_page' => array ( 'form_settings' ),
 					),
-				),
+				)
 			);
 
 		return array_merge( parent::scripts(), $scripts );
@@ -142,12 +138,11 @@ class WH_GF_Multicolumn extends
 		// Styles needs to be present in admin also for Gutenberg blocks preview
 		$styles = array (
 			array (
-				'handle'   => 'gfmc-styles-v2',
-				'src'      => plugins_url( '/public/css/gf-form-multicolumn-v2.css',
-				                           __FILE__ ),
-				'version'  => $this->get_version(),
-				/*'callback' => array ( $this, 'is_v2' ),*/
-				'enqueue'  => array (
+				'handle'  => 'gfmc-styles-v2',
+				'src'     => plugins_url( '/public/css/gf-form-multicolumn-v2.css',
+				                          __FILE__ ),
+				'version' => $this->get_version(),
+				'enqueue' => array (
 					array (
 						'field_types' => array (
 							'section',
@@ -156,12 +151,11 @@ class WH_GF_Multicolumn extends
 				),
 			),
 			array (
-				'handle'   => 'gfmc-styles-v3',
-				'src'      => plugins_url( '/public/css/gf-form-multicolumn.css',
-				                           __FILE__ ),
-				'version'  => $this->get_version(),
-				/*'callback' => array ( $this, 'is_v3' ),*/
-				'enqueue'  => array (
+				'handle'  => 'gfmc-styles-v3',
+				'src'     => plugins_url( '/public/css/gf-form-multicolumn.css',
+				                          __FILE__ ),
+				'version' => $this->get_version(),
+				'enqueue' => array (
 					array (
 						'field_types' => array (
 							'column_start',

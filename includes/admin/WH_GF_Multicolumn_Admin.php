@@ -63,42 +63,87 @@ class WH_GF_Multicolumn_Admin {
 	}
 
 	public function display_gfmc_form_settings( $settings, $form ) {
-		$formCSSChecked          = $this->getCSSEnabledString( $form );
-		$enable_gfmc_css_checked = $formCSSChecked;
+		$enable_gfmc_css_checked  = rgar( $form,
+		                                 'gfmcEnableCSS' ) ? 'checked="checked"' : '';
+		$enable_gfmc_js_checked  = rgar( $form,
+		                                 'gfmcEnableJS' ) ? 'checked="checked"' : '';
 
-		$settings[ __( 'Multiple Columns',
-		               'gf-form-multicolumn' ) ]['gfmc_enable_css']
-			= '<tr><th>' . __( 'Enable CSS',
-			                   'gf-form-multicolumn' ) . ' ' .
-			  gform_tooltip( 'gfmc_enable_css',
-			                 '', true ) .
-			  '</th><td>
-		       <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_css"
-		       value="1" ' . $enable_gfmc_css_checked . '>
+		// Settings - CSS form element definition
+		$gfmcEnableCSSHeaderString =
+			'<th>' . __( 'Enable CSS', 'gf-form-multicolumn' ) .
+			' ' . gform_tooltip( 'gfmc_enable_css', '', true ) .
+			'</th>';
+
+		$gfmcEnableCSSDataString = '<td>
+		       <input id="gfmc_enable_css" type="checkbox" value="1" name="gfmcEnableCSS" '
+		                           . $enable_gfmc_css_checked . '>
 		       <label for="gfmc_enable_css">' .
-			  __( 'Load CSS Stylesheet', 'gf-form-multicolumn' ) .
-			  '</label></td></tr>';
+		                           __( 'Load CSS Stylesheet',
+		                               'gf-form-multicolumn' ) .
+		                           '</label></td>';
 
-		$enable_gfmc_js_checked =
-			rgar( $form, 'gfmc_enable_js' ) ? 'checked="checked"' : '';
-		$settings[ __( 'Multiple Columns',
-		               'gf-form-multicolumn' ) ]['gfmc_enable_js']
-		                        = '<tr><th>' . __( 'Enable JS',
-		                                           'gf-form-multicolumn' ) . ' ' .
-		                          gform_tooltip( 'gfmc_enable_js', '', true ) . '</th>
-		    <td>
-		    <input id="gfmc_enable_css" type="checkbox" name="gfmc_enable_js"
-		    value="1" ' . $enable_gfmc_js_checked . '>
+
+		// Define the Settings Page custom elements layout
+		// Note that the HTML name needs to align with the Settings variable
+		// name
+		$settings['Multiple Columns']['gfmcEnableCSS'] =
+			'<tr>' . $gfmcEnableCSSHeaderString . $gfmcEnableCSSDataString . '</tr>';
+
+
+		// Settings - JS form element definition
+		$gfmcEnableJSHeaderString = '<th>' . __( 'Enable JS',
+		                                         'gf-form-multicolumn' ) . ' ' .
+		                            gform_tooltip( 'gfmc_enable_js', '',
+		                                           true ) . '</th>';
+		$enableJSValue =  rgar ( $form,  'gfmcEnableJS' ) ? rgar( $form,
+		                                      'gfmcEnableJS' ) : 0;
+
+		$gfmcEnableJSDataString = '<td>
+		    <input id="gfmc_enable_js" type="checkbox" value="1" name="gfmcEnableJS" ' .
+		                          $enable_gfmc_js_checked . '>
 		    <label for="gfmc_enable_js">' . __( 'Load JS Script',
-		                                        'gf-form-multicolumn' ) . '</label></td></tr>';
+		                                        'gf-form-multicolumn' ) . '</label></td>';
+
+		$settings['Multiple Columns']['gfmcEnableJS']
+			= '<tr>' . $gfmcEnableJSHeaderString .
+			  $gfmcEnableJSDataString .
+			  '</tr>';
 
 		return $settings;
 	}
 
 	public function save_gfmc_form_setting( $form ) {
-		$form['gfmc_enable_css'] = rgpost( 'gfmc_enable_css' ) ? '1' : '0';
-		$form['gfmc_enable_js']  = rgpost( 'gfmc_enable_js' ) ? '1' : '0';
+/*		echo ('<br>pre rgpost( \'gfmcEnableCSS\' ): '.rgpost( 'gfmcEnableCSS' )
+		      .'<br>');
+		echo ('<br>pre rgpost( \'gfmcEnableJS\' ): '.rgpost( 'gfmcEnableJS' )
+		      .'<br>');*/
 
+/*		if ( rgpost( 'gfmcEnableCSS' ) === 'on' || rgpost( 'gfmcEnableCSS' )
+		                                           === true ) {
+			$form['gfmcEnableCSS'] = true;
+		} else {
+			$form['gfmcEnableCSS'] = 0;
+		}
+		if ( rgpost( 'gfmcEnableJS' ) === 'on' || rgpost( 'gfmcEnableJS' ) ===
+		                                         true
+		) {
+			$form['gfmcEnableJS'] = true;
+		} else {
+			$form['gfmcEnableJS'] = false;
+		}*/
+		$form['gfmcEnableCSS']  = rgpost( 'gfmcEnableCSS' ) == 1 ? true :
+			false;
+		$form['gfmcEnableJS'] = rgpost( 'gfmcEnableJS' ) == 1 ? true :
+			false;
+
+/*		echo ('<pre>');
+		var_dump($form);
+		echo('</pre>');*/
+
+/*		echo ('<br>rgpost( \'gfmcEnableCSS\' ): '.rgpost( 'gfmcEnableCSS' ).'<br>');
+		echo ('<br>rgpost( \'gfmcEnableJS\' ): '.rgpost( 'gfmcEnableJS' ).'<br>');*/
+
+//		die ('save_gfmc_form_setting EXIT');
 		return $form;
 	}
 
@@ -113,7 +158,7 @@ class WH_GF_Multicolumn_Admin {
 		return $tooltips;
 	}
 
-	public function enqueue_admin_scripts( $form ) {
+	public function enqueue_admin_scripts() {
 		wp_register_script( 'gfmc-admin-scripts',
 		                    plugins_url( '/js/gf-form-multicolumn-admin.min.js',
 		                                 __FILE__ ),
@@ -131,16 +176,15 @@ class WH_GF_Multicolumn_Admin {
 		wp_enqueue_script(
 			'gfmc-admin-scripts'
 		);
-		wp_dequeue_script( 'gfmc-scripts-public' );
-//		wp_dequeue_style( 'gfmc-styles' );
+//		wp_dequeue_script( 'gfmc-scripts-public' );
 	}
 
 	private function is_new_form( $form ) {
-		return ( isset ( $form['gfmc_enable_css'] ) ) ? true : false;
+		//return ( isset ( $form['gfmcEnableCSS'] ) ) ? true : false;
 	}
 
 	private function getCSSEnabledString( $form ) {
-		if ( $this->is_new_form( $form ) === false || (string) $form['gfmc_enable_css'] === '1' ) {
+		if ( $this->is_new_form( $form ) === false || (string) $form['gfmcEnableCSS'] === '1' ) {
 			return 'checked="checked"';
 		}
 

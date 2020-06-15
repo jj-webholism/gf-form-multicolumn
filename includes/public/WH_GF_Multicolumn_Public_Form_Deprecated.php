@@ -22,8 +22,8 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 
 	public function __construct( $version, $form ) {
 		$this->version = $version;
-		/*add_action( 'gform_enqueue_scripts',
-		            array ( $this, 'enqueue_scripts' ) );*/
+		add_action( 'gform_enqueue_scripts',
+		            array ( $this, 'dequeue_v3_style' ) );
 		$this->rowColumnArray =
 			$this->calculate_row_and_column_count( $form );
 		$this->structure_form_elements();
@@ -170,16 +170,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 		return $field_container;
 	}
 
-	public function enqueue_scripts( $form ) {
-		wp_dequeue_style( 'gfmc-styles' );
-		if ( isset( $form['gfmc_enable_css'] ) && $form['gfmc_enable_css'] ) {
-			wp_enqueue_style(
-				'gfmc-styles-v2',
-				plugins_url( '/css/gf-form-multicolumn-v2.css', __FILE__ ),
-				false,
-				$this->version,
-				'all'
-			);
-		}
+	public function dequeue_v3_style() {
+		wp_dequeue_style( 'gfmc-styles-v3' );
 	}
 }
