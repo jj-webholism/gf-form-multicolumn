@@ -98,7 +98,6 @@ class WH_GF_Multicolumn extends
 	}
 
 	public function scripts() {
-		echo( 'scripts function called<br>' );
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc-scripts-public',
