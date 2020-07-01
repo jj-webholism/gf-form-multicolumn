@@ -33,11 +33,11 @@ class WH_GF_Multicolumn_Uninstaller {
 	}
 
 	private function remove_gfmc_fields( $form ) {
-		if ( isset( $form['gfmc_enable_css'] ) ) {
-			unset( $form['gfmc_enable_css'] );
+		if ( isset( $form['gfmcEnableCSS'] ) ) {
+			unset( $form['gfmcEnableCSS'] );
 		}
-		if ( isset( $form['gfmc_enable_js'] ) ) {
-			unset( $form['gfmc_enable_js'] );
+		if ( isset( $form['gfmcEnableJS'] ) ) {
+			unset( $form['gfmcEnableJS'] );
 		}
 
 		$fields = array_filter( $form['fields'], function ( $v, $k ) {

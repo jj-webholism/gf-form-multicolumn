@@ -19,13 +19,13 @@ class WH_GF_Multicolumn_Activator {
 	public function activate() {
 		$forms = GFAPI::get_forms();
 		foreach ( $forms as $form ) {
-			if ( ! isset ( $form['gfmc_enable_css'] ) ) {
+			if ( ! isset ( $form['gfmcEnableCSS'] ) ) {
 				// Add the gfmc_enable_css option and set it to 1
-				$form['gfmc_enable_css'] = true;
+				$form['gfmcEnableCSS'] = true;
 			}
-			if ( ! isset ( $form['gfmc_enable_js'] ) ) {
+			if ( ! isset ( $form['gfmcEnableJS'] ) ) {
 				// Add the gfmc_enable_js option and set it to 1
-				$form['gfmc_enable_js'] = false;
+				$form['gfmcEnableJS'] = false;
 			}
 			GFAPI::update_form( $form );
 		}
