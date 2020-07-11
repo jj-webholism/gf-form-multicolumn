@@ -12,6 +12,7 @@
 
 namespace WH\GF\Multicolumn\Admin;
 
+use DateTime;
 use GFAPI;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_End;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_Start;
@@ -26,7 +27,6 @@ class WH_GF_Multicolumn_Admin {
 	private $version;
 
 	public function __construct( $plugin_name, $version ) {
-
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
@@ -36,12 +36,19 @@ class WH_GF_Multicolumn_Admin {
 		            array ( $this, 'admin_pre_render_function' ) );
 		add_action( 'admin_enqueue_scripts',
 		            array ( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'gform_after_save_form', array (
+			$this,
+			'update_form_to_include_gfmc_settings_fields',
+		), 10, 2 );
 		add_filter( 'gform_form_settings',
 		            array ( $this, 'display_gfmc_form_settings' ),
 		            10, 2 );
-		add_filter( 'gform_pre_form_settings_save',
-		            array ( $this, 'save_gfmc_form_setting' ) );
 		add_filter( 'gform_tooltips', array ( $this, 'gfmc_tooltips' ) );
+		add_filter( 'gform_pre_form_settings_save',
+		            array (
+			            $this,
+			            'save_form_settings_to_include_gfmc_fields',
+		            ) );
 	}
 
 	public function admin_pre_render_function( $form ) {
@@ -63,8 +70,16 @@ class WH_GF_Multicolumn_Admin {
 	}
 
 	public function display_gfmc_form_settings( $settings, $form ) {
-		$enable_gfmc_css_checked = $form['gfmcEnableCSS'] === true ? 'checked="checked"' : '';
-		$enable_gfmc_js_checked  = $form['gfmcEnableJS'] === true ? 'checked="checked"' : '';
+		$enable_gfmc_css_checked = isset ( $form['gfmcEnableCSS'] ) && $form['gfmcEnableCSS'] === true ?
+			'checked="checked"' : '';
+		/*		if ( isset ($form['gfmcEnableCSS']) ) {
+					$enable_gfmc_css_checked = $form['gfmcEnableCSS'] === true ?
+						'checked="checked"' : '';
+				} else {
+					$enable_gfmc_css_checked = 'checked="checked"';
+				}*/
+		$enable_gfmc_js_checked = isset ( $form['gfmcEnableJS'] ) && $form['gfmcEnableJS'] ===
+		                                                             true ? 'checked="checked"' : '';
 
 		// Settings - CSS form element definition
 		$gfmcEnableCSSHeaderString =
@@ -93,9 +108,9 @@ class WH_GF_Multicolumn_Admin {
 		                                         'gf-form-multicolumn' ) . ' ' .
 		                            gform_tooltip( 'gfmc_enable_js', '',
 		                                           true ) . '</th>';
-		$gfmcEnableJSDataString = '<td>
+		$gfmcEnableJSDataString   = '<td>
 		    <input id="gfmc_enable_js" type="checkbox" value="1" name="gfmcEnableJS" ' .
-		                          $enable_gfmc_js_checked . '>
+		                            $enable_gfmc_js_checked . '>
 		    <label for="gfmc_enable_js">' . __( 'Load JS Script',
 		                                        'gf-form-multicolumn' ) . '</label></td>';
 
@@ -107,11 +122,69 @@ class WH_GF_Multicolumn_Admin {
 		return $settings;
 	}
 
-	public function save_gfmc_form_setting( $form ) {
-		$form['gfmcEnableCSS'] = rgpost( 'gfmcEnableCSS' ) == 1 ? true :
-			false;
-		$form['gfmcEnableJS']  = rgpost( 'gfmcEnableJS' ) == 1 ? true :
-			false;
+	// This is a filter hook and will return the modified form
+	public function save_form_settings_to_include_gfmc_fields( $form ) {
+		return $this
+			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
+		( $form );
+	}
+
+	// This is an action hook call and will update the form directly
+	public function update_form_to_include_gfmc_settings_fields( $form, $is_new
+	) {
+		$form = $this
+			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
+		( $form );
+
+		GFAPI::update_form( $form );
+	}
+
+	private function do_gfmc_fields_exist_in_form( $form ) {
+		foreach ( $form['fields'] as $field ) {
+			if ( $field['type'] === 'column_start' || $field['type'] === 'column_break' || $field['type'] === 'column_end' ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// Updates form with GFMC specific settings
+	private function
+	update_form_with_gfmc_settings_if_gfmc_fields_present_in_form ( $form ) {
+		if ( $this->do_gfmc_fields_exist_in_form ($form) ) {
+			if (isset ( $form['gfmcEnableCSS'] ) ) {
+				$form['gfmcEnableCSS'] = rgpost( 'gfmcEnableCSS' ) === 1;
+			} else {
+				$form['gfmcEnableCSS'] = true;
+			}
+
+			if (isset ( $form['gfmcEnableCSS'] ) ) {
+				$form['gfmcEnableJS'] = false;
+			} else {
+				$form['gfmcEnableJS']  = rgpost( 'gfmcEnableJS' ) === 1;
+			}
+		} else {
+			$form['gfmcEnableCSS'] = false;
+			$form['gfmcEnableJS']  = false;
+		}
+
+		// Note that newly created forms lack three fields when this function
+		// is implemented: is_active, date_created, and is_trash.
+		if ( !isset ( $form['is_active'] ) ) {
+			$form['is_active'] = 1;
+		}
+
+		$now = new DateTime();
+		if ( array_key_exists (  'date_created', $form ) ) {
+			$form['date_updated'] = $now->format('Y-m-d H:i:s');
+		} else {
+			$form['date_created'] = $now->format('Y-m-d H:i:s');
+		}
+
+		if ( !isset ( $form['is_trash'] ) ) {
+			$form['is_trash'] = 0;
+		}
 
 		return $form;
 	}

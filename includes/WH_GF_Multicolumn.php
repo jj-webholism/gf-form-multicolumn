@@ -58,6 +58,10 @@ class WH_GF_Multicolumn extends
 
 	public function init() {
 		parent::init();
+
+		add_filter( 'gform_preview_styles',
+		            array ( $this, 'enqueue_admin_preview_scripts' ), 10,
+		            2 );
 	}
 
 	public function init_admin() {
@@ -66,9 +70,6 @@ class WH_GF_Multicolumn extends
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
 		if ( is_admin() ) {
-			add_filter( 'gform_preview_styles',
-			            array ( $this, 'enqueue_admin_preview_scripts' ), 10,
-			            2 );
 
 			$this->admin = new WH_GF_Multicolumn_Admin(
 				$this->get_plugin_name(), $this->_version
