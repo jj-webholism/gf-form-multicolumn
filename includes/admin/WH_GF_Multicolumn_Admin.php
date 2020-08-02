@@ -14,6 +14,7 @@ namespace WH\GF\Multicolumn\Admin;
 
 use DateTime;
 use GFAPI;
+use GFCommon;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_End;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_Start;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_Separator;
@@ -53,7 +54,7 @@ class WH_GF_Multicolumn_Admin {
 
 	public function admin_pre_render_function( $form ) {
 		if ( wp_script_is( 'gfmc-admin-scripts' ) ) {
-			echo \GFCommon::is_form_editor() ? "<script type='text/javascript'>
+			echo GFCommon::is_form_editor() ? "<script type='text/javascript'>
         gform.addFilter( 'gform_validation_error_form_editor', 'gfmc_validate_form_columns', 10, 'gfmc_validate_form_columns_" . $form['id'] . "');
         </script>" : '';
 		}
@@ -126,15 +127,14 @@ class WH_GF_Multicolumn_Admin {
 	public function save_form_settings_to_include_gfmc_fields( $form ) {
 		return $this
 			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
-		( $form );
+			( $form );
 	}
 
 	// This is an action hook call and will update the form directly
-	public function update_form_to_include_gfmc_settings_fields( $form, $is_new
-	) {
+	public function update_form_to_include_gfmc_settings_fields( $form ) {
 		$form = $this
 			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
-		( $form );
+			( $form );
 
 		GFAPI::update_form( $form );
 	}
@@ -151,18 +151,25 @@ class WH_GF_Multicolumn_Admin {
 
 	// Updates form with GFMC specific settings
 	private function
-	update_form_with_gfmc_settings_if_gfmc_fields_present_in_form ( $form ) {
-		if ( $this->do_gfmc_fields_exist_in_form ($form) ) {
-			if (isset ( $form['gfmcEnableCSS'] ) ) {
-				$form['gfmcEnableCSS'] = rgpost( 'gfmcEnableCSS' ) === 1;
+	update_form_with_gfmc_settings_if_gfmc_fields_present_in_form( $form ) {
+		// Apply the following to the relevant multicolumn forms only
+		if ( $this->do_gfmc_fields_exist_in_form( $form ) ) {
+			// Check if the CSS parameter is a new addition to the form
+			if ( isset ( $form['gfmcEnableCSS'] ) ) {
+				$form['gfmcEnableCSS'] = rgpost( 'gfmcEnableCSS' ) === 1 ||
+				                         rgpost( 'gfmcEnableCSS' ) === '1' ||
+				                         rgpost( 'gfmcEnableCSS'  ) === true;
 			} else {
 				$form['gfmcEnableCSS'] = true;
 			}
 
-			if (isset ( $form['gfmcEnableCSS'] ) ) {
-				$form['gfmcEnableJS'] = false;
+			// Check if the JS parameter is a new addition to the form
+			if ( isset ( $form['gfmcEnableJS'] ) ) {
+				$form['gfmcEnableJS'] = rgpost( 'gfmcEnableJS' ) === 1 ||
+				                        rgpost( 'gfmcEnableJS' ) === '1' ||
+				                        rgpost( 'gfmcEnableJS'  ) === true;
 			} else {
-				$form['gfmcEnableJS']  = rgpost( 'gfmcEnableJS' ) === 1;
+				$form['gfmcEnableCSS'] = false;
 			}
 		} else {
 			$form['gfmcEnableCSS'] = false;
@@ -171,18 +178,18 @@ class WH_GF_Multicolumn_Admin {
 
 		// Note that newly created forms lack three fields when this function
 		// is implemented: is_active, date_created, and is_trash.
-		if ( !isset ( $form['is_active'] ) ) {
+		if ( ! isset ( $form['is_active'] ) ) {
 			$form['is_active'] = 1;
 		}
 
 		$now = new DateTime();
-		if ( array_key_exists (  'date_created', $form ) ) {
-			$form['date_updated'] = $now->format('Y-m-d H:i:s');
+		if ( array_key_exists( 'date_created', $form ) ) {
+			$form['date_updated'] = $now->format( 'Y-m-d H:i:s' );
 		} else {
-			$form['date_created'] = $now->format('Y-m-d H:i:s');
+			$form['date_created'] = $now->format( 'Y-m-d H:i:s' );
 		}
 
-		if ( !isset ( $form['is_trash'] ) ) {
+		if ( ! isset ( $form['is_trash'] ) ) {
 			$form['is_trash'] = 0;
 		}
 
