@@ -169,7 +169,7 @@ class WH_GF_Multicolumn_Admin {
 				                        rgpost( 'gfmcEnableJS' ) === '1' ||
 				                        rgpost( 'gfmcEnableJS'  ) === true;
 			} else {
-				$form['gfmcEnableCSS'] = false;
+				$form['gfmcEnableJS'] = false;
 			}
 		} else {
 			$form['gfmcEnableCSS'] = false;
