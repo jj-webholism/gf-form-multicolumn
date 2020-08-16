@@ -125,9 +125,6 @@ class WH_GF_Multicolumn_Admin {
 
 	// This is a filter hook and will return the modified form
 	public function save_form_settings_to_include_gfmc_fields( $form ) {
-		add_action( 'gform_after_save_form', array ( $this, 'output_form' ), 10,
-		            2 );
-
 		return $this
 			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
 			( $form );
