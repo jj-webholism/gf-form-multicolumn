@@ -13,6 +13,7 @@
 namespace WH\GF\Multicolumn\Admin;
 
 use DateTime;
+use GFAPI;
 use GFCommon;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_End;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_Start;
@@ -54,7 +55,7 @@ class WH_GF_Multicolumn_Admin {
 		// Called on form update on Edit Form page
 		add_action( 'gform_after_save_form', array (
 			$this,
-			'save_form_settings_to_include_gfmc_fields',
+			'update_form_settings_to_include_gfmc_fields',
 		), 10, 2 );
 	}
 
@@ -130,9 +131,22 @@ class WH_GF_Multicolumn_Admin {
 			( $form );
 	}
 
+	// This is a action hook and will return the modified form
+	public function update_form_settings_to_include_gfmc_fields( $form ) {
+		if ( !isset ( $form['gfmcEnableCSS'] ) ) {
+			$form['gfmcEnableCSS'] = true;
+		}
+		if ( !isset ( $form['gfmcEnableJS'] ) ) {
+			$form['gfmcEnableJS'] = false;
+		}
+		GFAPI::update_form( $form );
+	}
+
 	private function do_gfmc_fields_exist_in_form( $form ) {
 		foreach ( $form['fields'] as $field ) {
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_break' || $field['type'] === 'column_end' ) {
+			if ( $field['type'] === 'column_start' ||
+			     $field['type'] === 'column_break' ||
+			     $field['type'] === 'column_end' ) {
 				return true;
 			}
 		}
