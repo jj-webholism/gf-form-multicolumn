@@ -13,7 +13,6 @@
 namespace WH\GF\Multicolumn\Admin;
 
 use DateTime;
-use GFAPI;
 use GFCommon;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_End;
 use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Column_Start;
