@@ -35,21 +35,28 @@ class WH_GF_Multicolumn_Admin {
 
 		add_action( 'gform_admin_pre_render',
 		            array ( $this, 'admin_pre_render_function' ) );
+
 		add_action( 'admin_enqueue_scripts',
 		            array ( $this, 'enqueue_admin_scripts' ) );
-		add_action( 'gform_after_save_form', array (
-			$this,
-			'update_form_to_include_gfmc_settings_fields',
-		), 10, 2 );
+
 		add_filter( 'gform_form_settings',
 		            array ( $this, 'display_gfmc_form_settings' ),
 		            10, 2 );
+
 		add_filter( 'gform_tooltips', array ( $this, 'gfmc_tooltips' ) );
+
+		// Called to update Settings page options
 		add_filter( 'gform_pre_form_settings_save',
 		            array (
 			            $this,
 			            'save_form_settings_to_include_gfmc_fields',
 		            ) );
+
+		// Called on form update on Edit Form page
+		add_action( 'gform_after_save_form', array (
+			$this,
+			'save_form_settings_to_include_gfmc_fields',
+		), 10, 2 );
 	}
 
 	public function admin_pre_render_function( $form ) {
@@ -73,14 +80,8 @@ class WH_GF_Multicolumn_Admin {
 	public function display_gfmc_form_settings( $settings, $form ) {
 		$enable_gfmc_css_checked = isset ( $form['gfmcEnableCSS'] ) && $form['gfmcEnableCSS'] === true ?
 			'checked="checked"' : '';
-		/*		if ( isset ($form['gfmcEnableCSS']) ) {
-					$enable_gfmc_css_checked = $form['gfmcEnableCSS'] === true ?
-						'checked="checked"' : '';
-				} else {
-					$enable_gfmc_css_checked = 'checked="checked"';
-				}*/
-		$enable_gfmc_js_checked = isset ( $form['gfmcEnableJS'] ) && $form['gfmcEnableJS'] ===
-		                                                             true ? 'checked="checked"' : '';
+		$enable_gfmc_js_checked  = isset ( $form['gfmcEnableJS'] ) && $form['gfmcEnableJS'] ===
+		                                                              true ? 'checked="checked"' : '';
 
 		// Settings - CSS form element definition
 		$gfmcEnableCSSHeaderString =
@@ -125,18 +126,12 @@ class WH_GF_Multicolumn_Admin {
 
 	// This is a filter hook and will return the modified form
 	public function save_form_settings_to_include_gfmc_fields( $form ) {
+		add_action( 'gform_after_save_form', array ( $this, 'output_form' ), 10,
+		            2 );
+
 		return $this
 			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
 			( $form );
-	}
-
-	// This is an action hook call and will update the form directly
-	public function update_form_to_include_gfmc_settings_fields( $form ) {
-		$form = $this
-			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
-			( $form );
-
-		GFAPI::update_form( $form );
 	}
 
 	private function do_gfmc_fields_exist_in_form( $form ) {
@@ -151,14 +146,17 @@ class WH_GF_Multicolumn_Admin {
 
 	// Updates form with GFMC specific settings
 	private function
-	update_form_with_gfmc_settings_if_gfmc_fields_present_in_form( $form ) {
+	update_form_with_gfmc_settings_if_gfmc_fields_present_in_form(
+		$form
+	) {
 		// Apply the following to the relevant multicolumn forms only
 		if ( $this->do_gfmc_fields_exist_in_form( $form ) ) {
 			// Check if the CSS parameter is a new addition to the form
 			if ( isset ( $form['gfmcEnableCSS'] ) ) {
 				$form['gfmcEnableCSS'] = rgpost( 'gfmcEnableCSS' ) === 1 ||
 				                         rgpost( 'gfmcEnableCSS' ) === '1' ||
-				                         rgpost( 'gfmcEnableCSS'  ) === true;
+				                         rgpost( 'gfmcEnableCSS' ) === true ||
+				                         rgpost( 'gfmcEnableCSS' ) === 'true';
 			} else {
 				$form['gfmcEnableCSS'] = true;
 			}
@@ -167,7 +165,8 @@ class WH_GF_Multicolumn_Admin {
 			if ( isset ( $form['gfmcEnableJS'] ) ) {
 				$form['gfmcEnableJS'] = rgpost( 'gfmcEnableJS' ) === 1 ||
 				                        rgpost( 'gfmcEnableJS' ) === '1' ||
-				                        rgpost( 'gfmcEnableJS'  ) === true;
+				                        rgpost( 'gfmcEnableJS' ) === true ||
+				                        rgpost( 'gfmcEnableJS' ) === 'true';
 			} else {
 				$form['gfmcEnableJS'] = false;
 			}
