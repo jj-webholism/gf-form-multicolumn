@@ -88,6 +88,7 @@ Check the form settings, and ensure that the Enable CSS checkbox has been checke
 Yes.
 
 == Screenshots ==
+
 1. New Gravity Form with Multiple Columns Fields floating panel (collapsed).
 2. Multiple Columns Fields floating panel close up (expanded).
 3. Form showing new fields (Row Start, Column Break, Row End) added to form.
@@ -154,7 +155,7 @@ Initial Release. Trumpets sound!
 
 == Upgrade Notice ==
 
-=3.1.0 =
+= 3.1.0 =
 
 CSS fix for IE11. Allows admins to enable and disable the inclusion of CSS for layout, and JS for hidden conditional
 logic elements. Tooltips added to enhance clarity. CSS classes can now be added to column output to provide greater ease
