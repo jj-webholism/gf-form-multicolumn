@@ -23,7 +23,7 @@ class WH_GF_Multicolumn_Field_Column_End extends
 	}
 
 	public function get_form_editor_field_title() {
-		return __( 'Column End', 'gf-form-multicolumn' );
+		return __( 'Row End', 'gf-form-multicolumn' );
 	}
 
 	public function get_form_editor_field_settings() {

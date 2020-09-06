@@ -23,7 +23,7 @@ class WH_GF_Multicolumn_Field_Column_Start extends
 	}
 
 	public function get_form_editor_field_title() {
-		return __( 'Column Start', 'gf-form-multicolumn' );
+		return __( 'Row Start', 'gf-form-multicolumn' );
 	}
 
 	public function get_form_editor_field_settings() {

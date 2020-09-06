@@ -224,9 +224,9 @@ class WH_GF_Multicolumn_Admin {
 		                    $this->version,
 		                    'all' );
 		$gfmcTranslationArray = array (
-			'tooManyColumnStarts' => __( ' too many Column Starts to Column Ends. Please review and remove the excess Column Starts.',
+			'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.',
 			                             'gf-form-multicolumn' ),
-			'tooManyColumnEnds'   => __( ' too many Column Ends to Column Starts. Please review and remove the excess Column Ends.',
+			'tooManyColumnEnds'   => __( ' too many Row Ends to Row Starts. Please review and remove the excess Row Ends.',
 			                             'gf-form-multicolumn' ),
 		);
 		wp_localize_script( 'gfmc-admin-scripts', 'gfmc',

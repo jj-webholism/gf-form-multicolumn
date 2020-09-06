@@ -15,7 +15,8 @@ Introduces new form elements into Gravity Forms which allows simple column creat
 == Description ==
 
 When activated this plugin allows Gravity Forms elements to be split into columns. To implement the columns three new
-elements (Column Start, Column Break, and Column End) which are introduced into the Gravity Forms administration area in a group labelled as Multiple Columns Fields.
+elements (Row Start, Column Break, and Row End) which are introduced into the Gravity Forms administration area in a
+group labelled as Multiple Columns Fields.
 
 For each form, in its form settings it is possible to enable and disable the plugin's CSS and JS that are used by
 the plugin. The CSS file is responsible for the layout of the form, and the JS file is used to remove unwanted spacing
@@ -37,10 +38,10 @@ directory, which usually is /wp-content/plugins/.
 3. Activate the plugin through your <em>Plugins</em> area.
 
 Once installed, the following steps will help provide guidance to introduce column elements into a form:
-4. Create a new row of separated columns by selecting the Column Start button in the Multiple Columns Field box on the
+4. Create a new row of separated columns by selecting the Row Start button in the Multiple Columns Field box on the
 right-hand side of the Gravity Forms form page.
 5. Add the fields that you want in the column.
-6. Create a Column Break to separate to the next column, or Column End to end the column division and the field row.
+6. Create a Column Break to separate to the next column, or Row End to end the column division and the field row.
 7. Repeat 4-6 as necessary.
 8. Click the Update button to save the changes.
 
@@ -57,17 +58,17 @@ amount of screen space you have.
 
 = Could you give an example of how I would create 3 columns on a single row? =
 
-Add a Column Start field. Add the field/s that are to be contained in the first column. Add a Column Break field. Add
+Add a Row Start field. Add the field/s that are to be contained in the first column. Add a Column Break field. Add
 the field/s that are to be contained in the second column. Add a Column Break field. Add the field/s that are to be
-contained in the third column. Add a Column End field.
+contained in the third column. Add a Row End field.
 
 = Could you give an example of how I would create 1 row with 2 columns, then a second row with 3 columns? =
 
-Add a Column Start field. Add the field/s that are to be contained in the first column. Add a Column Break field. Add
-the field/s that are to be contained in the second column. Add a Column End field Add a Column Start field. Add the
+Add a Row Start field. Add the field/s that are to be contained in the first column. Add a Column Break field. Add
+the field/s that are to be contained in the second column. Add a Row End field Add a Row Start field. Add the
 field/s that are to be contained in the first column. Add a Column Break field. Add the field/s that are to be contained
  in the second column. Add a Column Break field. Add the field/s that are to be contained in the third column. Add a
- Column End field.
+ Row End field.
 
 = Is it possible to disable the default CSS and the JS from the plugin? =
 
@@ -75,7 +76,7 @@ It is possible to stop the loading of these files from within the settings of th
 
 = How do I ensure that a new row will occur at the end of my columns? =
 
-The Column End field will default to ending a given row.
+The Row End field will default to ending a given row.
 
 = I am not seeing columns on the front end, after adding Multiple Column elements to my form =
 
@@ -89,7 +90,7 @@ Yes.
 == Screenshots ==
 1. New Gravity Form with Multiple Columns Fields floating panel (collapsed).
 2. Multiple Columns Fields floating panel close up (expanded).
-3. Form showing new fields (Column Start, Column Break, Column End) added to form.
+3. Form showing new fields (Row Start, Column Break, Row End) added to form.
 4. Example of a completed form, composed of Multiple Columns Fields and generic Gravity Form fields.
 5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
 
@@ -103,8 +104,9 @@ element around conditional logic elements.
 Improvement: Form settings modified which allows the plugin CSS file to be enabled and disabled for inclusion.
 Improvement: Included possibility to allow for CSS classes to be defined for columns
 Improvement: Removes form entries added when the plugin is uninstalled.
-Improvement: Form validation when saving to reduce unequal column start to column end implementations.
+Improvement: Form validation when saving to reduce unequal row start to row end implementations.
 Improvement: Introduced functionality that will also provide appropriate layout on AJAX generated forms.
+Alteration: Changed Column Start and Column End to Row Start and Row End respectively.
 
 = 3.0.3 =
 
@@ -156,7 +158,7 @@ Initial Release. Trumpets sound!
 
 CSS fix for IE11. Allows admins to enable and disable the inclusion of CSS for layout, and JS for hidden conditional
 logic elements. Tooltips added to enhance clarity. CSS classes can now be added to column output to provide greater ease
- of customisation. Form column start and column end validation.  Layout styling persists in AJAX forms.
+ of customisation. Form row start and row end validation.  Layout styling persists in AJAX forms.
 
 == Credits ==
 
