@@ -126,20 +126,31 @@ class WH_GF_Multicolumn_Admin {
 
 	// This is a filter hook and will return the modified form
 	public function save_form_settings_to_include_gfmc_fields( $form ) {
-		return $this
-			->update_form_with_gfmc_settings_if_gfmc_fields_present_in_form
-			( $form );
+		$form = $this->set_gfmc_settings_if_not_present ( $form );
+
+		$form['gfmcEnableCSS'] = rgpost ('gfmcEnableCSS') === '1' ? true :
+			false;
+		$form['gfmcEnableJS'] = rgpost ('gfmcEnableJS') === '1' ? true : false;
+
+		return $form;
 	}
 
 	// This is a action hook and will return the modified form
 	public function update_form_settings_to_include_gfmc_fields( $form ) {
+		$form = $this->set_gfmc_settings_if_not_present ( $form );
+
+		GFAPI::update_form( $form );
+	}
+
+	private function set_gfmc_settings_if_not_present ( $form ) {
 		if ( !isset ( $form['gfmcEnableCSS'] ) ) {
 			$form['gfmcEnableCSS'] = true;
 		}
 		if ( !isset ( $form['gfmcEnableJS'] ) ) {
 			$form['gfmcEnableJS'] = false;
 		}
-		GFAPI::update_form( $form );
+
+		return ( $form );
 	}
 
 	private function do_gfmc_fields_exist_in_form( $form ) {
