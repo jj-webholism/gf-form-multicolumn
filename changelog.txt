@@ -1,3 +1,15 @@
+= 3.1.0 =
+
+Fix: IE11 CSS styling that was not correctly aligning columns.
+Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list
+element around conditional logic elements.
+Improvement: Form settings modified which allows the plugin CSS file to be enabled and disabled for inclusion.
+Improvement: Included possibility to allow for CSS classes to be defined for columns
+Improvement: Removes form entries added when the plugin is uninstalled.
+Improvement: Form validation when saving to reduce unequal row start to row end implementations.
+Improvement: Introduced functionality that will also provide appropriate layout on AJAX generated forms.
+Alteration: Changed Column Start and Column End to Row Start and Row End respectively.
+
 = 3.0.3 =
 Fix: Removed echo commands as these were causing update issues from within Gutenberg pages. Improvement: Altered CSS to be more specific with class naming implementation.
 

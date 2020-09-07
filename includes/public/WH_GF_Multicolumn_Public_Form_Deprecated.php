@@ -5,7 +5,7 @@
  * creation style.
  *
  * @link       https://wordpress.org/plugins/gf-form-multicolumn/
- * @since      3.1.0
+ * @since      3.1.1
  *
  * @package    gf-form-multicolumn
  * @subpackage gf-form-multicolumn/includes/public
