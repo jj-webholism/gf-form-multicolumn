@@ -1,7 +1,23 @@
+= 3.1.2 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
+the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
+ Load CSS Stylesheet -> Click Update Form Settings.**
+
 = 3.1.1 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
+the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
+ Load CSS Stylesheet -> Click Update Form Settings.**
+
 Fix: Inaccurate set of files uploaded.
 
 = 3.1.0 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
+the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
+ Load CSS Stylesheet -> Click Update Form Settings.**
+
 Fix: IE11 CSS styling that was not correctly aligning columns.
 Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list
 element around conditional logic elements.

@@ -18,8 +18,8 @@ When activated this plugin allows Gravity Forms elements to be split into column
 elements (Row Start, Column Break, and Row End) which are introduced into the Gravity Forms administration area in a
 group labelled as Multiple Columns Fields.
 
-For each form, in its form settings it is possible to enable and disable the plugin's CSS and JS that are used by
-the plugin. The CSS file is responsible for the layout of the form, and the JS file is used to remove unwanted spacing
+For each form, in its form settings it is possible to enable and disable the plugin's CSS and JS that are used by the
+plugin. The CSS file is responsible for the layout of the form, and the JS file is used to remove unwanted spacing
 generated if using conditional logic to hide form elements. It is advised to keep the CSS enabled at all times, but the
 JS should only be enabled in the case of hidden elements through the use of conditional logic.
 
@@ -33,7 +33,6 @@ Upload ...
 find the “Multiple Columns for Gravity Forms” plugin and click “<em>Install now</em>”.
 2. Alternatively download the zip file, unzip, and upload the gf-form-multicolumn folder (and files) to your plugins
 directory, which usually is /wp-content/plugins/.
-
 ... and activate.
 3. Activate the plugin through your <em>Plugins</em> area.
 
@@ -99,13 +98,25 @@ Yes.
 
 = 3.1.2 =
 
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
+the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
+ Load CSS Stylesheet -> Click Update Form Settings.**
+
 Fix: Problem with form deactivation on save.
 
 = 3.1.1 =
 
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
+the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
+ Load CSS Stylesheet -> Click Update Form Settings.**
+
 Fix: Inaccurate set of files uploaded.
 
 = 3.1.0 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
+the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
+ Load CSS Stylesheet -> Click Update Form Settings.**
 
 Fix: IE11 CSS styling that was not correctly aligning columns.
 Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list
