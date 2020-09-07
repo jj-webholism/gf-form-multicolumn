@@ -6,7 +6,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,6 +96,10 @@ Yes.
 5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
 
 == Changelog ==
+
+= 3.1.2 =
+
+Fix: Problem with form deactivation on save.
 
 = 3.1.1 =
 

@@ -4,7 +4,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       https://wordpress.org/plugins/gf-form-multicolumn/
- * @since      3.1.1
+ * @since      3.1.2
  *
  * @package    gf-form-multicolumn
  * @subpackage gf-form-multicolumn/includes/admin
@@ -148,6 +148,21 @@ class WH_GF_Multicolumn_Admin {
 		}
 		if ( !isset ( $form['gfmcEnableJS'] ) ) {
 			$form['gfmcEnableJS'] = false;
+		}
+
+		if ( ! isset ( $form['is_active'] ) ) {
+			$form['is_active'] = true;
+		}
+
+		$now = new DateTime();
+		if ( array_key_exists( 'date_created', $form ) ) {
+			$form['date_updated'] = $now->format( 'Y-m-d H:i:s' );
+		} else {
+			$form['date_created'] = $now->format( 'Y-m-d H:i:s' );
+		}
+
+		if ( ! isset ( $form['is_trash'] ) ) {
+			$form['is_trash'] = false;
 		}
 
 		return ( $form );

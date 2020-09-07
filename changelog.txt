@@ -1,5 +1,7 @@
-= 3.1.0 =
+= 3.1.1 =
+Fix: Inaccurate set of files uploaded.
 
+= 3.1.0 =
 Fix: IE11 CSS styling that was not correctly aligning columns.
 Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list
 element around conditional logic elements.
