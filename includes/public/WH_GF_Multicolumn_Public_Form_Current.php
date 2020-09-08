@@ -4,7 +4,7 @@
  * The public-specific functionality of the plugin.
  *
  * @link       https://wordpress.org/plugins/gf-form-multicolumn/
- * @since      3.1.1
+ * @since      3.1.2
  *
  * @package    gf-form-multicolumn
  * @subpackage gf-form-multicolumn/includes/public
@@ -46,7 +46,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 				$columnCount = 1;
 			} elseif ( $formField['type'] === 'column_break' ) {
 				$columnCount ++;
-			} elseif ( $formField['type'] === 'column_end' || $formField['type'] === 'page' ) {
+			} elseif ( $formField['type'] === 'column_end' || ( $formField['type'] === 'page' && $rowCount > 1 ) ) {
 				$rowColumnArray[ $rowCount ] = $columnCount;
 				$rowCount ++;
 			}

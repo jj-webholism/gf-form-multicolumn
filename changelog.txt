@@ -1,3 +1,7 @@
+= 3.1.3 =
+
+Fix: Multipage form layout broken (GFMC-29)
+
 = 3.1.2 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses

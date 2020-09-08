@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Multiple Columns for Gravity Forms\n"
 "POT-Creation-Date: 2020-09-06 19:37+0200\n"
-"PO-Revision-Date: 2020-09-06 19:37+0200\n"
+"PO-Revision-Date: 2020-09-08 04:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
@@ -24,85 +24,95 @@ msgstr ""
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:88
 msgid "Enable CSS"
-msgstr ""
+msgstr "Enable CSS"
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:96
 msgid "Load CSS Stylesheet"
-msgstr ""
+msgstr "Load CSS Stylesheet"
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:109
 msgid "Enable JS"
-msgstr ""
+msgstr "Enable JS"
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:116
 msgid "Load JS Script"
-msgstr ""
+msgstr "Load JS Script"
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:209
 msgid ""
 "Load MultiColumn specific CSS file (note that deactivating this may result "
 "in the plugin layout breaking)."
 msgstr ""
+"Load MultiColumn specific CSS file (note that deactivating this may result "
+"in the plugin layout breaking)."
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:211
 msgid ""
 "Load MultiColumn specific JS file which alters spacing when using "
 "conditional logic elements."
 msgstr ""
+"Load MultiColumn specific JS file which alters spacing when using "
+"conditional logic elements."
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:213
 msgid "Use elements to construct column divisions in the form."
-msgstr ""
+msgstr "Use elements to construct column divisions in the form."
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:227
 msgid ""
 " too many Row Starts to Row Ends. Please review and remove the excess Row "
 "Starts."
 msgstr ""
+" too many Row Starts to Row Ends. Please review and remove the excess Row "
+"Starts."
 
 #: includes/admin/WH_GF_Multicolumn_Admin.php:229
 msgid ""
 " too many Row Ends to Row Starts. Please review and remove the excess Row "
 "Ends."
 msgstr ""
+" too many Row Ends to Row Starts. Please review and remove the excess Row "
+"Ends."
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Column_End.php:26
 msgid "Row End"
-msgstr ""
+msgstr "Row End"
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Column_Separator.php:26
 msgid "Column Break"
-msgstr ""
+msgstr "Column Break"
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Column_Start.php:26
 msgid "Row Start"
-msgstr ""
+msgstr "Row Start"
 
 #: includes/admin/field/WH_GF_Multicolumn_Field_Group.php:53
 msgid "Multiple Columns Fields"
-msgstr ""
+msgstr "Multiple Columns Fields"
 
 #. Plugin Name of the plugin/theme
 msgid "Multiple Columns for Gravity Forms"
-msgstr ""
+msgstr "Multiple Columns for Gravity Forms"
 
 #. Plugin URI of the plugin/theme
 msgid "https://wordpress.org/plugins/gf-form-multicolumn/"
-msgstr ""
+msgstr "https://wordpress.org/plugins/gf-form-multicolumn/"
 
 #. Description of the plugin/theme
 msgid ""
 "Introduces new form elements into Gravity Forms which allow rows to be split "
 "into multiple columns."
 msgstr ""
+"Introduces new form elements into Gravity Forms which allow rows to be split "
+"into multiple columns."
 
 #. Author of the plugin/theme
 msgid "WebHolism"
-msgstr ""
+msgstr "WebHolism"
 
 #. Author URI of the plugin/theme
 msgid "http://www.webholism.com"
-msgstr ""
+msgstr "http://www.webholism.com"
 
 #~ msgid "Column End"
 #~ msgstr "Row End"
