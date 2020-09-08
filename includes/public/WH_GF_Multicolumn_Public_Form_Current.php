@@ -4,7 +4,7 @@
  * The public-specific functionality of the plugin.
  *
  * @link       https://wordpress.org/plugins/gf-form-multicolumn/
- * @since      3.1.2
+ * @since      3.1.0
  *
  * @package    gf-form-multicolumn
  * @subpackage gf-form-multicolumn/includes/public
@@ -46,7 +46,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 				$columnCount = 1;
 			} elseif ( $formField['type'] === 'column_break' ) {
 				$columnCount ++;
-			} elseif ( $formField['type'] === 'column_end' || ( $formField['type'] === 'page' && $rowCount > 1 ) ) {
+			} elseif ( $formField['type'] === 'column_end' ) {
 				$rowColumnArray[ $rowCount ] = $columnCount;
 				$rowCount ++;
 			}
@@ -63,7 +63,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			'gform_field_container', array ( $this, 'define_output_elements' ),
 			10, 6
 		);
-
 	}
 
 	public function define_output_elements( $field_container, $field ) {
@@ -71,29 +70,25 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			$this->columnCounter ++;
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor(
-					100 / $this->rowColumnArray[ $this->rowCounter ]
-				) . '%;"><ul>';
+			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter .
+			       '-column gfmc-row-' . $this->rowCounter . '-col-' .
+			       $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor( 100 / $this->rowColumnArray[ $this->rowCounter ] ) . '%;"><ul>';
 		}
 		if ( $field->type === 'column_break' ) {
 			$this->columnCounter ++;
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			return '</ul></li><li class="gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor(
-				       100 / $this->rowColumnArray[ $this->rowCounter ]
-			       ) . '%;"><ul>';
+			return '</ul></li><li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor(
+					100 / $this->rowColumnArray[ $this->rowCounter ]
+				) . '%;"><ul>';
 		}
 		if ( $field->type === 'column_end' ) {
 			$this->columnCounter = 0;
-			$this->rowCounter ++;
+			if (isset($this->rowColumnArray[$this->rowCounter+1])) {
+				$this->rowCounter ++;
+			}
 
 			return ( '</ul></li>' );
-		}
-		if ( $field->type === 'row_break' || $field->type === 'page' ) {
-			$this->columnCounter = 0;
-
-			return '</ul><ul class="gform_fields top_label form_sublabel_below description_below">';
 		}
 
 		return ( $field_container );
