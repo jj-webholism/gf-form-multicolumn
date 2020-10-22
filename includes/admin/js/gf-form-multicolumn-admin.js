@@ -2,9 +2,9 @@ function gfmc_validate_form_columns (error, form, has_product, has_option) {
   var result = check_start_and_end_quantities(form)
   if (result !== 0) {
     if (result > 0) {
-      return result + gfmc.tooManyColumnStarts
+      return result + gfmc_scripts_admin_strings.tooManyColumnStarts
     } else {
-      return -result + gfmc.tooManyColumnEnds
+      return -result + gfmc_scripts_admin_strings.tooManyColumnEnds
     }
   }
 }

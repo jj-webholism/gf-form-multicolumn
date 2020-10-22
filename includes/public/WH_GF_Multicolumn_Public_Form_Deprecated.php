@@ -171,6 +171,6 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	}
 
 	public function dequeue_v3_style() {
-		wp_dequeue_style( 'gfmc-styles-v3' );
+		wp_dequeue_style( 'gfmc_styles_v3' );
 	}
 }
