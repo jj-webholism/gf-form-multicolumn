@@ -38,7 +38,8 @@ Once installed, the following steps will help provide guidance to introduce colu
 
 CSS and JS included with the plugin can be toggled on and off in the Form Settings for the individual form.
 
-9. In Settings -> Form Settings once a form has been selcted, visit the section titled Multiple Columns.  Here there are new options related to the Multiple Columns for Gravity Forms plugin.
+9. In Settings -> Form Settings once a form has been selected, visit the section titled Multiple Columns.  Here there
+are new options related to the Multiple Columns for Gravity Forms plugin.
 
 **Note: If updating from version 3.0.3 or earlier. If the columns are not displaying, please visit the Form Settings for each form and check the Enable CSS checkbox.**
 
@@ -47,10 +48,6 @@ CSS and JS included with the plugin can be toggled on and off in the Form Settin
 = I have updated from an earlier version, where have my columns gone? =
 
 For each Gravity Form that you had prior to update, please visit the Form Settings for each and check the Enable CSS checkbox.
-
-= The update button isn't working when I try and save a form =
-
-This occurs when the Gravity Forms -> Settings - No-Conflict Mode is set to On.  Please set this to Off and the forms should update correctly.
 
 = How many columns can I make? =
 
@@ -94,7 +91,7 @@ Yes.
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
-Fix: Update button in administrator fixed when Gravity Forms -> Settings in On condition (GFMC-43)
+Fix: Update button in administrator fixed when Gravity Forms -> Settings in On state (GFMC-43)
 
 = 3.1.4 =
 
