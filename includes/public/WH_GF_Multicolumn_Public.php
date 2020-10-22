@@ -73,11 +73,11 @@ class WH_GF_Multicolumn_Public {
 
 	public function dequeue_selected_scripts( $form = '', $is_ajax = false ) {
 		if ( ! rgar( $form, 'gfmcEnableJS' ) ) {
-			wp_dequeue_script( 'gfmc-scripts-public' );
+			wp_dequeue_script( 'gfmc_scripts_public' );
 		}
 		if ( ! rgar( $form, 'gfmcEnableCSS' ) ) {
-			wp_dequeue_style( 'gfmc-styles-v2' );
-			wp_dequeue_style( 'gfmc-styles-v3' );
+			wp_dequeue_style( 'gfmc_styles_v2' );
+			wp_dequeue_style( 'gfmc_styles_v3' );
 		}
 	}
 

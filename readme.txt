@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,7 +38,8 @@ Once installed, the following steps will help provide guidance to introduce colu
 
 CSS and JS included with the plugin can be toggled on and off in the Form Settings for the individual form.
 
-9. In Settings -> Form Settings once a form has been selcted, visit the section titled Multiple Columns.  Here there are new options related to the Multiple Columns for Gravity Forms plugin.
+9. In Settings -> Form Settings once a form has been selected, visit the section titled Multiple Columns.  Here there
+are new options related to the Multiple Columns for Gravity Forms plugin.
 
 **Note: If updating from version 3.0.3 or earlier. If the columns are not displaying, please visit the Form Settings for each form and check the Enable CSS checkbox.**
 
@@ -47,10 +48,6 @@ CSS and JS included with the plugin can be toggled on and off in the Form Settin
 = I have updated from an earlier version, where have my columns gone? =
 
 For each Gravity Form that you had prior to update, please visit the Form Settings for each and check the Enable CSS checkbox.
-
-= The update button isn't working when I try and save a form =
-
-This occurs when the Gravity Forms -> Settings - No-Conflict Mode is set to On.  Please set this to Off and the forms should update correctly.
 
 = How many columns can I make? =
 
@@ -90,33 +87,29 @@ Yes.
 
 == Changelog ==
 
-= 3.1.4 =
+= 3.1.5 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Update button in administrator fixed when Gravity Forms -> Settings in On state (GFMC-43)
+
+= 3.1.4 =
 
 Fix: Page count added to row count causing division by zero issue (GFMC-30)
 
 = 3.1.3 =
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
-
 Fix: Multipage form layout broken (GFMC-29)
 
 = 3.1.2 =
-
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
 Fix: Problem with form deactivation on save.
 
 = 3.1.1 =
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
-
 Fix: Inaccurate set of files uploaded.
 
 = 3.1.0 =
-
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
 Fix: IE11 CSS styling that was not correctly aligning columns.
 Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list element around conditional logic elements.

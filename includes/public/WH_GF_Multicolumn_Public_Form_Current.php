@@ -95,6 +95,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	public function dequeue_v2_style() {
-		wp_dequeue_style( 'gfmc-styles-v2' );
+		wp_dequeue_style( 'gfmc_styles_v2' );
 	}
 }

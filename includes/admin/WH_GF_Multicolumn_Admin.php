@@ -36,9 +36,6 @@ class WH_GF_Multicolumn_Admin {
 		add_action( 'gform_admin_pre_render',
 		            array ( $this, 'admin_pre_render_function' ) );
 
-		add_action( 'admin_enqueue_scripts',
-		            array ( $this, 'enqueue_admin_scripts' ) );
-
 		add_filter( 'gform_form_settings',
 		            array ( $this, 'display_gfmc_form_settings' ),
 		            10, 2 );
@@ -60,10 +57,10 @@ class WH_GF_Multicolumn_Admin {
 	}
 
 	public function admin_pre_render_function( $form ) {
-		if ( wp_script_is( 'gfmc-admin-scripts' ) ) {
+		if ( wp_script_is( 'gfmc_scripts_admin' ) ) {
 			echo GFCommon::is_form_editor() ? "<script type='text/javascript'>
         gform.addFilter( 'gform_validation_error_form_editor', 'gfmc_validate_form_columns', 10, 'gfmc_validate_form_columns_" . $form['id'] . "');
-        </script>" : '';
+        </script>" : null;
 		}
 
 		return $form;
@@ -240,25 +237,5 @@ class WH_GF_Multicolumn_Admin {
 		                                                'gf-form-multicolumn' );
 
 		return $tooltips;
-	}
-
-	public function enqueue_admin_scripts() {
-		wp_register_script( 'gfmc-admin-scripts',
-		                    plugins_url( '/js/gf-form-multicolumn-admin.min.js',
-		                                 __FILE__ ),
-		                    100,
-		                    $this->version,
-		                    'all' );
-		$gfmcTranslationArray = array (
-			'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.',
-			                             'gf-form-multicolumn' ),
-			'tooManyColumnEnds'   => __( ' too many Row Ends to Row Starts. Please review and remove the excess Row Ends.',
-			                             'gf-form-multicolumn' ),
-		);
-		wp_localize_script( 'gfmc-admin-scripts', 'gfmc',
-		                    $gfmcTranslationArray );
-		wp_enqueue_script(
-			'gfmc-admin-scripts'
-		);
 	}
 }

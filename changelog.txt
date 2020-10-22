@@ -1,3 +1,9 @@
+= 3.1.5 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Update button in administrator fixed when Gravity Forms -> Settings in On state (GFMC-43)
+
 = 3.1.4 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
