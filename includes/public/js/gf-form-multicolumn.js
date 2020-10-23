@@ -19,5 +19,3 @@ function gfFormsAddConditionalColumns () {
     observer.observe(gfieldCollection[i], config)
   }
 }
-
-gfFormsAddConditionalColumns()
