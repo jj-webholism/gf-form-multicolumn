@@ -13,17 +13,18 @@
 namespace WH\GF\Multicolumn\Classes;
 
 use GFAddOn;
+use GFForms;
 use WH\GF\Multicolumn\Admin\WH_GF_Multicolumn_Admin;
 use WH\GF\Multicolumn\Site\WH_GF_Multicolumn_Public;
 
-\GFForms::include_addon_framework();
+GFForms::include_addon_framework();
 
 class WH_GF_Multicolumn extends
 	GFAddOn {
 	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '3.1.5';
+	protected $_version = '3.1.6a';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
@@ -185,7 +186,7 @@ class WH_GF_Multicolumn extends
 		return array_merge( parent::styles(), $styles );
 	}
 
-	public function enqueue_admin_preview_scripts( $styles, $form ) {
+	public function enqueue_admin_preview_scripts( ) {
 		wp_register_style( 'preview_stylesheet',
 		                   plugins_url( '/public/css/gf-form-multicolumn.css',
 		                                __FILE__ ), array (), $this->_version );
@@ -195,7 +196,7 @@ class WH_GF_Multicolumn extends
 	}
 
 	public function set_locale() {
-		$plugin_i18n = new WH_GF_Multicolumn_i18n();
+		new WH_GF_Multicolumn_i18n();
 	}
 
 	public function get_plugin_name() {

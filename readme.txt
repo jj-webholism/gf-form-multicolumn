@@ -3,9 +3,9 @@ Contributors: webholism
 Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 3.1.5
+Stable tag: 3.1.6a
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,9 +87,14 @@ Yes.
 
 == Changelog ==
 
-= 3.1.5 =
+= 3.1.6 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Resolution of issue when conditional logic JS enabled - Uncaught TypeError: e[n].target.parentElement is null On Page with Conditional Logic Elements (GFMC-44)
+Fix: composer.json file included at root of the plugin which was causing issues when installing or updating the plugin with WP-CLI. (GFMC-49)
+
+= 3.1.5 =
 
 Fix: Update button in administrator fixed when Gravity Forms -> Settings in On state (GFMC-43)
 
