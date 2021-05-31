@@ -33,3 +33,21 @@ li[class*="column-count-1"] > div > ul {
     padding-left: 0;
     margin-left: 0;
 }
+
+/* 2.5 Additional layout options */
+.gform_wrapper.gravity-theme .gform_fields {
+    grid-template-columns: unset;
+}
+
+.gfmc-container {
+    grid-auto-flow: column;
+    display: grid;
+    grid-template-rows: 100%;
+    align-items: center;
+
+}
+
+@media screen and (max-width: 600px) {
+    div.gfmc-container {
+    }
+}
