@@ -14,6 +14,7 @@ namespace WH\GF\Multicolumn\Site;
 
 class WH_GF_Multicolumn_Public_Form_Current {
 	private $version;
+	private $gfLegacyVersion;
 	private $rowColumnArray;
 	private $columnCounter;
 	private $rowCounter;
@@ -29,6 +30,9 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$this->rowColumnArray =
 			$this->calculate_row_and_column_count( $form );
 
+		// Stores form legacy value for ul/li (1), or divs (2) layout
+		$this->gfLegacyVersion = isset($form['markupVersion']) ? (int)$form['markupVersion'] : 1;
+
 		$this->structure_form_elements();
 
 		add_action( 'gform_enqueue_scripts',
@@ -36,7 +40,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	private function calculate_row_and_column_count( $form ) {
-//		echo ('<pre>'); print_r ($form['fields']); echo('</pre>');
 		$rowColumnArray = array ();
 		$rowCount       = 1;
 		$columnCount    = 0;
@@ -84,7 +87,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			$gravityFormsVersion = (float) $gravityFormsVersion;
 		}
 
-		if ( $gravityFormsVersion >= 2.5 )
+		if ( $gravityFormsVersion >= 2.5 && $this->gfLegacyVersion == 2 )
 		{
 			add_filter(
 				'gform_field_container',
@@ -142,49 +145,41 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	public function define_output_elements_2_5( $field_container, $field ) {
 		if ( $field->type === 'column_start' )
 		{
-			//echo ('<pre>'); var_dump ('column_start'); echo ('</pre>');
 			$this->columnCounter ++;
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			/*return '<div class="gfmc-container"><div class="gfmc-column gfmc-row-' .
-			       $this->rowCounter .
-			       '-column gfmc-row-' . $this->rowCounter . '-col-' .
-			       $this->columnCounter . '-of-' . $this->rowColumnArray[
-			                                       $this->rowCounter ] . $cssClass . '" style="width: ' .
-			       floor( 100 / $this->rowColumnArray[ $this->rowCounter ] )
-			       . '%;">';*/
+			$columnCountMax = $this->rowColumnArray[$this->rowCounter];
+
 			// Calculate the number of columns to build the CSS template
 			// column string
 			$gridColumnString = '';
 			for (
-				$i = 0; $i < $this->rowColumnArray[$this->rowCounter]; $i ++
+				$i = 0; $i < $columnCountMax; $i ++
 			)
 			{
-				$gridColumnString .= floor( 100 / $this->rowColumnArray[$this->rowCounter] ) . "% ";
+				$gridColumnString .= floor( 100 / $columnCountMax ) . "% ";
 			}
 
-			return '<div class="gfmc-container" style="grid-template-columns: repeat( auto-fit, minmax(' . floor( 100 / $this->rowColumnArray[$this->rowCounter] ) . '%, 1fr));"><div class="gfmc-column gfmc-row-' .
+			// Determine the number of fr's as a multiple of 4 x column count
+			return '<div class="gfmc-container" style="-ms-grid-columns: (1fr 2%)['.(4*$columnCountMax).'];
+    grid-template-columns: repeat('.(4*$columnCountMax).',1fr);"><div class="gfield gfmc-column gfmc-row-' .
 			       $this->rowCounter .
 			       '-column gfmc-row-' . $this->rowCounter . '-col-' .
-			       $this->columnCounter . '-of-' . $this->rowColumnArray[$this->rowCounter] . $cssClass . '" >';
+			       $this->columnCounter . '-of-' . $columnCountMax . $cssClass . '" >';
 		}
 		if ( $field->type === 'column_break' )
 		{
-			//var_dump ('column_break');
 			$this->columnCounter ++;
+
+			$columnCountMax = $this->rowColumnArray[$this->rowCounter];
+
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			/*return '</div><div class="gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[ $this->rowCounter ] . $cssClass . '" style="width: ' . floor(
-				       100 / $this->rowColumnArray[ $this->rowCounter ]
-			       ) . '%;">';*/
-
-			return '</div><div class="gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[$this->rowCounter] . $cssClass . '">';
+			return '</div><div class="gfield gfmc-column gfmc-row-' .
+			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $columnCountMax . $cssClass . '">';
 		}
 		if ( $field->type === 'column_end' )
 		{
-			//var_dump ('column_end');
 			$this->columnCounter = 0;
 			if ( isset( $this->rowColumnArray[$this->rowCounter + 1] ) )
 			{

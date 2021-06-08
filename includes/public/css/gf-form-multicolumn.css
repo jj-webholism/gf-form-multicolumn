@@ -8,12 +8,12 @@ li[class*="column-count-"] {
     display: inline-block;
 }
 
-.gfmc-column {
+li.gfmc-column {
     display: inline-block;
     vertical-align: text-top;
 }
 
-.gfmc-column .gform_wrapper {
+li.gfmc-column .gform_wrapper {
     width: 100%;
 }
 
@@ -39,15 +39,31 @@ li[class*="column-count-1"] > div > ul {
     grid-template-columns: unset;
 }
 
-.gfmc-container {
-    grid-auto-flow: column;
-    display: grid;
-    grid-template-rows: 100%;
-    align-items: center;
-
+.gform_wrapper.gravity-theme .gfield {
+    -ms-grid-column-span: 4;
+    grid-column: span 4;
 }
 
-@media screen and (max-width: 600px) {
-    div.gfmc-container {
+.gfmc-container {
+    /*grid-auto-flow: column;
+    display: grid;
+    grid-template-rows: 100%;
+    align-items: center;*/
+    width: 100%;
+    display: -ms-grid;
+    display: grid;
+/*    -ms-grid-columns: (1fr 2%)[12];
+    grid-template-columns: repeat(12,1fr);*/
+    grid-template-rows: repeat(auto-fill,auto);
+    grid-column-gap: 2%;
+    grid-row-gap: 16px;
+}
+
+@media screen and (max-width: 640px) {
+    .gfmc-container {
+/*        grid-auto-flow: unset;
+        grid-template-rows: unset;
+        display: grid;
+        align-items: center;*/
     }
 }
