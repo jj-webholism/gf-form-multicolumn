@@ -13,25 +13,35 @@
 namespace WH\GF\Multicolumn\Site;
 
 class WH_GF_Multicolumn_Public_Form_Current {
-	private $version;
+	/*	private $version;*/
 	private $gfLegacyVersion;
+	/*	private $rowCount;
+		private $rowNumber;
+		private $columnCount;*/
 	private $rowColumnArray;
 	private $columnCounter;
 	private $rowCounter;
 
+	private $instanceCounter;
+	private $internalContainerCounter;
+
 	public function __construct( $version, $form ) {
-		$this->version = $version;
+		$this->instanceCounter          = 0;
+		$this->internalContainerCounter = 0;
+		/*		$this->version = $version;
+				echo ('<pre>VERSION: '.$this->version.'</pre>');*/
 
 		// Set row and column counts
 		$this->rowCount    = 1;
 		$this->rowNumber   = 1;
 		$this->columnCount = 0;
 
-		$this->rowColumnArray =
-			$this->calculate_row_and_column_count( $form );
+		/*$this->rowColumnArray =
+			$this->calculate_row_and_column_count( $form );*/
+		$this->calculate_row_and_column_count( $form );
 
 		// Stores form legacy value for ul/li (1), or divs (2) layout
-		$this->gfLegacyVersion = isset($form['markupVersion']) ? (int)$form['markupVersion'] : 1;
+		$this->gfLegacyVersion = isset( $form['markupVersion'] ) ? (int) $form['markupVersion'] : 1;
 
 		$this->structure_form_elements();
 
@@ -40,9 +50,8 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	private function calculate_row_and_column_count( $form ) {
-		$rowColumnArray = array ();
-		$rowCount       = 1;
-		$columnCount    = 0;
+		$rowCount    = 1;
+		$columnCount = 0;
 
 		foreach ( $form['fields'] as $formField )
 		{
@@ -57,15 +66,17 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			}
 			elseif ( $formField['type'] === 'column_end' )
 			{
-				$rowColumnArray[$rowCount] = $columnCount;
+				$this->rowColumnArray[$rowCount] = $columnCount;
 				$rowCount ++;
 			}
 		}
 
-		return $rowColumnArray;
+		return $this->rowColumnArray;
 	}
 
 	private function structure_form_elements() {
+		$this->instanceCounter ++;
+
 		$this->rowCounter    = 1;
 		$this->columnCounter = 0;
 
@@ -142,41 +153,21 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		return ( $field_container );
 	}
 
-	public function define_output_elements_2_5( $field_container, $field ) {
+	public function define_output_elements_2_5( $field_container, $field, $form
+	) {
+		$this->internalContainerCounter ++;
+
 		if ( $field->type === 'column_start' )
 		{
 			$this->columnCounter ++;
-			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			$columnCountMax = $this->rowColumnArray[$this->rowCounter];
-
-			// Calculate the number of columns to build the CSS template
-			// column string
-			$gridColumnString = '';
-			for (
-				$i = 0; $i < $columnCountMax; $i ++
-			)
-			{
-				$gridColumnString .= floor( 100 / $columnCountMax ) . "% ";
-			}
-
-			// Determine the number of fr's as a multiple of 4 x column count
-			return '<div class="gfmc-container" style="-ms-grid-columns: (1fr 2%)['.(4*$columnCountMax).'];
-    grid-template-columns: repeat('.(4*$columnCountMax).',1fr);"><div class="gfield gfmc-column gfmc-row-' .
-			       $this->rowCounter .
-			       '-column gfmc-row-' . $this->rowCounter . '-col-' .
-			       $this->columnCounter . '-of-' . $columnCountMax . $cssClass . '" >';
+			return '<div class="gfmc-container"><div class="gfield gfmc-field">';
 		}
 		if ( $field->type === 'column_break' )
 		{
 			$this->columnCounter ++;
 
-			$columnCountMax = $this->rowColumnArray[$this->rowCounter];
-
-			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
-
-			return '</div><div class="gfield gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $columnCountMax . $cssClass . '">';
+			return '</div><div class="gfield gfmc-field">';
 		}
 		if ( $field->type === 'column_end' )
 		{
@@ -185,7 +176,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 			{
 				$this->rowCounter ++;
 			}
-
 			return ( '</div></div>' );
 		}
 
