@@ -155,31 +155,69 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 	public function define_output_elements_2_5( $field_container, $field, $form
 	) {
-		$this->internalContainerCounter ++;
-
-		if ( $field->type === 'column_start' )
+		if ( $this->is_gfmc_field_type( $field->type ) )
 		{
-			$this->columnCounter ++;
+			//$this->internalContainerCounter ++;
+			//var_dump( $field['cssClass'] );
 
-			return '<div class="gfmc-container"><div class="gfield gfmc-field">';
-		}
-		if ( $field->type === 'column_break' )
-		{
-			$this->columnCounter ++;
+			$columnWidthCount = $this->rowColumnArray[$this->rowCounter] * 2;
 
-			return '</div><div class="gfield gfmc-field">';
-		}
-		if ( $field->type === 'column_end' )
-		{
-			$this->columnCounter = 0;
-			if ( isset( $this->rowColumnArray[$this->rowCounter + 1] ) )
+			$columnWidth = is_numeric( ( 100 - $columnWidthCount ) /
+			                           $this->rowColumnArray[$this->rowCounter] )
+				? floor( ( 100 - $columnWidthCount ) /
+				         $this->rowColumnArray[$this->rowCounter] ) : 1;
+
+			if ( $field->type === 'column_start' )
 			{
-				$this->rowCounter ++;
+				return ( $this->generate_start_of_row( $columnWidth ) );
+
 			}
-			return ( '</div></div>' );
+			if ( $field->type === 'column_break' )
+			{
+				return ( $this->generate_break_in_row( $columnWidthCount,
+				                                       $columnWidth ) );
+			}
+			if ( $field->type === 'column_end' )
+			{
+				return ( $this->generate_end_of_row() );
+			}
+
 		}
 
 		return ( $field_container );
+	}
+
+	private function is_gfmc_field_type( $fieldType ) {
+		if ( $fieldType === 'column_start' || $fieldType === 'column_break'
+		     || $fieldType === 'column_end' )
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	private function generate_start_of_row( $columnWidth ) {
+		$this->columnCounter ++;
+
+		return '<div class="gfmc-container"><div class="gfield gfmc-field" style="flex-basis: ' . $columnWidth . '%">';
+
+	}
+
+	private function generate_break_in_row( $columnWidthCount, $columnWidth ) {
+		$this->columnCounter ++;
+
+		return '</div><div style="flex-basis: ' . $columnWidthCount / 2 . '%""></div><div class="gfield gfmc-field" style="flex-basis: ' . $columnWidth . '%">';
+	}
+
+	private function generate_end_of_row() {
+		$this->columnCounter = 0;
+		if ( isset( $this->rowColumnArray[$this->rowCounter + 1] ) )
+		{
+			$this->rowCounter ++;
+		}
+
+		return ( '</div></div>' );
 	}
 
 	public function dequeue_v2_style() {

@@ -41,14 +41,20 @@ li[class*="column-count-1"] > div > ul {
 }
 
 .gfmc-container {
-    display:flex;
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+}
+
+.gfmc-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 @media screen and (max-width: 640px) {
     .gfmc-container {
-        display:flex;
+        display: flex;
         flex-direction: column;
         justify-content: space-around;
     }
