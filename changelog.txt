@@ -1,10 +1,14 @@
-= 3.2.0 =
+= 3.2.1a =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
+Fix: Warning: Division by zero message resolved. (GFMC-57)
+
+= 3.2.0 =
+
 Fix: Resolution of issue when conditional logic JS enabled - Uncaught TypeError: e[n].target.parentElement is null On Page with Conditional Logic Elements (GFMC-44)
 Fix: composer.json file included at root of the plugin which was causing issues when installing or updating the plugin with WP-CLI. (GFMC-49)
-Fix: Restruture of layout for Gravity Forms 2.5 as this uses divs when not in legacy enabled mode. (GFMC-55)
+Fix: Restructure of layout for Gravity Forms 2.5 as this uses divs when not in legacy enabled mode. (GFMC-55)
 
 = 3.1.5 =
 

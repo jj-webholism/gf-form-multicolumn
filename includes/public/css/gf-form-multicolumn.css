@@ -41,21 +41,32 @@ li[class*="column-count-1"] > div > ul {
 }
 
 .gfmc-container {
+    align-items: flex-start;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .gfmc-field {
     display: flex;
+    flex-basis: 100%;
     flex-direction: column;
     justify-content: space-around;
 }
 
+.gfmc-field div {
+    padding-bottom: 1em;
+}
+
 @media screen and (max-width: 640px) {
     .gfmc-container {
+        align-items: stretch;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+    }
+
+    .gfmc-field {
+        max-width: unset !important;
     }
 }
