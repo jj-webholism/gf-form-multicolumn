@@ -15,29 +15,21 @@ namespace WH\GF\Multicolumn\Site;
 class WH_GF_Multicolumn_Public_Form_Current {
 	/*	private $version;*/
 	private $gfLegacyVersion;
-	/*	private $rowCount;
-		private $rowNumber;
-		private $columnCount;*/
 	private $rowColumnArray;
 	private $columnCounter;
 	private $rowCounter;
 
 	private $instanceCounter;
-	private $internalContainerCounter;
 
 	public function __construct( $version, $form ) {
 		$this->instanceCounter          = 0;
 		$this->internalContainerCounter = 0;
-		/*		$this->version = $version;
-				echo ('<pre>VERSION: '.$this->version.'</pre>');*/
 
 		// Set row and column counts
 		$this->rowCount    = 1;
 		$this->rowNumber   = 1;
 		$this->columnCount = 0;
 
-		/*$this->rowColumnArray =
-			$this->calculate_row_and_column_count( $form );*/
 		$this->calculate_row_and_column_count( $form );
 
 		// Stores form legacy value for ul/li (1), or divs (2) layout
@@ -47,6 +39,48 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 		add_action( 'gform_enqueue_scripts',
 		            array ( $this, 'dequeue_v2_style' ) );
+	}
+
+	private function build_form_field_row_array( $form ) {
+		$rowCounter    = 1;
+		$columnCounter = 1;
+
+		for ( $i = 0; $i < count( $form['fields'] ); $i ++ )
+		{
+			$field = $form['fields'][$i];
+			if ( $field->type === 'column_start' )
+			{
+				$this->formFieldRowArray[$rowCounter][] = [
+					$field->id,
+					$field->type,
+					$field->cssClass,
+				];
+				for ( $j = $i ++; $j < count( $form['fields'] ) - $i; $j ++ )
+				{
+					$rowField = $form['fields'][$j];
+					if ( $rowField === 'column_break' || $rowField === 'column_end' )
+					{
+						if ( $rowField->type === 'column_end' )
+						{
+							$rowCounter ++;
+							break;
+						}
+						else
+						{
+							$columnCounter ++;
+						}
+					}
+					else
+					{
+						$this->formFieldRowArray[$rowCounter][] = [
+							$rowField->id,
+							$rowField->type,
+							$rowField->cssClass,
+						];
+					}
+				}
+			}
+		}
 	}
 
 	private function calculate_row_and_column_count( $form ) {
@@ -117,24 +151,28 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	public function define_output_elements( $field_container, $field ) {
+		// Eliminate division by zero error
+		$divisor = $this->rowColumnArray[$this->rowCounter] > 0 ?
+			$this->rowColumnArray[$this->rowCounter] : 1;
+
 		if ( $field->type === 'column_start' )
 		{
 			$this->columnCounter ++;
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[$this->rowCounter] . $cssClass . '" style="width: ' . floor(
-					100 / $this->rowColumnArray[$this->rowCounter]
+			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $divisor . $cssClass . '" style="width: ' . floor(
+					100 / $divisor
 				) . '%;"><ul>';
 		}
 		if ( $field->type === 'column_break' )
 		{
 			$this->columnCounter ++;
+
 			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
 			return '</ul></li><li class="gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $this->rowColumnArray[$this->rowCounter] . $cssClass . '" style="width: ' . floor(
-				       100 / $this->rowColumnArray[$this->rowCounter]
-			       ) . '%;"><ul>';
+			       $this->rowCounter . '-column gfmc-row-' .
+			       $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $divisor . $cssClass . '" style="width: ' . floor( 100 / $divisor ) . '%;"><ul>';
 		}
 		if ( $field->type === 'column_end' )
 		{
@@ -157,13 +195,9 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	) {
 		if ( $this->is_gfmc_field_type( $field->type ) )
 		{
-			//$this->internalContainerCounter ++;
-			//var_dump( $field['cssClass'] );
-
 			$columnWidthCount = $this->rowColumnArray[$this->rowCounter] * 2;
-
-			$columnWidth = is_numeric( ( 100 - $columnWidthCount ) /
-			                           $this->rowColumnArray[$this->rowCounter] )
+			$columnWidth      = is_numeric( ( 100 - $columnWidthCount ) /
+			                                $this->rowColumnArray[$this->rowCounter] )
 				? floor( ( 100 - $columnWidthCount ) /
 				         $this->rowColumnArray[$this->rowCounter] ) : 1;
 
@@ -200,14 +234,14 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	private function generate_start_of_row( $columnWidth ) {
 		$this->columnCounter ++;
 
-		return '<div class="gfmc-container"><div class="gfield gfmc-field" style="flex-basis: ' . $columnWidth . '%">';
+		return '<div class="gfmc-container"><div class="gfield gfmc-column gfmc-field" style="max-width: ' . $columnWidth . '%;">';
 
 	}
 
 	private function generate_break_in_row( $columnWidthCount, $columnWidth ) {
 		$this->columnCounter ++;
 
-		return '</div><div style="flex-basis: ' . $columnWidthCount / 2 . '%""></div><div class="gfield gfmc-field" style="flex-basis: ' . $columnWidth . '%">';
+		return '</div><div class="gfield gfmc-column gfmc-field" style="max-width: ' . $columnWidth . '%;">';
 	}
 
 	private function generate_end_of_row() {
