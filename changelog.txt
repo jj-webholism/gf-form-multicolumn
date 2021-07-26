@@ -1,8 +1,8 @@
-= 3.2.1a =
+= 3.2.1 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
-Fix: Warning: Division by zero message resolved. (GFMC-57)
+Fix: Warning: Division by zero message corrected with the use of a check for zero. (GFMC-57)
 
 = 3.2.0 =
 

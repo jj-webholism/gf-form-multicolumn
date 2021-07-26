@@ -25,11 +25,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$this->instanceCounter          = 0;
 		$this->internalContainerCounter = 0;
 
-		// Set row and column counts
-		$this->rowCount    = 1;
-		$this->rowNumber   = 1;
-		$this->columnCount = 0;
-
 		$this->calculate_row_and_column_count( $form );
 
 		// Stores form legacy value for ul/li (1), or divs (2) layout
@@ -114,8 +109,8 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$this->rowCounter    = 1;
 		$this->columnCounter = 0;
 
-		$gfInstallation      = get_plugin_data( ABSPATH .
-		                                        'wp-content/plugins/gravityforms/gravityforms.php' );
+		$gfInstallation      = get_plugin_data( WP_PLUGIN_DIR .
+		                                        '/gravityforms/gravityforms.php' );
 		$gravityFormsVersion = $gfInstallation['Version'];
 
 
@@ -151,41 +146,44 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	public function define_output_elements( $field_container, $field ) {
-		// Eliminate division by zero error
-		$divisor = $this->rowColumnArray[$this->rowCounter] > 0 ?
-			$this->rowColumnArray[$this->rowCounter] : 1;
-
-		if ( $field->type === 'column_start' )
+		if ( $this->is_gfmc_field_type( $field->type ) )
 		{
-			$this->columnCounter ++;
-			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
+			// Eliminate division by zero error
+			$divisor = ( $this->rowColumnArray[$this->rowCounter] > 0 ) ?
+				$this->rowColumnArray[$this->rowCounter] : 1;
 
-			return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $divisor . $cssClass . '" style="width: ' . floor(
-					100 / $divisor
-				) . '%;"><ul>';
-		}
-		if ( $field->type === 'column_break' )
-		{
-			$this->columnCounter ++;
+			if ( $field->type === 'column_start' )
+			{
+				$this->columnCounter ++;
+				$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
+				return '<li class="gfmc-column gfmc-row-' . $this->rowCounter . '-column gfmc-row-' . $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $divisor . $cssClass . '" style="width: ' . floor(
+						100 / $divisor
+					) . '%;"><ul>';
+			}
+			if ( $field->type === 'column_break' )
+			{
+				$this->columnCounter ++;
 
-			return '</ul></li><li class="gfmc-column gfmc-row-' .
-			       $this->rowCounter . '-column gfmc-row-' .
-			       $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $divisor . $cssClass . '" style="width: ' . floor( 100 / $divisor ) . '%;"><ul>';
-		}
-		if ( $field->type === 'column_end' )
-		{
-			$this->columnCounter = 0;
-			$this->rowCounter ++;
+				$cssClass = $field->cssClass !== '' ? ' ' . $field->cssClass : '';
 
-			return ( '</ul></li>' );
-		}
-		if ( $field->type === 'row_break' || $field->type === 'page' )
-		{
-			$this->columnCounter = 0;
+				return '</ul></li><li class="gfmc-column gfmc-row-' .
+				       $this->rowCounter . '-column gfmc-row-' .
+				       $this->rowCounter . '-col-' . $this->columnCounter . '-of-' . $divisor . $cssClass . '" style="width: ' . floor( 100 / $divisor ) . '%;"><ul>';
+			}
+			if ( $field->type === 'column_end' )
+			{
+				$this->columnCounter = 0;
+				$this->rowCounter ++;
 
-			return '</ul><ul class="gform_fields top_label form_sublabel_below description_below">';
+				return ( '</ul></li>' );
+			}
+			if ( $field->type === 'row_break' || $field->type === 'page' )
+			{
+				$this->columnCounter = 0;
+
+				return '</ul><ul class="gform_fields top_label form_sublabel_below description_below">';
+			}
 		}
 
 		return ( $field_container );
