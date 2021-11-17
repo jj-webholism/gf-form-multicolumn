@@ -35,12 +35,12 @@ li[class*="column-count-1"] > div > ul {
 }
 
 /* 2.5 Additional layout options */
-.gfmc-container {
+.gfmc-container,
+.gfmc-field {
     display: flex;
 }
 
 .gfmc-field {
-    display: flex;
     flex-basis: 100%;
     flex-direction: column;
     justify-content: space-around;
@@ -53,9 +53,12 @@ li[class*="column-count-1"] > div > ul {
 @media screen and (min-width: 641px) {
     .gfmc-container {
         align-items: flex-start;
-        display: flex;
         flex-direction: row;
         justify-content: space-between;
+    }
+
+    .gfield.gfmc-column.gfmc-field > div.gfield > .ginput_container.ginput_container_select {
+        padding-right: .3em;
     }
 }
 
