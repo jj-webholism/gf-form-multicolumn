@@ -35,16 +35,8 @@ li[class*="column-count-1"] > div > ul {
 }
 
 /* 2.5 Additional layout options */
-.gform_wrapper.gravity-theme .gform_fields {
-    display: block;
-    grid-template-columns: unset;
-}
-
 .gfmc-container {
-    align-items: flex-start;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 }
 
 .gfmc-field {
@@ -54,16 +46,28 @@ li[class*="column-count-1"] > div > ul {
     justify-content: space-around;
 }
 
-.gfmc-field div {
-    padding-bottom: 1em;
+.gfmc-field div:not(.gchoice) {
+    padding-bottom: .5em;
+}
+
+@media screen and (min-width: 641px) {
+    .gfmc-container {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
 }
 
 @media screen and (max-width: 640px) {
     .gfmc-container {
         align-items: stretch;
-        display: flex;
         flex-direction: column;
         justify-content: space-around;
+    }
+
+    .gfield.gfmc-column.gfmc-field:last-child div {
+        padding-bottom: 0;
     }
 
     .gfmc-field {

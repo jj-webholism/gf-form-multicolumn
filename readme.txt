@@ -3,9 +3,9 @@ Contributors: webholism
 Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6
-Tested up to: 5.8
+Tested up to: 5.8.1
 Requires PHP: 7.0
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,9 +87,13 @@ Yes.
 
 == Changelog ==
 
-= 3.2.1 =
+= 3.2.2 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Issue due to CSS conflict when displaying default form and form with GFMC elements. (GFMC-58)
+
+= 3.2.1 =
 
 Fix: Warning: Division by zero message corrected with the use of a check for zero. (GFMC-57)
 
