@@ -1,1 +1,8 @@
 composer.json
+./node_modules
+.ginput_container.ginput_container_select
+div.gfield
+composer.json
+package.json
+package-lock.json
+.DS_Store

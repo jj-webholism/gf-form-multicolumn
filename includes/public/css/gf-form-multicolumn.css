@@ -55,10 +55,11 @@ li[class*="column-count-1"] > div > ul {
         align-items: flex-start;
         flex-direction: row;
         justify-content: space-between;
+        column-gap: .5em;
     }
 
-    .gfield.gfmc-column.gfmc-field > div.gfield > .ginput_container.ginput_container_select {
-        padding-right: .3em;
+    .gform_wrapper.gravity-theme legend.gfield_label {
+        padding-top: .35em;
     }
 }
 

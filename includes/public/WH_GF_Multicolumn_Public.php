@@ -13,6 +13,7 @@
 namespace WH\GF\Multicolumn\Site;
 
 \GFForms::include_addon_framework();
+// \GFForms::version;
 
 class WH_GF_Multicolumn_Public {
 	private $plugin_name;
@@ -97,7 +98,10 @@ class WH_GF_Multicolumn_Public {
 	public function run_conditional_function( $form ) {
 		if ( rgar( $form, 'gfmcEnableJS' ) &&
 		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
-			$script = 'gfFormsAddConditionalColumns();';
+			$script = (floatval(\GFForms::$version) >= 2.5) ? 'gfFormsAddConditionalColumns(2.5)' :
+				'gfFormsAddConditionalColumns(1.9)';
+			// var_dump(floatval(\GFForms::$version));
+			//$script = 'gfFormsAddConditionalColumns();';
 
 			\GFFormDisplay::add_init_script( $form['id'],
 			                                 'gfmc-conditional-ajax',
