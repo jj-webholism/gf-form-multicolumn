@@ -91,6 +91,10 @@ li[class*="column-count-1"] > div > ul {
 }
 
 /* 2.5 Additional layout options */
+.gfmc-container {
+    grid-column: 1/-1;
+}
+
 .gfmc-container,
 .gfmc-field {
     display: flex;
