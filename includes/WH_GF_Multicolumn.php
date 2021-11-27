@@ -100,30 +100,10 @@ class WH_GF_Multicolumn extends
 	}
 
 	public function scripts() {
-		/*$scripts[] =
-			array (
-				'handle'    => 'gfmc_scripts_public',
-				'src'       => plugins_url( '/public/js/gf-form-multicolumn.min.js',
-				                            __FILE__ ),
-				'version'   => $this->get_version(),
-				'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
-				'in_footer' => true,
-				'callback' => array ( $this, 'dequeue_if_in_admin_area' ),
-				'enqueue'   => array (
-					array (
-						'field_types' => array (
-							'column_start',
-							'column_break',
-							'column_end',
-						),
-					),
-				),
-			);*/
-
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc_scripts_public',
-				'src'       => plugins_url( '/public/js/gf-form-multicolumn.js',
+				'src'       => plugins_url( '/public/js/gf-form-multicolumn.min.js',
 				                            __FILE__ ),
 				'version'   => $this->get_version(),
 				'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
@@ -188,7 +168,7 @@ class WH_GF_Multicolumn extends
 			),
 			array (
 				'handle'  => 'gfmc_styles_v3',
-				'src'     => plugins_url( '/public/css/gf-form-multicolumn.css',
+				'src'     => plugins_url( '/public/css/gf-form-multicolumn.min.css',
 				                          __FILE__ ),
 				'version' => $this->get_version(),
 				'enqueue' => array (

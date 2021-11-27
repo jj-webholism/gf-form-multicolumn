@@ -99,9 +99,7 @@ class WH_GF_Multicolumn_Public {
 		if ( rgar( $form, 'gfmcEnableJS' ) &&
 		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
 			$script = (floatval(\GFForms::$version) >= 2.5) ? 'gfFormsAddConditionalColumns(2.5)' :
-				'gfFormsAddConditionalColumns(1.9)';
-			// var_dump(floatval(\GFForms::$version));
-			//$script = 'gfFormsAddConditionalColumns();';
+				'gfFormsAddConditionalColumns(2.4)';
 
 			\GFFormDisplay::add_init_script( $form['id'],
 			                                 'gfmc-conditional-ajax',

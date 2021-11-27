@@ -8,9 +8,6 @@ function gfFormsAddConditionalColumns(version) {
     the case, then apply display: none to the parent gfmc-column class
     element.
   */
-  
-  console.log('gfFormsAddConditionalColumns');
-  
   let config = {
     attributes: true,
     attributeFilter: ['style'],
@@ -46,8 +43,6 @@ function gfFormsAddConditionalColumns(version) {
       if (mutation.type === 'attributes') {
         var gfmcParentElement = mutation.target.parentElement;
         var gfmcColumnWrapper = gfmcParentElement.parentElement;
-        // console.log ('mutation parent: '); console.log(gfmcParentElement);
-        // console.log ('mutation wrapper: '); console.log(gfmcColumnWrapper);
         
         if (gfmcParentElement.className.search(
             'gfmc-column') !== -1) {
@@ -60,8 +55,6 @@ function gfFormsAddConditionalColumns(version) {
   
   function CheckParentsChildrenDisplayValueAndHideParentIfNecessary(
       GFMCParent, targetDisplayValue) {
-    // console.log (GFMCParent);
-    // console.log (targetDisplayValue);
     if (GFMCParent.firstChild.children.length === 1) {
       targetDisplayValue !== 'none' ?
           ShowParent(GFMCParent) : HideParent(GFMCParent);
@@ -95,7 +88,6 @@ function gfFormsAddConditionalColumns(version) {
   // Base the application of observing the form elements on a page by page basis
   // Determine if pages are present in the form.
   let gravityFormPages = document.getElementsByClassName('gform_page');
-  console.log(version);
   let observer = (version >= 2.5) ? new MutationObserver(callback25) : new MutationObserver(callback);;
   
   if (gravityFormPages.length > 0) {

@@ -13,6 +13,62 @@ li.gfmc-column {
     vertical-align: text-top;
 }
 
+li.gfmc-column100 {
+    width: 100%;
+}
+
+li.gfmc-column50 {
+    width: 50%;
+}
+/* Three Columns */
+li.gfmc-column33:nth-child(odd) {
+    width: 33%;
+}
+/* Three Columns */
+li.gfmc-column33:nth-child(even) {
+    width: 34%;
+}
+/* Four Columns */
+li.gfmc-column25 {
+    width: 25%;
+}
+/* Five Columns */
+li.gfmc-column20 {
+    width: 20%;
+}
+/* Six Columns */
+li.gfmc-column16:nth-child(n) {
+    width: 16.5%;
+}
+/* Six Columns */
+li.gfmc-column16:nth-child(3n) {
+    width: 17%;
+}
+/* Seven Columns */
+li.gfmc-column14:nth-child(n) {
+    width: 14.3%;
+}
+/* Seven Columns */
+li.gfmc-column14:nth-child(6n) {
+     width: 14.2%;
+ }
+/* Eight Columns */
+li.gfmc-column12 {
+    width: 12.5%;
+}
+/* Nine Columns */
+li.gfmc-column11:nth-child(n) {
+    width: 11.1%;
+}
+/* Nine Columns */
+li.gfmc-column11:nth-child(9n) {
+    width: 11.2%;
+}
+/* Ten Columns */
+li.gfmc-column10 {
+    width: 10%;
+}
+
 li.gfmc-column .gform_wrapper {
     width: 100%;
 }

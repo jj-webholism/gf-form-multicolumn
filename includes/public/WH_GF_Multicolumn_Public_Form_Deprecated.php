@@ -16,7 +16,7 @@ namespace WH\GF\Multicolumn\Site;
 class WH_GF_Multicolumn_Public_Form_Deprecated {
 	private $version;
 	private $cssArray;
-	private $rowColumnArray;
+	private $rowColumnArray = [];
 	private $columnCounter;
 	private $rowCounter;
 
@@ -109,7 +109,7 @@ class WH_GF_Multicolumn_Public_Form_Deprecated {
 	}
 
 	function define_output_elements( $field_container, $field ) {
-		if ( IS_ADMIN ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			return $field_container;
 		} // only modify HTML on the front end
 
