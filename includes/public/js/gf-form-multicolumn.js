@@ -16,6 +16,7 @@ function gfFormsAddConditionalColumns(version) {
   };
   
   function callback(mutationList) {
+    console.log ('callback');
     mutationList.forEach(function(mutation) {
       // Check if the modified element has display set to none
       // NOTE, this may need to be modified based on the condition that an
@@ -34,6 +35,7 @@ function gfFormsAddConditionalColumns(version) {
   }
   
   function callback25(mutationList) {
+    console.log ('callback25');
     mutationList.forEach(function(mutation) {
       // Check if the modified element has display set to none
       // NOTE, this may need to be modified based on the condition that an
@@ -88,7 +90,7 @@ function gfFormsAddConditionalColumns(version) {
   // Base the application of observing the form elements on a page by page basis
   // Determine if pages are present in the form.
   let gravityFormPages = document.getElementsByClassName('gform_page');
-  let observer = (version >= 2.5) ? new MutationObserver(callback25) : new MutationObserver(callback);;
+  let observer = (version >= 2.5) ? new MutationObserver(callback25) : new MutationObserver(callback);
   
   if (gravityFormPages.length > 0) {
     for (let i = 0; i < gravityFormPages.length; i++) {

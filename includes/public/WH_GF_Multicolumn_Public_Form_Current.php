@@ -30,9 +30,6 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$this->gfLegacyVersion = isset( $form['markupVersion'] ) ? (int) $form['markupVersion'] : 1;
 
 		$this->structure_form_elements();
-
-		add_action( 'gform_enqueue_scripts',
-		            array ( $this, 'dequeue_v2_style' ) );
 	}
 
 	private function calculate_row_and_column_count( $form ) {
@@ -198,9 +195,5 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		}
 
 		return ( '</div></div>' );
-	}
-
-	public function dequeue_v2_style() {
-		wp_dequeue_style( 'gfmc_styles_v2' );
 	}
 }

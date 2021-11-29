@@ -21,11 +21,12 @@ li.gfmc-column50 {
     width: 50%;
 }
 /* Three Columns */
-li.gfmc-column33:nth-child(odd) {
+li[class*="col-1-of-3"],
+li[class*="col-3-of-3"] {
     width: 33%;
 }
 /* Three Columns */
-li.gfmc-column33:nth-child(even) {
+li[class*="col-2-of-3"] {
     width: 34%;
 }
 /* Four Columns */
@@ -37,19 +38,28 @@ li.gfmc-column20 {
     width: 20%;
 }
 /* Six Columns */
-li.gfmc-column16:nth-child(n) {
+li[class*="col-1-of-6"],
+li[class*="col-3-of-6"],
+li[class*="col-4-of-6"],
+li[class*="col-6-of-6"] {
     width: 16.5%;
 }
 /* Six Columns */
-li.gfmc-column16:nth-child(3n) {
+li[class*="col-2-of-6"],
+li[class*="col-5-of-6"] {
     width: 17%;
 }
 /* Seven Columns */
-li.gfmc-column14:nth-child(n) {
+li[class*="col-1-of-7"],
+li[class*="col-2-of-7"],
+li[class*="col-3-of-7"],
+li[class*="col-5-of-7"],
+li[class*="col-6-of-7"],
+li[class*="col-7-of-7"] {
     width: 14.3%;
 }
 /* Seven Columns */
-li.gfmc-column14:nth-child(6n) {
+li[class*="col-4-of-7"] {
      width: 14.2%;
  }
 /* Eight Columns */
@@ -57,11 +67,18 @@ li.gfmc-column12 {
     width: 12.5%;
 }
 /* Nine Columns */
-li.gfmc-column11:nth-child(n) {
+li[class*="col-1-of-9"],
+li[class*="col-2-of-9"],
+li[class*="col-3-of-9"],
+li[class*="col-4-of-9"],
+li[class*="col-6-of-9"],
+li[class*="col-7-of-9"],
+li[class*="col-8-of-9"],
+li[class*="col-9-of-9"] {
     width: 11.1%;
 }
 /* Nine Columns */
-li.gfmc-column11:nth-child(9n) {
+li[class*="col-5-of-9"] {
     width: 11.2%;
 }
 /* Ten Columns */
@@ -98,6 +115,7 @@ li[class*="column-count-1"] > div > ul {
 .gfmc-container,
 .gfmc-field {
     display: flex;
+    /*display: grid;*/
 }
 
 .gfmc-field {
