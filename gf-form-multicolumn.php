@@ -5,7 +5,7 @@
  * Description: Introduces new form elements into Gravity Forms which allow rows to be split into multiple columns.
  * Author: WebHolism
  * Author URI: http://www.webholism.com
- * Version: 3.2.2
+ * Version: 4.0.0
  * Text Domain: gf-form-multicolumn
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0
@@ -45,7 +45,7 @@ class WH_GF_Multicolumn_Bootstrap {
 	}
 }
 
-//WH_GF_Multicolumn_Bootstrap::load();
+WH_GF_Multicolumn_Bootstrap::load();
 
 /**
  * Activation is responsible for adding form options

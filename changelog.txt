@@ -1,3 +1,12 @@
+= 4.0.0 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Issue due to CSS conflict when displaying default form and form with GFMC elements. (GFMC-58)
+Fix: JavaScript functionality issue for hiding elements because of conditional logic. (GFMC-64)
+
+Alteration: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.
+
 = 3.2.1 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
