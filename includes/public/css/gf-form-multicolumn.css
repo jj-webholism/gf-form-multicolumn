@@ -115,7 +115,6 @@ li[class*="column-count-1"] > div > ul {
 .gfmc-container,
 .gfmc-field {
     display: flex;
-    /*display: grid;*/
 }
 
 .gfmc-field {
