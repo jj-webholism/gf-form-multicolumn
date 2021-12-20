@@ -19,6 +19,9 @@ class WH_GF_Multicolumn_Public {
 	private $version;
 
 	private $form;
+	// Note: it appears that the markupVersion value is available is not
+	// accessible in the constructor of this class.
+	private $gfLegacyVersion;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -45,30 +48,14 @@ class WH_GF_Multicolumn_Public {
 		if ( $form !== false ) {
 			$this->form = $form;
 
-			// Test to see if the form contains any type of multicolumn element
-			if ( $this->get_form_version_by_elements( $form ) === 2 ) {
-				$version2Form = new
-				WH_GF_Multicolumn_Public_Form_Deprecated( $this->version,
-				                                          $form );
-			} elseif ( $this->get_form_version_by_elements( $form ) > 2 ) {
-				$version3Form = new
-				WH_GF_Multicolumn_Public_Form_Current( $this->version, $form );
-			}
+			$gfmcForm = new
+			WH_GF_Multicolumn_Public_Form_Current( $this->version, $form );
 		}
+
+		// Stores form legacy value for ul/li (1), or divs (2) layout.
+		$this->gfLegacyVersion = $form['markupVersion'] ?? 1;
 
 		return $form;
-	}
-
-	private function get_form_version_by_elements( $form ) {
-		foreach ( $form['fields'] as $field ) {
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_break' || $field['type'] === 'column_end' ) {
-				return 3;
-			}
-
-			if ( ( $field['cssClass'] === 'split-start' ) || $field['cssClass'] === 'split-end' ) {
-				return 2;
-			}
-		}
 	}
 
 	public function dequeue_selected_scripts( $form = '', $is_ajax = false ) {
@@ -76,8 +63,7 @@ class WH_GF_Multicolumn_Public {
 			wp_dequeue_script( 'gfmc_scripts_public' );
 		}
 		if ( ! rgar( $form, 'gfmcEnableCSS' ) ) {
-			wp_dequeue_style( 'gfmc_styles_v2' );
-			wp_dequeue_style( 'gfmc_styles_v3' );
+			wp_dequeue_style( 'gfmc_styles' );
 		}
 	}
 
@@ -95,14 +81,29 @@ class WH_GF_Multicolumn_Public {
 	/* This is used for running the conditional logic mutator within AJAX
 	forms. */
 	public function run_conditional_function( $form ) {
-		if ( rgar( $form, 'gfmcEnableJS' ) &&
-		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
-			$script = 'gfFormsAddConditionalColumns();';
+		if ( $this->is_gfmc_javascript_to_be_loaded($form) ) {
+			$script = 'gfFormsAddConditionalColumns(' .
+			          $this->get_gfmc_javascript_version() . ')';
 
 			\GFFormDisplay::add_init_script( $form['id'],
 			                                 'gfmc-conditional-ajax',
 			                                 \GFFormDisplay::ON_PAGE_RENDER,
 			                                 $script );
 		}
+	}
+
+	private function is_gfmc_javascript_to_be_loaded($form) {
+		if ( rgar( $form, 'gfmcEnableJS' ) &&
+		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private function get_gfmc_javascript_version() {
+		return ( floatval( \GFForms::$version ) >= 2.5 && $this->gfLegacyVersion >
+		                                                  1 )
+			? '2.5' : '2.4';
 	}
 }
