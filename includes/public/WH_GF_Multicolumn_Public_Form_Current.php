@@ -14,6 +14,7 @@ namespace WH\GF\Multicolumn\Site;
 
 class WH_GF_Multicolumn_Public_Form_Current {
 	private $gfLegacyVersion;
+	private $pluginDirectory;
 	private $rowColumnArray = [];
 	private $columnCounter;
 	private $rowCounter;
@@ -21,6 +22,20 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	private $instanceCounter;
 
 	public function __construct( $version, $form ) {
+		try {
+			if (file_exists( WP_PLUGIN_DIR .
+			                 '/gravityforms/gravityforms.php' )) {
+				$this->pluginDirectory = WP_PLUGIN_DIR .
+				                         '/gravityforms/gravityforms.php';
+			} else if (file_exists( WPMU_PLUGIN_DIR .
+			                        '/gravityforms/gravityforms.php' )) {
+				$this->pluginDirectory = WPMU_PLUGIN_DIR .
+				                         '/gravityforms/gravityforms.php';
+			}
+		} catch (\Exception $e) {
+
+		}
+
 		$this->instanceCounter          = 0;
 		$this->internalContainerCounter = 0;
 
@@ -55,8 +70,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		$this->rowCounter    = 1;
 		$this->columnCounter = 0;
 
-		$gfInstallation      = get_plugin_data( WP_PLUGIN_DIR .
-		                                        '/gravityforms/gravityforms.php' );
+		$gfInstallation      = get_plugin_data( $this->pluginDirectory );
 		$gravityFormsVersion = $gfInstallation['Version'];
 
 		if ( substr_count( $gravityFormsVersion, '.' ) > 1 ) {
