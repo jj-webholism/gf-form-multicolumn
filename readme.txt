@@ -3,13 +3,13 @@ Contributors: webholism
 Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6
-Tested up to: 5.7
+Tested up to: 5.8.1
 Requires PHP: 7.0
-Stable tag: 3.2.0
+Stable tag: 4.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Introduces new form elements into Gravity Forms which allows simple column creation.
+Introduces new form elements into Gravity Forms which allow for simple column creation.
 
 == Description ==
 
@@ -17,7 +17,9 @@ When activated this plugin allows Gravity Forms elements to be split into column
 
 For each form, in its form settings it is possible to enable and disable the plugin's CSS and JS that are used by the plugin. The CSS file is responsible for the layout of the form, and the JS file is used to remove unwanted spacing generated if using conditional logic to hide form elements. It is advised to keep the CSS enabled at all times, but the JS should only be enabled in the case of hidden elements through the use of conditional logic.
 
-**Note: If updating from version 3.0.3 or earlier. If the columns are not displaying, please visit the Form Settings for each form and check the Enable CSS checkbox.**
+** Note: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.**
+
+**Note: If updating from version 3.0.3 or earlier. If the columns are not displaying as expected, first please visit the Form Settings for each form and check the Enable CSS checkbox.**
 
 **Support this plugin by purchasing [Gravity Forms](https://rocketgenius.pxf.io/multicolumns) now, using the affiliate link.  No extra cost to you, and a big help towards supporting this plugin.**
 
@@ -51,7 +53,7 @@ For each Gravity Form that you had prior to update, please visit the Form Settin
 
 = How many columns can I make? =
 
-We’ve tested 2, 3, 4 and 5 columns. Theoretically you can have more, although this will depend on your theme and the amount of screen space you have.
+We’ve tested 2 up to 10 columns. Theoretically you can have more, although this will depend on your theme and the amount of screen space you have.
 
 = Could you give an example of how I would create 3 columns on a single row? =
 
@@ -87,9 +89,20 @@ Yes.
 
 == Changelog ==
 
-= 3.2.0 =
+= 4.0.0 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Issue due to CSS conflict when displaying default form and form with GFMC elements. (GFMC-58)
+Fix: JavaScript functionality issue for hiding elements because of conditional logic. (GFMC-64)
+
+Alteration: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.
+
+= 3.2.1 =
+
+Fix: Warning: Division by zero message corrected with the use of a check for zero. (GFMC-57)
+
+= 3.2.0 =
 
 Fix: Resolution of issue when conditional logic JS enabled - Uncaught TypeError: e[n].target.parentElement is null On Page with Conditional Logic Elements (GFMC-44)
 Fix: composer.json file included at root of the plugin which was causing issues when installing or updating the plugin with WP-CLI. (GFMC-49)
@@ -174,4 +187,4 @@ CSS fix for IE11. Allows admins to enable and disable the inclusion of CSS for l
 
 == Credits ==
 
-A big thank you goes to K. Woodberry, T. Kaufenberg, J. Wright, D. Donnelly, A. Sharma for identifying issues, and assisting in finding solutions to them. :)
+A big thank you goes to K. Woodberry, T. Kaufenberg, J. Wright, D. Donnelly, A. Sharma, L. Hanbury-Pickett for identifying issues, and assisting in finding solutions to them. :)

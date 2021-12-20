@@ -1,4 +1,4 @@
-function gfFormsAddConditionalColumns() {
+function gfFormsAddConditionalColumns(version) {
   /*
     The callback function will accept a list of elements, and will cycle
     through identifying and acting on those elements that have the gfmc-column
@@ -8,7 +8,6 @@ function gfFormsAddConditionalColumns() {
     the case, then apply display: none to the parent gfmc-column class
     element.
   */
-  
   let config = {
     attributes: true,
     attributeFilter: ['style'],
@@ -17,6 +16,7 @@ function gfFormsAddConditionalColumns() {
   };
   
   function callback(mutationList) {
+    console.log ('callback');
     mutationList.forEach(function(mutation) {
       // Check if the modified element has display set to none
       // NOTE, this may need to be modified based on the condition that an
@@ -29,6 +29,27 @@ function gfFormsAddConditionalColumns() {
           CheckParentsChildrenDisplayValueAndHideParentIfNecessary(
               mutation.target.parentElement.parentElement,
               mutation.target.style.display);
+        }
+      }
+    });
+  }
+  
+  function callback25(mutationList) {
+    console.log ('callback25');
+    mutationList.forEach(function(mutation) {
+      // Check if the modified element has display set to none
+      // NOTE, this may need to be modified based on the condition that an
+      // element goes from none to another status.  Perhaps it is better to
+      // identify changes in elements underneath the className gfmc-column
+      // and assume that the change is a toggle to display.
+      if (mutation.type === 'attributes') {
+        var gfmcParentElement = mutation.target.parentElement;
+        var gfmcColumnWrapper = gfmcParentElement.parentElement;
+        
+        if (gfmcParentElement.className.search(
+            'gfmc-column') !== -1) {
+          CheckParentsChildrenDisplayValueAndHideParentIfNecessary(
+              gfmcColumnWrapper, mutation.target.style.display);
         }
       }
     });
@@ -69,7 +90,8 @@ function gfFormsAddConditionalColumns() {
   // Base the application of observing the form elements on a page by page basis
   // Determine if pages are present in the form.
   let gravityFormPages = document.getElementsByClassName('gform_page');
-  let observer = new MutationObserver(callback);
+  let observer = (version >= 2.5) ? new MutationObserver(callback25) : new MutationObserver(callback);
+  
   if (gravityFormPages.length > 0) {
     for (let i = 0; i < gravityFormPages.length; i++) {
       observer.observe(gravityFormPages[i], config);

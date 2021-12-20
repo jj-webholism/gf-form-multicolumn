@@ -24,7 +24,7 @@ class WH_GF_Multicolumn extends
 	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '3.1.6a';
+	protected $_version = '4.0.0';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
@@ -46,7 +46,7 @@ class WH_GF_Multicolumn extends
 	public function minimum_requirements() {
 		return array (
 			'php' => array (
-				'version' => '5.6',
+				'version' => '7.0',
 			),
 		);
 	}
@@ -154,21 +154,8 @@ class WH_GF_Multicolumn extends
 		// Styles needs to be present in admin also for Gutenberg blocks preview
 		$styles = array (
 			array (
-				'handle'  => 'gfmc_styles_v2',
-				'src'     => plugins_url( '/public/css/gf-form-multicolumn-v2.css',
-				                          __FILE__ ),
-				'version' => $this->get_version(),
-				'enqueue' => array (
-					array (
-						'field_types' => array (
-							'section',
-						),
-					),
-				),
-			),
-			array (
-				'handle'  => 'gfmc_styles_v3',
-				'src'     => plugins_url( '/public/css/gf-form-multicolumn.css',
+				'handle'  => 'gfmc_styles',
+				'src'     => plugins_url( '/public/css/gf-form-multicolumn.min.css',
 				                          __FILE__ ),
 				'version' => $this->get_version(),
 				'enqueue' => array (

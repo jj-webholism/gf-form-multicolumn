@@ -5,7 +5,7 @@
  * Description: Introduces new form elements into Gravity Forms which allow rows to be split into multiple columns.
  * Author: WebHolism
  * Author URI: http://www.webholism.com
- * Version: 3.2.0
+ * Version: 4.0.0
  * Text Domain: gf-form-multicolumn
  * License: GPLv3
  * License URI: http://www.gnu.org/licenses/gpl-3.0
@@ -45,7 +45,7 @@ class WH_GF_Multicolumn_Bootstrap {
 	}
 }
 
-//WH_GF_Multicolumn_Bootstrap::load();
+WH_GF_Multicolumn_Bootstrap::load();
 
 /**
  * Activation is responsible for adding form options
@@ -53,17 +53,17 @@ class WH_GF_Multicolumn_Bootstrap {
  * Uninstall will remove those settings and delete all multicolumn form
  * element entries.
  */
-//register_activation_hook( __FILE__, 'activate' );
-register_uninstall_hook( __FILE__, 'uninstall' );
+register_activation_hook( __FILE__, 'gfmc_activate' );
+register_uninstall_hook( __FILE__, 'gfmc_uninstall' );
 
-/*function activate() {
+function gfmc_activate() {
 	$activator = new WH_GF_Multicolumn_Activator();
 	$activator->activate();
-}*/
+}
 
-function uninstall() {
+function gfmc_uninstall() {
 	// The Gravity Forms AddOns automatically deletes: Form settings, Plugin
 	// settings, Entry meta & Version information
-//	$uninstaller = new WH_GF_Multicolumn_Uninstaller();
-//	$uninstaller->uninstall();
+	$uninstaller = new WH_GF_Multicolumn_Uninstaller();
+	$uninstaller->uninstall();
 }
