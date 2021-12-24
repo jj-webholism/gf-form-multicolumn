@@ -12,42 +12,51 @@
 
 namespace WH\GF\Multicolumn\Site;
 
-class WH_GF_Multicolumn_Public_Form_Current {
-	private $gfLegacyVersion;
-	private $pluginDirectory;
-	private $rowColumnArray = [];
-	private $columnCounter;
-	private $rowCounter;
+use Exception;
 
-	private $instanceCounter;
+class WH_GF_Multicolumn_Public_Form_Current {
+	private int $gfLegacyVersion;
+	private string $pluginDirectory;
+	private array $rowColumnArray = [];
+	private int $columnCounter;
+	private int $rowCounter;
+
+	private int $instanceCounter;
 
 	public function __construct( $version, $form ) {
 		try {
-			if (file_exists( WP_PLUGIN_DIR .
-			                 '/gravityforms/gravityforms.php' )) {
-				$this->pluginDirectory = WP_PLUGIN_DIR .
-				                         '/gravityforms/gravityforms.php';
-			} else if (file_exists( WPMU_PLUGIN_DIR .
-			                        '/gravityforms/gravityforms.php' )) {
-				$this->pluginDirectory = WPMU_PLUGIN_DIR .
-				                         '/gravityforms/gravityforms.php';
-			}
-		} catch (\Exception $e) {
+			$this->pluginDirectory = $this->get_gf_install_path();
 
+			$this->instanceCounter = 0;
+
+			$this->calculate_row_and_column_count( $form );
+
+			// Stores form legacy value for ul/li (1), or divs (2) layout
+			$this->gfLegacyVersion = isset( $form['markupVersion'] ) ? (int) $form['markupVersion'] : 1;
+
+			$this->structure_form_elements();
 		}
-
-		$this->instanceCounter          = 0;
-		$this->internalContainerCounter = 0;
-
-		$this->calculate_row_and_column_count( $form );
-
-		// Stores form legacy value for ul/li (1), or divs (2) layout
-		$this->gfLegacyVersion = isset( $form['markupVersion'] ) ? (int) $form['markupVersion'] : 1;
-
-		$this->structure_form_elements();
+		catch ( Exception $e ) {
+			error_log( $e->getMessage() );
+		}
 	}
 
-	private function calculate_row_and_column_count( $form ) {
+	/**
+	 * @throws Exception
+	 */
+	private function get_gf_install_path(): string {
+
+		if ( file_exists( WP_PLUGIN_DIR .
+		                  '/gravityforms/gravityforms.php' ) ) {
+			return ( WP_PLUGIN_DIR . 'gravityforms/gravityforms.php' );
+		} else if ( file_exists( WPMU_PLUGIN_DIR .
+		                         '/gravityforms/gravityforms.php' ) ) {
+			return ( WPMU_PLUGIN_DIR . '/gravityforms/gravityforms.php' );
+		}
+		throw new Exception( 'Gravity Forms Multiple Columns cannot locate Gravity Forms plugin. Abort processing.' );
+	}
+
+	private function calculate_row_and_column_count( $form ): void {
 		$rowCount    = 1;
 		$columnCount = 0;
 
@@ -64,7 +73,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		}
 	}
 
-	private function structure_form_elements() {
+	private function structure_form_elements(): void {
 		$this->instanceCounter ++;
 
 		$this->rowCounter    = 1;
@@ -98,7 +107,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		}
 	}
 
-	public function define_output_elements( $field_container, $field ) {
+	public function define_output_elements( $field_container, $field ): string {
 		if ( $this->is_gfmc_field_type( $field->type ) ) {
 			// Eliminate division by zero error
 			$divisor = ( $this->rowColumnArray[ $this->rowCounter ] > 0 ) ?
@@ -154,7 +163,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	public function define_output_elements_2_5( $field_container, $field, $form
-	) {
+	): string {
 		if ( $this->is_gfmc_field_type( $field->type ) ) {
 			$columnWidthCount = $this->rowColumnArray[ $this->rowCounter ] * 2;
 			$columnWidth      = is_numeric( ( 100 - $columnWidthCount ) /
@@ -179,7 +188,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		return ( $field_container );
 	}
 
-	private function is_gfmc_field_type( $fieldType ) {
+	private function is_gfmc_field_type( $fieldType ): bool {
 		if ( $fieldType === 'column_start' || $fieldType === 'column_break'
 		     || $fieldType === 'column_end' ) {
 			return true;
@@ -188,7 +197,8 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		return false;
 	}
 
-	private function generate_start_of_row( $columnWidth, $setWidth = false ) {
+	private function generate_start_of_row( $columnWidth, $setWidth = false
+	): string {
 		$this->columnCounter ++;
 
 		return '<div class="gfmc-container"><div class="gfield gfmc-column gfmc-field">';
@@ -196,13 +206,13 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 	private function generate_break_in_row(
 		$columnWidthCount, $columnWidth, $setWidth = false
-	) {
+	): string {
 		$this->columnCounter ++;
 
 		return '</div><div class="gfield gfmc-column gfmc-field">';
 	}
 
-	private function generate_end_of_row() {
+	private function generate_end_of_row(): string {
 		$this->columnCounter = 0;
 		if ( isset( $this->rowColumnArray[ $this->rowCounter + 1 ] ) ) {
 			$this->rowCounter ++;
