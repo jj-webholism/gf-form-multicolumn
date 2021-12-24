@@ -19,23 +19,19 @@ use WH\GF\Multicolumn\Site\WH_GF_Multicolumn_Public;
 
 GFForms::include_addon_framework();
 
-class WH_GF_Multicolumn extends
-	GFAddOn {
-	protected $plugin_name = 'gf-form-multicolumn';
+class WH_GF_Multicolumn extends GFAddOn {
+	protected string $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '4.0.0';
+	protected $_version = '4.0.1';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
 	protected $_full_path = __FILE__;
 
-	private $admin;
-	private $public;
+	private static ?WH_GF_Multicolumn $_instance = null;
 
-	private static $_instance = null;
-
-	public static function get_instance() {
+	public static function get_instance(): ?WH_GF_Multicolumn {
 		if ( self::$_instance == null ) {
 			self::$_instance = new self();
 		}
@@ -43,7 +39,7 @@ class WH_GF_Multicolumn extends
 		return self::$_instance;
 	}
 
-	public function minimum_requirements() {
+	public function minimum_requirements(): array {
 		return array (
 			'php' => array (
 				'version' => '7.0',
@@ -51,13 +47,13 @@ class WH_GF_Multicolumn extends
 		);
 	}
 
-	public function pre_init() {
+	public function pre_init(): void {
 		parent::pre_init();
 
 		add_action( 'plugins_loaded', array ( $this, 'set_locale' ) );
 	}
 
-	public function init() {
+	public function init(): void {
 		parent::init();
 
 		add_filter( 'gform_preview_styles',
@@ -65,12 +61,12 @@ class WH_GF_Multicolumn extends
 		            2 );
 	}
 
-	public function init_admin() {
+	public function init_admin(): void {
 
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
 		if ( is_admin() ) {
-			$this->admin = new WH_GF_Multicolumn_Admin(
+			new WH_GF_Multicolumn_Admin(
 				$this->get_plugin_name(), $this->_version
 			);
 
@@ -78,19 +74,19 @@ class WH_GF_Multicolumn extends
 		}
 	}
 
-	public function init_frontend() {
+	public function init_frontend(): void {
 		parent::init_frontend();
 
-		$this->public = new WH_GF_Multicolumn_Public(
+		$public = new WH_GF_Multicolumn_Public(
 			$this->get_plugin_name(), $this->get_version() );
 
 		add_action( 'gform_enqueue_scripts',
-		            array ( $this->public, 'dequeue_selected_scripts' ), 11 );
+		            array ( $public, 'dequeue_selected_scripts' ), 11 );
 
-		$this->public->display();
+		$public->display();
 	}
 
-	public function init_ajax() {
+	public function init_ajax(): void {
 		parent::init_ajax();
 
 		$ajaxForm = new WH_GF_Multicolumn_Public(
@@ -99,7 +95,7 @@ class WH_GF_Multicolumn extends
 		$ajaxForm->display();
 	}
 
-	public function scripts() {
+	public function scripts(): array {
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc_scripts_public',
@@ -108,7 +104,7 @@ class WH_GF_Multicolumn extends
 				'version'   => $this->get_version(),
 				'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
 				'in_footer' => true,
-				'callback' => array ( $this, 'dequeue_if_in_admin_area' ),
+				'callback'  => array ( $this, 'dequeue_if_in_admin_area' ),
 				'enqueue'   => array (
 					array (
 						'field_types' => array (
@@ -126,13 +122,18 @@ class WH_GF_Multicolumn extends
 				'src'     => plugins_url( '/admin/js/gf-form-multicolumn-admin.min.js',
 				                          __FILE__ ),
 				'version' => $this->get_version(),
-				'strings' => array(
-					'tooManyColumnStarts'  => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.', 'gf-form-multicolumn' ),
-					'tooManyColumnEnds' => __( ' too many Row Ends to Row Starts. Please review and remove the excess Row Ends.', 'gf-form-multicolumn' )
+				'strings' => array (
+					'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.',
+					                             'gf-form-multicolumn' ),
+					'tooManyColumnEnds'   => __( ' too many Row Ends to Row Starts. Please review and remove the excess Row Ends.',
+					                             'gf-form-multicolumn' ),
 				),
 				'enqueue' => array (
 					array (
-						'admin_page' => array ( 'form_editor', 'form_settings' ),
+						'admin_page' => array (
+							'form_editor',
+							'form_settings',
+						),
 					),
 				),
 			);
@@ -140,17 +141,18 @@ class WH_GF_Multicolumn extends
 		return array_merge( parent::scripts(), $scripts );
 	}
 
-	public function dequeue_if_in_admin_area () {
+	public function dequeue_if_in_admin_area(): bool {
 		if ( is_admin() ) {
 			wp_dequeue_script(
 				'gfmc_scripts_public'
 			);
 			wp_deregister_script( 'gfmc_scripts_public' );
 		}
+
 		return true;
 	}
 
-	public function styles() {
+	public function styles(): array {
 		// Styles needs to be present in admin also for Gutenberg blocks preview
 		$styles = array (
 			array (
@@ -173,10 +175,11 @@ class WH_GF_Multicolumn extends
 		return array_merge( parent::styles(), $styles );
 	}
 
-	public function enqueue_admin_preview_scripts( ) {
-		wp_register_style( 'preview_stylesheet',
-		                   plugins_url( '/public/css/gf-form-multicolumn.css',
-		                                __FILE__ ), array (), $this->_version );
+	public function enqueue_admin_preview_scripts(): array {
+		wp_register_style(                          'preview_stylesheet',
+		                                            plugins_url( '/public/css/gf-form-multicolumn.css',
+		                                                         __FILE__ ),
+		                                            array (), $this->_version );
 
 		return array ( 'preview_stylesheet' );
 
@@ -186,11 +189,11 @@ class WH_GF_Multicolumn extends
 		new WH_GF_Multicolumn_i18n();
 	}
 
-	public function get_plugin_name() {
+	public function get_plugin_name(): string {
 		return $this->plugin_name;
 	}
 
-	public function get_version() {
+	public function get_version(): string {
 		return $this->_version;
 	}
 }
