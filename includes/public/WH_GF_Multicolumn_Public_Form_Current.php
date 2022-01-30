@@ -44,11 +44,11 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	/**
 	 * @throws Exception
 	 */
-	private function get_gf_install_path(): string {
+	private function get_gf_install_path() {
 
 		if ( file_exists( WP_PLUGIN_DIR .
 		                  '/gravityforms/gravityforms.php' ) ) {
-			return ( WP_PLUGIN_DIR . 'gravityforms/gravityforms.php' );
+			return ( WP_PLUGIN_DIR . '/gravityforms/gravityforms.php' );
 		} else if ( file_exists( WPMU_PLUGIN_DIR .
 		                         '/gravityforms/gravityforms.php' ) ) {
 			return ( WPMU_PLUGIN_DIR . '/gravityforms/gravityforms.php' );
@@ -56,7 +56,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		throw new Exception( 'Gravity Forms Multiple Columns cannot locate Gravity Forms plugin. Abort processing.' );
 	}
 
-	private function calculate_row_and_column_count( $form ): void {
+	private function calculate_row_and_column_count( $form ) {
 		$rowCount    = 1;
 		$columnCount = 0;
 
@@ -73,7 +73,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		}
 	}
 
-	private function structure_form_elements(): void {
+	private function structure_form_elements() {
 		$this->instanceCounter ++;
 
 		$this->rowCounter    = 1;
@@ -107,11 +107,11 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		}
 	}
 
-	public function define_output_elements( $field_container, $field ): string {
+	public function define_output_elements( $field_container, $field ) {
 		if ( $this->is_gfmc_field_type( $field->type ) ) {
 			// Eliminate division by zero error
-			$divisor = ( $this->rowColumnArray[ $this->rowCounter ] > 0 ) ?
-				$this->rowColumnArray[ $this->rowCounter ] : 1;
+			$divisor = ( isset( $this->rowColumnArray[ $this->rowCounter ] ) > 0
+			) ?	$this->rowColumnArray[ $this->rowCounter ] : 1;
 
 			$widthPercentage = floor( 100 / $divisor );
 
@@ -126,7 +126,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 				              $this->columnCounter . '-of-' . $divisor . $cssClass .
 				              '"';
 
-				$htmlOutput .= ' style="width: '.$widthPercentage.'%"><ul class="flex-wrapper 
+				$htmlOutput .= '><ul class="flex-wrapper 
 				flex-wrapper-' . $divisor
 				               . '">';
 
@@ -142,7 +142,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 				              $this->rowCounter . '-col-' .
 				              $this->columnCounter . '-of-' . $divisor . $cssClass . '"';
 
-				$htmlOutput .= ' style="width: '.$widthPercentage.'%"><ul class="flex-wrapper flex-wrapper-' . $divisor
+				$htmlOutput .= '><ul class="flex-wrapper flex-wrapper-' . $divisor
 				               . '">';
 
 				return $htmlOutput;
@@ -164,7 +164,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	public function define_output_elements_2_5( $field_container, $field, $form
-	): string {
+	) {
 		if ( $this->is_gfmc_field_type( $field->type ) ) {
 			$columnWidthCount = $this->rowColumnArray[ $this->rowCounter ] * 2;
 			$columnWidth      = is_numeric( ( 100 - $columnWidthCount ) /
@@ -189,7 +189,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 		return ( $field_container );
 	}
 
-	private function is_gfmc_field_type( $fieldType ): bool {
+	private function is_gfmc_field_type( $fieldType ) {
 		if ( $fieldType === 'column_start' || $fieldType === 'column_break'
 		     || $fieldType === 'column_end' ) {
 			return true;
@@ -199,7 +199,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	}
 
 	private function generate_start_of_row( $columnWidth, $setWidth = false
-	): string {
+	) {
 		$this->columnCounter ++;
 
 		return '<div class="gfmc-container"><div class="gfield gfmc-column gfmc-field">';
@@ -207,13 +207,13 @@ class WH_GF_Multicolumn_Public_Form_Current {
 
 	private function generate_break_in_row(
 		$columnWidthCount, $columnWidth, $setWidth = false
-	): string {
+	) {
 		$this->columnCounter ++;
 
 		return '</div><div class="gfield gfmc-column gfmc-field">';
 	}
 
-	private function generate_end_of_row(): string {
+	private function generate_end_of_row() {
 		$this->columnCounter = 0;
 		if ( isset( $this->rowColumnArray[ $this->rowCounter + 1 ] ) ) {
 			$this->rowCounter ++;
