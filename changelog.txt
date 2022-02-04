@@ -2,7 +2,8 @@
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
-Fix: Problem with directory reference when using mu-plugins folder. (GFMC-65)
+Fix: Not working if Gravity Forms is Must-Use plugin. (GFMC-65)
+Fix: Undefined offset PHP notice. (GFMC-67)
 
 = 4.0.0 =
 
