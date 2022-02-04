@@ -3,7 +3,7 @@ Contributors: webholism
 Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6
-Tested up to: 5.8.1
+Tested up to: 5.9
 Requires PHP: 7.0
 Stable tag: 4.0.1
 License: GPLv3 or later
@@ -93,11 +93,10 @@ Yes.
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
-Fix: Problem with directory reference when using mu-plugins folder. (GFMC-65)
+Fix: Not working if Gravity Forms is Must-Use plugin. (GFMC-65)
+Fix: Undefined offset PHP notice. (GFMC-67)
 
 = 4.0.0 =
-
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
 
 Fix: Issue due to CSS conflict when displaying default form and form with GFMC elements. (GFMC-58)
 Fix: JavaScript functionality issue for hiding elements because of conditional logic. (GFMC-64)
@@ -186,6 +185,10 @@ Altered details related to the supporting files. No functional alterations. Upgr
 Initial Release. Trumpets sound!
 
 == Upgrade Notice ==
+
+= 4.0.0 =
+
+Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.
 
 = 3.1.0 =
 
