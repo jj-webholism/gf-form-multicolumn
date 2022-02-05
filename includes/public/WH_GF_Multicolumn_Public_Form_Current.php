@@ -15,13 +15,13 @@ namespace WH\GF\Multicolumn\Site;
 use Exception;
 
 class WH_GF_Multicolumn_Public_Form_Current {
-	private int $gfLegacyVersion;
-	private string $pluginDirectory;
-	private array $rowColumnArray = [];
-	private int $columnCounter;
-	private int $rowCounter;
+	private $gfLegacyVersion;
+	private $pluginDirectory;
+	private $rowColumnArray = [];
+	private $columnCounter;
+	private $rowCounter;
 
-	private int $instanceCounter;
+	private $instanceCounter;
 
 	public function __construct( $version, $form ) {
 		try {

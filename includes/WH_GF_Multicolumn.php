@@ -20,18 +20,18 @@ use WH\GF\Multicolumn\Site\WH_GF_Multicolumn_Public;
 GFForms::include_addon_framework();
 
 class WH_GF_Multicolumn extends GFAddOn {
-	protected string $plugin_name = 'gf-form-multicolumn';
+	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '4.0.1';
+	protected $_version = '4.0.2';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
 	protected $_full_path = __FILE__;
 
-	private static ?WH_GF_Multicolumn $_instance = null;
+	private static $_instance = null;
 
-	public static function get_instance(): ?WH_GF_Multicolumn {
+	public static function get_instance() {
 		if ( self::$_instance == null ) {
 			self::$_instance = new self();
 		}
@@ -39,7 +39,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		return self::$_instance;
 	}
 
-	public function minimum_requirements(): array {
+	public function minimum_requirements() {
 		return array (
 			'php' => array (
 				'version' => '7.0',
@@ -47,13 +47,13 @@ class WH_GF_Multicolumn extends GFAddOn {
 		);
 	}
 
-	public function pre_init(): void {
+	public function pre_init() {
 		parent::pre_init();
 
 		add_action( 'plugins_loaded', array ( $this, 'set_locale' ) );
 	}
 
-	public function init(): void {
+	public function init() {
 		parent::init();
 
 		add_filter( 'gform_preview_styles',
@@ -61,7 +61,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		            2 );
 	}
 
-	public function init_admin(): void {
+	public function init_admin() {
 
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
@@ -74,7 +74,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		}
 	}
 
-	public function init_frontend(): void {
+	public function init_frontend() {
 		parent::init_frontend();
 
 		$public = new WH_GF_Multicolumn_Public(
@@ -86,7 +86,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		$public->display();
 	}
 
-	public function init_ajax(): void {
+	public function init_ajax() {
 		parent::init_ajax();
 
 		$ajaxForm = new WH_GF_Multicolumn_Public(
@@ -95,7 +95,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		$ajaxForm->display();
 	}
 
-	public function scripts(): array {
+	public function scripts() {
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc_scripts_public',
@@ -141,7 +141,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		return array_merge( parent::scripts(), $scripts );
 	}
 
-	public function dequeue_if_in_admin_area(): bool {
+	public function dequeue_if_in_admin_area() {
 		if ( is_admin() ) {
 			wp_dequeue_script(
 				'gfmc_scripts_public'
@@ -152,7 +152,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		return true;
 	}
 
-	public function styles(): array {
+	public function styles() {
 		// Styles needs to be present in admin also for Gutenberg blocks preview
 		$styles = array (
 			array (
@@ -175,7 +175,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		return array_merge( parent::styles(), $styles );
 	}
 
-	public function enqueue_admin_preview_scripts(): array {
+	public function enqueue_admin_preview_scripts() {
 		wp_register_style(                          'preview_stylesheet',
 		                                            plugins_url( '/public/css/gf-form-multicolumn.css',
 		                                                         __FILE__ ),
@@ -189,11 +189,11 @@ class WH_GF_Multicolumn extends GFAddOn {
 		new WH_GF_Multicolumn_i18n();
 	}
 
-	public function get_plugin_name(): string {
+	public function get_plugin_name() {
 		return $this->plugin_name;
 	}
 
-	public function get_version(): string {
+	public function get_version() {
 		return $this->_version;
 	}
 }
