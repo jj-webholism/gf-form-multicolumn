@@ -19,7 +19,7 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	private $pluginDirectory;
 	private $rowColumnArray = [];
 	private $columnCounter;
-	private $rowCounter;
+	private $rowCounter = 1;
 
 	private $instanceCounter;
 
@@ -165,24 +165,28 @@ class WH_GF_Multicolumn_Public_Form_Current {
 	public function define_output_elements_2_5( $field_container, $field, $form
 	) {
 		if ( $this->is_gfmc_field_type( $field->type ) ) {
-			$columnWidthCount = $this->rowColumnArray[ $this->rowCounter ] * 2;
-			$columnWidth      = is_numeric( ( 100 - $columnWidthCount ) /
-			                                $this->rowColumnArray[ $this->rowCounter ] )
-				? floor( ( 100 - $columnWidthCount ) /
-				         $this->rowColumnArray[ $this->rowCounter ] ) : 1;
+			if ( isset ($this->rowColumnArray[ $this->rowCounter ])) {
+				$columnWidthCount = $this->rowColumnArray[ $this->rowCounter ] * 2;
+				$columnWidth      = is_numeric( ( 100 - $columnWidthCount ) /
+				                                $this->rowColumnArray[ $this->rowCounter ] )
+					? floor( ( 100 - $columnWidthCount ) /
+					         $this->rowColumnArray[ $this->rowCounter ] ) : 1;
 
-			if ( $field->type === 'column_start' ) {
-				return ( $this->generate_start_of_row( $columnWidth ) );
+				if ( $field->type === 'column_start' ) {
+					return ( $this->generate_start_of_row( $columnWidth ) );
 
+				}
+				if ( $field->type === 'column_break' ) {
+					return ( $this->generate_break_in_row( $columnWidthCount,
+					                                       $columnWidth ) );
+				}
+				if ( $field->type === 'column_end' ) {
+					return ( $this->generate_end_of_row() );
+				}
+			} elseif ( isset ( $this->rowColumnArray[ $this->rowCounter + 1]
+			) ) {
+				$this->rowCounter++;
 			}
-			if ( $field->type === 'column_break' ) {
-				return ( $this->generate_break_in_row( $columnWidthCount,
-				                                       $columnWidth ) );
-			}
-			if ( $field->type === 'column_end' ) {
-				return ( $this->generate_end_of_row() );
-			}
-
 		}
 
 		return ( $field_container );

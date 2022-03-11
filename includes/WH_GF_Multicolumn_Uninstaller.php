@@ -17,7 +17,7 @@ use Exception;
  * @author      jj <jj@webholism.com>
  */
 class WH_GF_Multicolumn_Uninstaller {
-	public function uninstall() {
+	public function gfmc_uninstall() {
 		$forms = \GFAPI::get_forms();
 		foreach ( $forms as $form ) {
 			$form = $this->remove_gfmc_fields( $form );

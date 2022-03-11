@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.6
 Tested up to: 5.9
 Requires PHP: 7.3
-Stable tag: 4.0.2
+Stable tag: 4.0.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,6 +88,12 @@ Yes.
 5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
 
 == Changelog ==
+
+= 4.0.3 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Divide by Zero error. (GFMC-69)
 
 = 4.0.2 =
 
