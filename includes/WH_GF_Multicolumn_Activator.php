@@ -16,7 +16,7 @@ use GFAPI;
  * @author      jj <jj@webholism.com>
  */
 class WH_GF_Multicolumn_Activator {
-	public function activate() {
+	public function gfmc_activate() {
 		$forms = GFAPI::get_forms();
 		foreach ( $forms as $form ) {
 			if ( ! isset ( $form['gfmcEnableCSS'] ) ) {

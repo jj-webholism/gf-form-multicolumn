@@ -8,9 +8,10 @@
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="$USER_HOME$/work/webholism/sites/wordpress_core/v5_8" />
+      <path value="$PROJECT_DIR$/../../.." />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.3">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
 </project>
