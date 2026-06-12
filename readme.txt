@@ -2,10 +2,10 @@
 Contributors: webholism
 Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
-Requires at least: 4.6
-Tested up to: 6.0.1
-Requires PHP: 7.3
-Stable tag: 4.0.4
+Requires at least: 6.0
+Tested up to: 7.0
+Requires PHP: 8.0
+Stable tag: 4.1.0-beta3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,6 +88,25 @@ Yes.
 5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
 
 == Changelog ==
+
+= 4.1.0-beta3 =
+
+Test: Adds Gravity Forms 2.10+ layout handling.
+Test: Adds form ID guard to reduce cross-form field-container interference.
+Fix: Restores row-level grid behaviour for modern Gravity Forms markup.
+
+= 4.0.6 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: Rollback of GFMC-73 issue as this appeared to cause issues with removed layout elements.
+
+= 4.0.5 =
+
+**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+
+Fix: How to remove muticolumn fields from Entries. (GFMC-73)
+Fix: PHP error (Required parameter). (GFMC-76)
 
 = 4.0.4 =
 

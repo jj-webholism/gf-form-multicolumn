@@ -59,7 +59,7 @@ class WH_GF_Multicolumn_Admin {
 	public function admin_pre_render_function( $form ) {
 		if ( wp_script_is( 'gfmc_scripts_admin' ) ) {
 			echo GFCommon::is_form_editor() ? "<script type='text/javascript'>
-        gform.addFilter( 'gform_validation_error_form_editor', 'gfmc_validate_form_columns', 10, 'gfmc_validate_form_columns_" . $form['id'] . "');
+        gform.addFilter( 'gform_validation_error_form_editor', 'gfmc_validate_form_columns', 10, 'gfmc_validate_form_columns_" . absint ($form['id'] ) . "');
         </script>" : null;
 		}
 
