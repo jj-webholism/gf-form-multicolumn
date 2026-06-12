@@ -23,7 +23,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '4.0.4';
+	protected $_version = '4.1.0-beta3';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
@@ -42,7 +42,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 	public function minimum_requirements() {
 		return array (
 			'php' => array (
-				'version' => '7.0',
+				'version' => '8.0',
 			),
 		);
 	}
@@ -51,18 +51,28 @@ class WH_GF_Multicolumn extends GFAddOn {
 		parent::pre_init();
 
 		add_action( 'plugins_loaded', array ( $this, 'set_locale' ) );
+        add_action( 'gform_preview_init', array( $this, 'register_preview_styles_filter' ) );
 	}
+
+    public function register_preview_styles_filter() {
+
+        add_filter(
+            'gform_preview_styles',
+            array( $this, 'enqueue_admin_preview_scripts' ),
+            10,
+            2
+        );
+    }
 
 	public function init() {
 		parent::init();
 
-		add_filter( 'gform_preview_styles',
-		            array ( $this, 'enqueue_admin_preview_scripts' ), 10,
-		            2 );
+//		add_filter( 'gform_preview_styles',
+//		            array ( $this, 'enqueue_admin_preview_scripts' ), 10,
+//		            2 );
 	}
 
 	public function init_admin() {
-
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
 		if ( is_admin() ) {
@@ -175,14 +185,24 @@ class WH_GF_Multicolumn extends GFAddOn {
 		return array_merge( parent::styles(), $styles );
 	}
 
-	public function enqueue_admin_preview_scripts() {
-		wp_register_style(                          'preview_stylesheet',
-		                                            plugins_url( '/public/css/gf-form-multicolumn.css',
-		                                                         __FILE__ ),
-		                                            array (), $this->_version );
+	public function enqueue_admin_preview_scripts( $styles, $form ) {
+        error_log( 'GFMC preview styles hook fired for form ' . rgar( $form, 'id' ) );
+        $url = plugin_dir_url( dirname( __DIR__, 2 ) ) . 'public/css/gf-form-multicolumn.min.css';
+        error_log( 'GFMC preview CSS URL: ' . $url );
 
-		return array ( 'preview_stylesheet' );
+        $handle = 'gfmc_preview_styles';
+        wp_register_style(
+            $handle,
+            plugins_url(
+                'public/css/gf-form-multicolumn.min.css',
+                WP_PLUGIN_DIR . '/gf-form-multicolumn/gf-form-multicolumn.php'
+            ),
+            array(),
+            $this->_version
+        );
+        $styles[] = 'preview_stylesheet';
 
+        return $styles;
 	}
 
 	public function set_locale() {

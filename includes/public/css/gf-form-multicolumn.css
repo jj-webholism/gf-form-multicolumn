@@ -1,3 +1,62 @@
+.gform_wrapper .gfmc-row {
+    display: grid;
+    grid-template-columns: repeat(var(--gfmc-cols, 1), minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
+.gform_wrapper .gfmc-row > .gfmc-col {
+    min-width: 0;
+    width: auto;
+    max-width: 100%;
+}
+
+.gform_wrapper .gfmc-row > .gfmc-col > .gfield {
+    min-width: 0;
+    width: auto;
+    max-width: 100%;
+    margin-bottom: 0;
+    grid-column: auto;
+}
+
+.gform_wrapper .gfmc-row .gfield--width-full,
+.gform_wrapper .gfmc-row .gfield--width-half,
+.gform_wrapper .gfmc-row .gfield--width-third,
+.gform_wrapper .gfmc-row .gfield--width-quarter {
+    width: auto;
+    max-width: 100%;
+    grid-column: auto;
+}
+
+.gform_wrapper .gfmc-row input,
+.gform_wrapper .gfmc-row select,
+.gform_wrapper .gfmc-row textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    .gform_wrapper .gfmc-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    .gform_wrapper .gfmc-row > .gfmc-col,
+    .gform_wrapper .gfmc-row > .gfmc-col > .gfield,
+    .gform_wrapper .gfmc-row .gfield--width-full,
+    .gform_wrapper .gfmc-row .gfield--width-half,
+    .gform_wrapper .gfmc-row .gfield--width-third,
+    .gform_wrapper .gfmc-row .gfield--width-quarter {
+        width: 100%;
+        max-width: 100%;
+        grid-column: auto;
+    }
+}
+
+/******************/
+
 .gform_fields.top_label.form_sublabel_below.description_below {
     clear: both;
 }

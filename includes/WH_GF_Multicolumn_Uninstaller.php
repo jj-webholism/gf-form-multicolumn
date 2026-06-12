@@ -18,15 +18,19 @@ use Exception;
  */
 class WH_GF_Multicolumn_Uninstaller {
 	public function gfmc_uninstall() {
-		$forms = \GFAPI::get_forms();
+        if ( ! class_exists( 'GFAPI' ) ) {
+            return;
+        }
+
+        $forms = \GFAPI::get_forms();
+
 		foreach ( $forms as $form ) {
 			$form = $this->remove_gfmc_fields( $form );
 			try {
 				\GFAPI::update_form( $form );
 			}
 			catch ( Exception $e ) {
-				WH_GF_Multicolumn_Logger::log( 'ERROR',
-				                               'Uninstall exception ' . $e . ' with form: ' .
+				WH_GF_Multicolumn_Logger::error( 'Uninstall exception ' . $e . ' with form: ' .
 				                               serialize( $form ) );
 			}
 		}
