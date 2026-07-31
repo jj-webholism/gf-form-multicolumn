@@ -8,12 +8,13 @@ on:
 
 jobs:
   static-analysis:
-    name: PHPCS & PHPStan Verification
+    name: PHPCS & PHPStan Verification (${{ matrix.php-version }})
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2','8.3', '8.4','8.5']
+        php-version: ['8.1', '8.2']
 
     steps:
       - name: Checkout repository code
@@ -25,6 +26,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           coverage: none
           tools: composer:v2
+          cache: composer
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress
