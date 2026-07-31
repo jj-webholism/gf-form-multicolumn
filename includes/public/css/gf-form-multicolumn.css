@@ -1,112 +1,112 @@
-.gform_wrapper .gfmc-row {
-    display: grid;
-    grid-template-columns: repeat(var(--gfmc-cols, 1), minmax(0, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    grid-column: 1 / -1;
+.gform_wrapper .gfmc-row, .gform_editor.gform_wrapper {
+	display: grid;
+	grid-template-columns: repeat(var(--gfmc-cols, 1), minmax(0, 1fr));
+	gap: 1rem;
+	margin-bottom: 1rem;
+	width: 100%;
+	grid-column: 1 / -1;
 }
 
 .gform_wrapper .gfmc-row > .gfmc-col {
-    min-width: 0;
-    width: auto;
-    max-width: 100%;
+	min-width: 0;
+	width: auto;
+	max-width: 100%;
 }
 
 .gform_wrapper .gfmc-row > .gfmc-col > .gfield {
-    min-width: 0;
-    width: auto;
-    max-width: 100%;
-    margin-bottom: 0;
-    grid-column: auto;
+	min-width: 0;
+	width: auto;
+	max-width: 100%;
+	margin-bottom: 0;
+	grid-column: auto;
 }
 
 .gform_wrapper .gfmc-row .gfield--width-full,
 .gform_wrapper .gfmc-row .gfield--width-half,
 .gform_wrapper .gfmc-row .gfield--width-third,
 .gform_wrapper .gfmc-row .gfield--width-quarter {
-    width: auto;
-    max-width: 100%;
-    grid-column: auto;
+	width: auto;
+	max-width: 100%;
+	grid-column: auto;
 }
 
 .gform_wrapper .gfmc-row input,
 .gform_wrapper .gfmc-row select,
 .gform_wrapper .gfmc-row textarea {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
 }
 
 @media (max-width: 767px) {
-    .gform_wrapper .gfmc-row {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-    .gform_wrapper .gfmc-row > .gfmc-col,
-    .gform_wrapper .gfmc-row > .gfmc-col > .gfield,
-    .gform_wrapper .gfmc-row .gfield--width-full,
-    .gform_wrapper .gfmc-row .gfield--width-half,
-    .gform_wrapper .gfmc-row .gfield--width-third,
-    .gform_wrapper .gfmc-row .gfield--width-quarter {
-        width: 100%;
-        max-width: 100%;
-        grid-column: auto;
-    }
+	.gform_wrapper .gfmc-row {
+		grid-template-columns: 1fr;
+		gap: 0.75rem;
+	}
+	.gform_wrapper .gfmc-row > .gfmc-col,
+	.gform_wrapper .gfmc-row > .gfmc-col > .gfield,
+	.gform_wrapper .gfmc-row .gfield--width-full,
+	.gform_wrapper .gfmc-row .gfield--width-half,
+	.gform_wrapper .gfmc-row .gfield--width-third,
+	.gform_wrapper .gfmc-row .gfield--width-quarter {
+		width: 100%;
+		max-width: 100%;
+		grid-column: auto;
+	}
 }
 
 /******************/
 
 .gform_fields.top_label.form_sublabel_below.description_below {
-    clear: both;
+	clear: both;
 }
 
 li[class*="column-count-"] {
-    vertical-align: top;
-    box-sizing: border-box;
-    display: inline-block;
+	vertical-align: top;
+	box-sizing: border-box;
+	display: inline-block;
 }
 
 li.gfmc-column {
-    display: inline-block;
-    vertical-align: text-top;
+	display: inline-block;
+	vertical-align: text-top;
 }
 
 li.gfmc-column100 {
-    width: 100%;
+	width: 100%;
 }
 
 li.gfmc-column50 {
-    width: 50%;
+	width: 50%;
 }
 /* Three Columns */
 li[class*="col-1-of-3"],
 li[class*="col-3-of-3"] {
-    width: 33%;
+	width: 33%;
 }
 /* Three Columns */
 li[class*="col-2-of-3"] {
-    width: 34%;
+	width: 34%;
 }
 /* Four Columns */
 li.gfmc-column25 {
-    width: 25%;
+	width: 25%;
 }
 /* Five Columns */
 li.gfmc-column20 {
-    width: 20%;
+	width: 20%;
 }
 /* Six Columns */
 li[class*="col-1-of-6"],
 li[class*="col-3-of-6"],
 li[class*="col-4-of-6"],
 li[class*="col-6-of-6"] {
-    width: 16.5%;
+	width: 16.5%;
 }
 /* Six Columns */
 li[class*="col-2-of-6"],
 li[class*="col-5-of-6"] {
-    width: 17%;
+	width: 17%;
 }
 /* Seven Columns */
 li[class*="col-1-of-7"],
@@ -115,15 +115,15 @@ li[class*="col-3-of-7"],
 li[class*="col-5-of-7"],
 li[class*="col-6-of-7"],
 li[class*="col-7-of-7"] {
-    width: 14.3%;
+	width: 14.3%;
 }
 /* Seven Columns */
 li[class*="col-4-of-7"] {
-     width: 14.2%;
- }
+	width: 14.2%;
+}
 /* Eight Columns */
 li.gfmc-column12 {
-    width: 12.5%;
+	width: 12.5%;
 }
 /* Nine Columns */
 li[class*="col-1-of-9"],
@@ -134,83 +134,83 @@ li[class*="col-6-of-9"],
 li[class*="col-7-of-9"],
 li[class*="col-8-of-9"],
 li[class*="col-9-of-9"] {
-    width: 11.1%;
+	width: 11.1%;
 }
 /* Nine Columns */
 li[class*="col-5-of-9"] {
-    width: 11.2%;
+	width: 11.2%;
 }
 /* Ten Columns */
 li.gfmc-column10 {
-    width: 10%;
+	width: 10%;
 }
 
 li.gfmc-column .gform_wrapper {
-    width: 100%;
+	width: 100%;
 }
 
 li.gfmc-column ul {
-    margin-left: 0;
-    padding-left: 0;
+	margin-left: 0;
+	padding-left: 0;
 }
 
 @media screen and (max-width: 600px) {
-    li.gfmc-column {
-        width: 100% !important;
-    }
+	li.gfmc-column {
+		width: 100% !important;
+	}
 }
 
 /* Class to remove left padding and margins from first column item on the form */
 li[class*="column-count-1"] > div > ul {
-    padding-left: 0;
-    margin-left: 0;
+	padding-left: 0;
+	margin-left: 0;
 }
 
 /* 2.5 Additional layout options */
 .gfmc-container {
-    grid-column: 1/-1;
+	grid-column: 1/-1;
 }
 
 .gfmc-container,
 .gfmc-field {
-    display: flex;
+	display: flex;
 }
 
 .gfmc-field {
-    flex-basis: 100%;
-    flex-direction: column;
-    justify-content: space-around;
+	flex-basis: 100%;
+	flex-direction: column;
+	justify-content: space-around;
 }
 
 .gfmc-field div:not(.gchoice) {
-    padding-bottom: .5em;
+	padding-bottom: .5em;
 }
 
 @media screen and (min-width: 641px) {
-    .gfmc-container {
-        align-items: flex-start;
-        flex-direction: row;
-        justify-content: space-between;
-        column-gap: .5em;
-    }
+	.gfmc-container {
+		align-items: flex-start;
+		flex-direction: row;
+		justify-content: space-between;
+		column-gap: .5em;
+	}
 
-    .gform_wrapper.gravity-theme legend.gfield_label {
-        padding-top: .35em;
-    }
+	.gform_wrapper.gravity-theme legend.gfield_label {
+		padding-top: .35em;
+	}
 }
 
 @media screen and (max-width: 640px) {
-    .gfmc-container {
-        align-items: stretch;
-        flex-direction: column;
-        justify-content: space-around;
-    }
+	.gfmc-container {
+		align-items: stretch;
+		flex-direction: column;
+		justify-content: space-around;
+	}
 
-    .gfield.gfmc-column.gfmc-field:last-child div {
-        padding-bottom: 0;
-    }
+	.gfield.gfmc-column.gfmc-field:last-child div {
+		padding-bottom: 0;
+	}
 
-    .gfmc-field {
-        max-width: unset !important;
-    }
+	.gfmc-field {
+		max-width: unset !important;
+	}
 }

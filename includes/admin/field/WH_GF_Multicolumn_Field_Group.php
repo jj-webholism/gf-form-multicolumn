@@ -1,6 +1,6 @@
 <?php
 
-namespace WH\GF\Multicolumn\Admin\Field;
+namespace WH\GF\Multicolumn\admin\field;
 
 if ( ! class_exists( 'GFForms' ) ) {
 	die();
@@ -8,12 +8,11 @@ if ( ! class_exists( 'GFForms' ) ) {
 
 use GF_Field;
 use GF_Fields;
-use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Logger;
+use WH\GF\Multicolumn\WH_GF_Multicolumn_Logger;
 
 define( 'WH_GF_MULTICOLUMN_FIELD_GROUP_TITLE', 'Multiple Columns Fields' );
 
-class WH_GF_Multicolumn_Field_Group extends
-	GF_Field {
+class WH_GF_Multicolumn_Field_Group extends GF_Field {
 	public $type = 'multicolumn_group';
 
 	private $buttonLabel;
@@ -23,7 +22,7 @@ class WH_GF_Multicolumn_Field_Group extends
 	 * Prevent adding a separate button for this field group
 	 */
 	public function get_form_editor_button() {
-		return null;
+		return array();
 	}
 
 	public function add_button( $field_groups ) {
@@ -40,25 +39,28 @@ class WH_GF_Multicolumn_Field_Group extends
 			}
 		}
 
-		$field_groups[] = array (
+		$field_groups[] = array(
 			'name'   => $this->button_group,
-			'label'  => __( $this->buttonLabel, 'gf-form-multicolumn' ),
-			'fields' => array (),
+			'label'  => ! empty( $this->buttonLabel ) ? $this->buttonLabel : __( 'Multi-Column Fields', 'gf-form-multicolumn' ),
+			'fields' => array(),
 		);
 
 		return $field_groups;
 	}
 
 	private function set_button_label() {
-		$this->buttonLabel = __( 'Multiple Columns Fields',
-		                         'gf-form-multicolumn' );
+		$this->buttonLabel = __(
+			'Multiple Columns Fields',
+			'gf-form-multicolumn'
+		);
 	}
 }
 
 try {
 	GF_Fields::register( new WH_GF_Multicolumn_Field_Group() );
-}
-catch ( \Exception $e ) {
-	WH_GF_Multicolumn_Logger::log( 'ERROR',
-	                               'Register WH_GF_Multicolumn_Field_Group exception ' . $e );
+} catch ( \Exception $e ) {
+	WH_GF_Multicolumn_Logger::log(
+		'ERROR',
+		'Register WH_GF_Multicolumn_Field_Group exception ' . $e
+	);
 }

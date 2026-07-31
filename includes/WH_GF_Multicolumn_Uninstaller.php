@@ -1,6 +1,6 @@
 <?php
 
-namespace WH\GF\Multicolumn\Classes;
+namespace WH\GF\Multicolumn;
 
 use Exception;
 
@@ -18,20 +18,21 @@ use Exception;
  */
 class WH_GF_Multicolumn_Uninstaller {
 	public function gfmc_uninstall() {
-        if ( ! class_exists( 'GFAPI' ) ) {
-            return;
-        }
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return;
+		}
 
-        $forms = \GFAPI::get_forms();
+		$forms = \GFAPI::get_forms();
 
 		foreach ( $forms as $form ) {
 			$form = $this->remove_gfmc_fields( $form );
 			try {
 				\GFAPI::update_form( $form );
-			}
-			catch ( Exception $e ) {
-				WH_GF_Multicolumn_Logger::error( 'Uninstall exception ' . $e . ' with form: ' .
-				                               serialize( $form ) );
+			} catch ( Exception $e ) {
+				WH_GF_Multicolumn_Logger::error(
+                // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize -- Required for legacy data logging.
+					'Uninstall exception ' . $e . ' with form: ' . serialize( $form )
+				);
 			}
 		}
 	}
@@ -44,11 +45,15 @@ class WH_GF_Multicolumn_Uninstaller {
 			unset( $form['gfmcEnableJS'] );
 		}
 
-		$fields = array_filter( $form['fields'], function ( $v, $k ) {
-			return ( $this->is_gfmc_form_field( $v ) );
-		}, ARRAY_FILTER_USE_BOTH );
+		$fields = array_filter(
+			$form['fields'],
+			function ( $v, $k ) {
+				return ( $this->is_gfmc_form_field( $v ) );
+			},
+			ARRAY_FILTER_USE_BOTH
+		);
 
-		unset ( $form['fields'] );
+		unset( $form['fields'] );
 		$form['fields'] = $fields;
 
 		return $form;
@@ -56,7 +61,7 @@ class WH_GF_Multicolumn_Uninstaller {
 
 	private function is_gfmc_form_field( $formField ) {
 		if ( ! $this->is_column_field_type( $formField )
-		     && ! $this->is_section_column_field_type( $formField ) ) {
+			&& ! $this->is_section_column_field_type( $formField ) ) {
 			return $formField;
 		}
 
@@ -65,14 +70,14 @@ class WH_GF_Multicolumn_Uninstaller {
 
 	private function is_column_field_type( $formField ) {
 		return $formField['type'] === 'column_start' ||
-		       $formField['type'] === 'column_end' ||
-		       $formField['type'] === 'column_break';
+				$formField['type'] === 'column_end' ||
+				$formField['type'] === 'column_break';
 	}
 
 	private function is_section_column_field_type( $formField ) {
 		if ( $formField['type'] === 'section' ) {
 			if ( $formField['cssClass'] === 'split-start' ||
-			     $formField['cssClass'] === 'split-end' ) {
+				$formField['cssClass'] === 'split-end' ) {
 				return true;
 			}
 		}
