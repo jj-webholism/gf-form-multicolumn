@@ -23,8 +23,8 @@
         }
     },
     "scripts": {
-        "check-cs": "vendor/bin/phpcs --standard=.phpcs.xml.dist",
-        "fix-cs": "vendor/bin/phpcbf --standard=.phpcs.xml.dist",
+        "check-cs": "vendor/bin/phpcs --standard=./.phpcs.xml.dist",
+        "fix-cs": "vendor/bin/phpcbf --standard=./.phpcs.xml.dist",
         "stan": "vendor/bin/phpstan analyse --memory-limit=1G",
         "stan:v2.9": "vendor/bin/phpstan analyse -c phpstan-GF2-9.neon --memory-limit=1G",
         "stan:v2.10": "vendor/bin/phpstan analyse -c phpstan-GF2-10.neon --memory-limit=1G",
