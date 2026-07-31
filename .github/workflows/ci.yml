@@ -2,9 +2,9 @@ name: Code Quality & Static Analysis
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, master, 'v*' ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, master, 'v*' ]
 
 jobs:
   static-analysis:
