@@ -1,139 +1,176 @@
-= 4.1.0-beta3 =
+# Changelog
 
-Test: Adds Gravity Forms 2.10+ layout handling.
-Test: Adds form ID guard to reduce cross-form field-container interference.
-Fix: Restores row-level grid behaviour for modern Gravity Forms markup.
+All notable changes to this project will be documented in this file.
 
-= 4.0.6 =
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+## [4.1.0]
+### Security
+- Added form ID guard to reduce cross-form field-container interference.
 
-Fix: Rollback of GFMC-73 issue as this appeared to cause issues with removed layout elements.
+### Fixed
+- Restored Gravity Forms 2.10+ row-level grid behaviour for modern Gravity Forms markup.
+- Resolved PHP 8+ fatal errors in class signatures in admin files.
 
-= 4.0.5 =
+## [4.0.6]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Fixed
+- Rolled back GFMC-73 issue as this appeared to cause issues with removed layout elements.
 
-Fix: How to remove muticolumn fields from Entries. (GFMC-73)
-Fix: PHP error (Required parameter). (GFMC-76)
+## [4.0.5]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-= 4.0.4 =
+### Fixed
+- Resolved how to remove multicolumn fields from Entries (GFMC-73).
+- Resolved PHP error for required parameter (GFMC-76).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+## [4.0.4]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-Fix: CSS class names on MCGF elements. (GFMC-74)
+### Fixed
+- Corrected CSS class names on MCGF elements (GFMC-74).
 
-= 4.0.3 =
+## [4.0.3]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Fixed
+- Resolved divide by zero error (GFMC-69).
+- Resolved uninstall function conflict (GFMC-60).
 
-Fix: Divide by Zero error. (GFMC-69)
-Fix: Uninstall Function Conflict. (GFMC-60)
+## [4.0.2]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-= 4.0.2 =
+### Fixed
+- Resolved an E_PARSE error on update related to specific PHP versions (GFMC-71).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+## [4.0.1]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-Fix: An error of type E_PARSE on update, related to PHP version site is running on. (GFMC-71)
+### Fixed
+- Resolved issue preventing the plugin from working if Gravity Forms is installed as a Must-Use plugin (GFMC-65).
+- Resolved undefined offset PHP notice (GFMC-67).
 
-= 4.0.1 =
+## [4.0.0]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Removed
+- Removed support for initial column specification using Sections in versions 2 and before. Forms created prior to version 3 will need to be recreated with the current design definitions.
 
-Fix: Not working if Gravity Forms is Must-Use plugin. (GFMC-65)
-Fix: Undefined offset PHP notice. (GFMC-67)
+### Fixed
+- Resolved issue due to CSS conflict when displaying default form and form with GFMC elements (GFMC-58).
+- Resolved JavaScript functionality issue for hiding elements because of conditional logic (GFMC-64).
 
-= 4.0.0 =
+## [3.2.1]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Fixed
+- Corrected a `Warning: Division by zero` message by implementing a check for zero (GFMC-57).
 
-Fix: Issue due to CSS conflict when displaying default form and form with GFMC elements. (GFMC-58)
-Fix: JavaScript functionality issue for hiding elements because of conditional logic. (GFMC-64)
+## [3.2.0]
+### Fixed
+- Resolved `Uncaught TypeError: e[n].target.parentElement is null` when conditional logic JS is enabled (GFMC-44).
+- Removed `composer.json` file from the root of the plugin, which caused issues when installing or updating via WP-CLI (GFMC-49).
+- Restructured layout for Gravity Forms 2.5 to account for div-based markup when legacy mode is disabled (GFMC-55).
 
-Alteration: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.
+## [3.1.5]
+### Fixed
+- Fixed update button in administrator area when Gravity Forms -> Settings is set to On (GFMC-43).
 
-= 3.2.1 =
+## [3.1.4]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Fixed
+- Prevented page count from adding to row count, which caused a division by zero issue (GFMC-30).
 
-Fix: Warning: Division by zero message corrected with the use of a check for zero. (GFMC-57)
+## [3.1.3]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-= 3.2.0 =
+### Fixed
+- Resolved broken layout on multipage forms (GFMC-29).
 
-Fix: Resolution of issue when conditional logic JS enabled - Uncaught TypeError: e[n].target.parentElement is null On Page with Conditional Logic Elements (GFMC-44)
-Fix: composer.json file included at root of the plugin which was causing issues when installing or updating the plugin with WP-CLI. (GFMC-49)
-Fix: Restructure of layout for Gravity Forms 2.5 as this uses divs when not in legacy enabled mode. (GFMC-55)
+## [3.1.2]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-= 3.1.5 =
+### Fixed
+- Resolved problem with form deactivation on save.
 
-Fix: Update button in administrator fixed when Gravity Forms -> Settings in On state (GFMC-43)
+## [3.1.1]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-= 3.1.4 =
+### Fixed
+- Corrected inaccurate set of uploaded files.
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+## [3.1.0]
+> **Note:** If upgrading from a previous version of this plugin, it may be necessary to activate the CSS for each form that uses the multiple column functionality. (See 4.0.6 for instructions).
 
-Fix: Page count added to row count causing division by zero issue (GFMC-30)
+### Added
+- Form settings modified to allow the addition of a `.js` file that hides and shows the wrapper list element around conditional logic elements.
+- Form settings modified to allow the plugin CSS file to be selectively enabled and disabled for inclusion.
+- Included capability to define custom CSS classes for columns.
+- Introduced form validation when saving to reduce unequal row start/end implementations.
+- Introduced functionality to provide appropriate layout on AJAX-generated forms.
 
-= 3.1.3 =
+### Changed
+- Changed terminology: "Column Start" and "Column End" renamed to "Row Start" and "Row End" respectively.
+- Plugin now automatically removes form entries when the plugin is uninstalled.
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Fixed
+- Corrected IE11 CSS styling that was improperly aligning columns.
 
-Fix: Multipage form layout broken (GFMC-29)
+## [3.0.3]
+### Changed
+- Altered CSS to be more specific with class naming implementation.
 
-= 3.1.2 =
+### Fixed
+- Removed `echo` commands causing update issues from within Gutenberg pages.
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+## [3.0.2]
+### Changed
+- Re-release of version 3.0.0 code state.
 
-Fix: Problem with form deactivation on save.
+## [3.0.1]
+### Fixed
+- Restored code to version 2.1.1 state, as version 3.0.0 was generating an Internal Server Error.
 
-= 3.1.1 =
+## [3.0.0]
+### Changed
+- Restructured how columns and rows are added to forms; native UI buttons are now integrated directly into the Gravity Forms interface.
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**
+### Fixed
+- Resolved issues with displaying multiple forms on a single page.
+- Corrected error handling when a form ID is not present in the shortcode.
+- Applied CSS enhancements to properly align list elements.
 
-Fix: Inaccurate set of files uploaded.
+## [2.1.1]
+### Removed
+- Removed code that had been temporarily used for testing multisite functionality in 2.1.0.
 
-= 3.1.0 =
+## [2.1.0]
+> **Note:** The title of this plugin has changed in this version to align with WordPress naming conventions. It may appear in a new location in your plugin list.
 
-**If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses
-the multiple column funcitonality.  This is done by going to the form -> Form Settings -> Check the box beside
- Load CSS Stylesheet -> Click Update Form Settings.**
+### Added
+- Introduced a new CSS style (`li[class*="column-count-1"] > div > ul`) to remove left padding and margin from the first column of each row, ensuring expected element alignment.
 
-Fix: IE11 CSS styling that was not correctly aligning columns.
-Improvement: Form settings modified which allows the addition of a .js file that hides and shows the wrapper list
-element around conditional logic elements.
-Improvement: Form settings modified which allows the plugin CSS file to be enabled and disabled for inclusion.
-Improvement: Included possibility to allow for CSS classes to be defined for columns
-Improvement: Removes form entries added when the plugin is uninstalled.
-Improvement: Form validation when saving to reduce unequal row start to row end implementations.
-Improvement: Introduced functionality that will also provide appropriate layout on AJAX generated forms.
-Alteration: Changed Column Start and Column End to Row Start and Row End respectively.
+### Changed
+- Updated the plugin title to align with WordPress naming recommendations.
 
-= 3.0.3 =
-Fix: Removed echo commands as these were causing update issues from within Gutenberg pages. Improvement: Altered CSS to be more specific with class naming implementation.
+### Fixed
+- Resolved issues preventing the plugin from providing network-only functionality on multisite installations. Admins can now activate or deactivate it on individual network sites.
 
-= 3.0.2 =
-Re-release of version 3.0.0.
+## [2.0.1]
+### Fixed
+- Altered code to accommodate web servers running PHP versions older than 5.4.
 
-= 3.0.1 =
-Restored 2.1.1 as version 3.0.0 appeared to generate an Internal Server Error.
+## [2.0.0]
+### Added
+- Introduced new feature allowing multiple rows. Individual rows will automatically split the columns they contain evenly.
 
-= 3.0.0 =
-Restructured way that columns and rows are added to forms; native UI buttons are now integrated into the Gravity Forms interface. Resolved a few issues that had been highlighted in previous versions: Displaying multiple forms on a single page Correct error handling when form id not present in shortcode * CSS enhancements to align list elements
+## [1.0.1]
+### Changed
+- Altered details related to supporting files. No functional alterations; upgrade optional.
 
-= 2.1.1 =
-This version removed code that had been used for testing multisite in 2.1.0.
-
-= 2.1.0 =
-This version resolves issues around the plugin providing network only functionality on multisite installations. This plugin will now allow admins to activate or deactivate on individual network sites. A new CSS style has been introduced to remove the left padding and left margin from the first column of each row of the created form, to allow for a form to line up elements as expected. This is achieved with the style: li[class*=\"column-count-1\"] > div > ul Please note that with this version, the title of this plugin has changed and will now likely appear in a new location in your plugin list. Do not be alarmed! This is simply a new naming convention to align with Wordpress recommendations.
-
-= 2.0.1 =
-Code altered to account for web servers with PHP version < 5.4.
-
-= 2.0.0 =
-Introduced new feature to allow for multiple rows. Individual rows will split the columns they contain evenly.
-
-= 1.0.1 =
-Altered details related to the supporting files. No functional alterations. Upgrade optional.
-
-= 1.0.0 =
-Initial Release. Trumpets sound!
+## [1.0.0]
+### Added
+- Initial Release.

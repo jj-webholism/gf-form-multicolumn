@@ -1,7 +1,6 @@
-composer.json
 node_modules/
-composer.json
 package.json
 package-lock.json
 .DS_Store
 .idea/
+vendor/

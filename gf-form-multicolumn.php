@@ -18,52 +18,61 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'GFMC_DEBUG' ) ) {
-    define( 'GFMC_DEBUG', false );
+	define( 'GFMC_DEBUG', false );
 }
 
 if ( ! defined( 'GFMC_LOG_LEVEL' ) ) {
-    define( 'GFMC_LOG_LEVEL', 'error' );
+	define( 'GFMC_LOG_LEVEL', 'error' );
 }
 
-require __DIR__ . '/vendor/autoload.php';
+// require __DIR__ . '/vendor/autoload.php';
+
+// Load Composer autoloader
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+}
 
 use WH\GF\Multicolumn;
-use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Activator;
-use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Uninstaller;
+use WH\GF\Multicolumn\WH_GF_Multicolumn_Activator;
+use WH\GF\Multicolumn\WH_GF_Multicolumn_Uninstaller;
 
-add_action( 'gform_loaded', [
-	'WH_GF_Multicolumn_Bootstrap',
-	'load',
-], 5 );
+add_action(
+	'gform_loaded',
+	array(
+		'WH_GF_Multicolumn_Bootstrap',
+		'load',
+	),
+	5
+);
 
 /**
  * Class GFMC_Bootstrap
  */
 class WH_GF_Multicolumn_Bootstrap {
-    /**
-     * Whether the plugin has already been loaded.
-     *
-     * @var bool
-     */
+	/**
+	 * Whether the plugin has already been loaded.
+	 *
+	 * @var bool
+	 */
+	private static $loaded = false;
 
-    private static $loaded = false;
-    /**
-     * Load the plugin.
-     *
-     * @return void
-     */
-    public static function load() {
-        if ( self::$loaded ) {
-            return;
-        }
+	/**
+	 * Load the plugin.
+	 *
+	 * @return void
+	 */
+	public static function load() {
+		if ( self::$loaded ) {
+			return;
+		}
 
-        self::$loaded = true;
+		self::$loaded = true;
 
 		if ( ! method_exists( '\GFForms', 'include_addon_framework' ) ) {
 			return;
 		} else {
-			GFAddOn::register( 'WH\GF\Multicolumn\Classes\WH_GF_Multicolumn' );
-			WH\GF\Multicolumn\Classes\WH_GF_Multicolumn::get_instance();
+			GFAddOn::register( 'WH\GF\Multicolumn\WH_GF_Multicolumn' );
+			WH\GF\Multicolumn\WH_GF_Multicolumn::get_instance();
 		}
 	}
 }
@@ -77,6 +86,28 @@ class WH_GF_Multicolumn_Bootstrap {
 register_activation_hook( __FILE__, 'gfmc_plugin_activate' );
 register_uninstall_hook( __FILE__, 'gfmc_plugin_uninstall' );
 
+
+function gfmc_plugin_activate() {
+	// Manually require the file.
+	if ( ! class_exists( 'WH\GF\Multicolumn\WH_GF_Multicolumn_Activator' ) ) {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/WH_GF_Multicolumn_Activator.php';
+	}
+
+	$activator = new WH_GF_Multicolumn_Activator();
+	$activator->gfmc_activate();
+}
+
+function gfmc_plugin_uninstall() {
+	// Manually require the file.
+	if ( ! class_exists( 'WH\GF\Multicolumn\WH_GF_Multicolumn_Uninstaller' ) ) {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/WH_GF_Multicolumn_Uninstaller.php';
+	}
+
+	$uninstaller = new WH_GF_Multicolumn_Uninstaller();
+	$uninstaller->gfmc_uninstall();
+}
+
+/*
 function gfmc_plugin_activate() {
 	$activator = new WH_GF_Multicolumn_Activator();
 	$activator->gfmc_activate();
@@ -87,4 +118,4 @@ function gfmc_plugin_uninstall() {
 	// settings, Entry meta & Version information
 	$uninstaller = new WH_GF_Multicolumn_Uninstaller();
 	$uninstaller->gfmc_uninstall();
-}
+}*/

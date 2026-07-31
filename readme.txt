@@ -89,11 +89,11 @@ Yes.
 
 == Changelog ==
 
-= 4.1.0-beta3 =
+= 4.1.0 =
 
-Test: Adds Gravity Forms 2.10+ layout handling.
-Test: Adds form ID guard to reduce cross-form field-container interference.
-Fix: Restores row-level grid behaviour for modern Gravity Forms markup.
+**Security:** Form ID guard to reduce cross-form field-container interference.
+**Fixed:** Gravity Forms 2.10+ row-level grid behaviour for modern Gravity Forms markup.
+**Fixed:** Resolved PHP 8+ fatal errors in class signatures in admin files.
 
 = 4.0.6 =
 
