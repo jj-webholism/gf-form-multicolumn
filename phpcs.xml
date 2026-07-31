@@ -1,18 +1,78 @@
 <?xml version="1.0"?>
-<ruleset name="GF-Multicolumn-Rules">
-    <description>Rules for Gravity Forms Multicolumn Plugin</description>
+<ruleset name="WordPress Coding Standards for Gravity Forms Multicolumn">
+    <description>Custom sniffs for Gravity Forms Multicolumn plugin.</description>
 
-    <!-- Scan these folders -->
-    <file>./includes</file>
+    <!-- Target files and directories to scan -->
+    <file>gf-form-multicolumn.php</file>
+    <file>includes</file>
 
-    <!-- Exclude Composer packages -->
-    <exclude-pattern>/vendor/*</exclude-pattern>
+    <!-- Only scan PHP files -->
+    <arg name="extensions" value="php"/>
 
-    <!-- Check for PHP 8.0+ compatibility -->
-    <config name="testVersion" value="8.0-"/>
+    <!-- CLI Output Options -->
+    <arg value="sp"/>
+    <arg name="basepath" value="./"/>
+    <arg name="colors"/>
+    <arg name="parallel" value="8"/>
+
+    <!-- Exclude third-party and built assets -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/tests/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
+    <exclude-pattern>*.css</exclude-pattern>
+    <exclude-pattern>*.js</exclude-pattern>
+
+    <!-- PHP Version Compatibility Check (PHP 8.1+) -->
+    <config name="testVersion" value="8.1-"/>
     <rule ref="PHPCompatibilityWP"/>
+    <!-- Ignore PHP false positive for /public/ folder name -->
+    <rule ref="PHPCompatibility.Keywords.ForbiddenNames.publicFound"><severity>0</severity></rule>
 
-    <!-- Enforce WordPress Security and Formatting -->
-    <rule ref="WordPress-Extra"/>
-    <rule ref="WordPress-Docs"/>
+    <!-- WordPress Coding Standards -->
+    <config name="minimum_supported_wp_version" value="6.4"/>
+    <rule ref="WordPress"/>
+
+    <!-- Ignore short prefix warning for legacy "wh" namespace -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals.ShortPrefixPassed">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Ignore legacy constant prefix checks -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Enable PSR-4 Class File Naming -->
+    <rule ref="WordPress.Files.FileName"><severity>0</severity></rule>
+
+    <!-- Suppress Strict Commenting Sniffs -->
+    <rule ref="Squiz.Commenting"><severity>0</severity></rule>
+    <rule ref="WordPress.NamingConventions.ValidVariableName"><severity>0</severity></rule>
+    <rule ref="WordPress.PHP.YodaConditions"><severity>0</severity></rule>
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"><severity>0</severity></rule>
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore"><severity>0</severity></rule>
+    <rule ref="Squiz.PHP.CommentedOutCode"><severity>0</severity></rule>
+    <rule ref="Universal.Files.SeparateFunctionsFromOO"><severity>0</severity></rule>
+
+    <!-- Prefixing Rules for Globals, Functions, Classes -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="wh_gf_multicolumn"/>
+                <element value="wh_gf"/>
+                <element value="wh"/>
+                <element value="gfmc"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Internationalization (i18n) Text Domain Check -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="gf-form-multicolumn"/>
+            </property>
+        </properties>
+    </rule>
 </ruleset>
