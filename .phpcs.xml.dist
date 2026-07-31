@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards for Gravity Forms Multicolumn">
+    <description>Custom sniffs for Gravity Forms Multicolumn plugin.</description>
+
+    <!-- Target files and directories to scan -->
+    <file>includes/</file>
+    <file>gf-multicolumn.php</file>
+
+    <!-- Exclude vendor, node_modules, tests, and build assets -->
+    <exclude-pattern>/vendor/</exclude-pattern>
+    <exclude-pattern>/node_modules/</exclude-pattern>
+    <exclude-pattern>/tests/</exclude-pattern>
+    <exclude-pattern>/build/</exclude-pattern>
+
+    <!-- Exclude static frontend assets -->
+    <exclude-pattern>*.css</exclude-pattern>
+    <exclude-pattern>*.js</exclude-pattern>
+
+    <!-- CLI Output Options -->
+    <arg value="sp"/>
+    <arg name="basepath" value="./"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/>
+
+    <!-- PHP Version Compatibility Check -->
+    <config name="testVersion" value="8.1-"/>
+    <rule ref="PHPCompatibilityWP"/>
+    <!-- Ignore PHP 5.0 compatibility false positive for /public/ folder name -->
+    <rule ref="PHPCompatibility.Keywords.ForbiddenNames.publicFound"><severity>0</severity></rule>
+
+    <!-- Ignore unused function parameter warnings (common in WordPress hook callbacks) -->
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"><severity>0</severity></rule>
+
+    <!-- WordPress Coding Standards -->
+    <config name="minimum_supported_wp_version" value="6.4"/>
+    <rule ref="WordPress"/>
+
+    <!-- Disable legacy WP filename check (PSR-4 compliance) -->
+    <rule ref="WordPress.Files.FileName"><severity>0</severity></rule>
+
+    <!-- Suppress strict PHPDoc comment sniffs -->
+    <rule ref="Squiz.Commenting.FileComment"><severity>0</severity></rule>
+    <rule ref="Squiz.Commenting.ClassComment"><severity>0</severity></rule>
+    <rule ref="Squiz.Commenting.FunctionComment"><severity>0</severity></rule>
+    <rule ref="Squiz.Commenting.VariableComment"><severity>0</severity></rule>
+    <rule ref="Squiz.Commenting.InlineComment"><severity>0</severity></rule>
+    <rule ref="Squiz.Commenting.BlockComment"><severity>0</severity></rule>
+
+    <!-- Suppress strict code style conventions -->
+    <rule ref="WordPress.NamingConventions.ValidVariableName"><severity>0</severity></rule>
+    <rule ref="WordPress.PHP.YodaConditions"><severity>0</severity></rule>
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore"><severity>0</severity></rule>
+    <rule ref="Squiz.PHP.CommentedOutCode"><severity>0</severity></rule>
+    <rule ref="Universal.Files.SeparateFunctionsFromOO"><severity>0</severity></rule>
+
+    <!-- Prefixing Rules for Globals, Functions, Classes -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+       <properties>
+          <property name="prefixes">
+             <element value="wh_gf_multicolumn"/>
+             <element value="wh_gf"/>
+             <element value="wh"/>
+             <element value="gfmc"/>
+          </property>
+       </properties>
+    </rule>
+
+    <!-- Internationalization (i18n) Text Domain Check -->
+    <rule ref="WordPress.WP.I18n">
+       <properties>
+          <property name="text_domain">
+             <element value="gf-form-multicolumn"/>
+          </property>
+       </properties>
+    </rule>
+</ruleset>
