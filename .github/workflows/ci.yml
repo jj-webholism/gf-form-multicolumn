@@ -8,13 +8,14 @@ on:
 
 jobs:
   static-analysis:
-    name: PHPCS & PHPStan Verification (${{ matrix.php-version }})
+    name: PHPCS & PHPStan (PHP ${{ matrix.php-version }} | GF Stub ${{ matrix.gf-stub-version }})
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         php-version: ['8.1', '8.2']
+        gf-stub-version: ['2.9.*', '2.10.*', 'latest']
 
     steps:
       - name: Checkout repository code
@@ -34,5 +35,11 @@ jobs:
       - name: Run PHP CodeSniffer
         run: composer check-cs
 
+      # Dynamically swap the GF stub version in CI if testing a specific version
+      - name: Require specific GF Stub version
+        if: matrix.gf-stub-version != 'latest'
+        run: composer require --dev "php-stubs/gravity-forms-stubs:${{ matrix.gf-stub-version }}" --update-with-dependencies
+
+      # Run ONLY the main phpstan.neon configuration against the installed stub
       - name: Run PHPStan Analysis
-        run: composer stan:all
+        run: composer stan
