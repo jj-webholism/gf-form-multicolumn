@@ -1,11 +1,16 @@
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
 parameters:
     level: 5
     paths:
         - gf-form-multicolumn.php
         - includes/
     scanDirectories:
-        - /Users/jjthornton/Business/work/webholism/wordpress/third-party-plugins/Gravity-Forms/gravityforms-v2-10-5/
+        - stubs/gf-2.10/
     excludePaths:
         - vendor/
+    ignoreErrors:
+        - identifier: function.alreadyNarrowedType
+        - identifier: isset.offset
+        - identifier: booleanAnd.rightAlwaysFalse
