@@ -7,7 +7,8 @@
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
         "phpunit/phpunit": "^9.6.20",
-        "yoast/phpunit-polyfills": "^3.0"
+        "yoast/phpunit-polyfills": "^3.0",
+        "php-stubs/gravity-forms-stubs": "^2.9"
     },
     "autoload": {
         "psr-4": {

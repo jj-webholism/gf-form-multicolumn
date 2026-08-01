@@ -6,9 +6,8 @@ parameters:
     paths:
         - gf-form-multicolumn.php
         - includes/
-    scanDirectories:
-        - includes/
-        - /Users/jjthornton/Business/work/webholism/wordpress/third-party-plugins/Gravity-Forms/gravityforms-v3-0-0/
+    scanFiles:
+        - vendor/php-stubs/gravity-forms-stubs/gravity-forms-stubs.php
     excludePaths:
         - vendor/
     ignoreErrors:
