@@ -1,8 +1,8 @@
 <?php
 
-namespace WH\GF\Multicolumn;
+namespace WH\GF\Multicolumn\Classes;
 
-class WH_GF_Multicolumn_I18n {
+class WH_GF_Multicolumn_i18n {
 	public function __construct() {
 		$this->load_plugin_textdomain();
 	}

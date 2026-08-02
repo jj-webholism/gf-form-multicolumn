@@ -1,6 +1,6 @@
 <?php
 
-namespace WH\GF\Multicolumn\admin\field;
+namespace WH\GF\Multicolumn\Admin\Field;
 
 if ( ! class_exists( 'GFForms' ) ) {
 	die();
@@ -8,17 +8,16 @@ if ( ! class_exists( 'GFForms' ) ) {
 
 use GF_Field;
 use GF_Fields;
-use WH\GF\Multicolumn\WH_GF_Multicolumn_Logger;
+use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Logger;
 
-class WH_GF_Multicolumn_Field_Column_Separator extends GF_Field {
+class WH_GF_Multicolumn_Field_Column_Separator extends
+	GF_Field {
 	public $type = 'column_break';
 
 	public function get_form_editor_inline_script_on_page_render() {
-		$script = sprintf(
-			"function SetDefaultValues_%s(field) {field.label = '%s';}",
-			$this->type,
-			$this->get_form_editor_field_title()
-		) . PHP_EOL;
+		$script = sprintf( "function SetDefaultValues_%s(field) {field.label = '%s';}",
+		                   $this->type,
+		                   $this->get_form_editor_field_title() ) . PHP_EOL;
 
 		return $script;
 	}
@@ -28,7 +27,7 @@ class WH_GF_Multicolumn_Field_Column_Separator extends GF_Field {
 	}
 
 	public function get_form_editor_field_settings() {
-		return array(
+		return array (
 			'css_class_setting',
 		);
 	}
@@ -37,12 +36,12 @@ class WH_GF_Multicolumn_Field_Column_Separator extends GF_Field {
 		return false;
 	}
 
-	public function get_field_label( $force_frontend_label = true, $value = '' ) {
+	public function get_field_label( $force_frontend_label, $value ) {
 		return $this->get_form_editor_field_title();
 	}
 
 	public function get_form_editor_button() {
-		return array(
+		return array (
 			'group' => GF_MULTICOLUMN_FIELD_GROUP_TITLE,
 			'text'  => $this->get_form_editor_field_title(),
 		);
@@ -51,9 +50,8 @@ class WH_GF_Multicolumn_Field_Column_Separator extends GF_Field {
 
 try {
 	GF_Fields::register( new WH_GF_Multicolumn_Field_Column_Separator() );
-} catch ( \Exception $e ) {
-	WH_GF_Multicolumn_Logger::log(
-		'ERROR',
-		'Register WH_GF_Multicolumn_Field_Column_Separator exception ' . $e
-	);
+}
+catch ( \Exception $e ) {
+	WH_GF_Multicolumn_Logger::log( 'ERROR',
+	                               'Register WH_GF_Multicolumn_Field_Column_Separator exception ' . $e );
 }
