@@ -36,7 +36,7 @@ class WH_GF_Multicolumn_Field_Column_End extends
 		return false;
 	}
 
-	public function get_field_label( $force_frontend_label, $value ) {
+    public function get_field_label( $force_frontend_label = true, $value = '' ) {
 		return $this->get_form_editor_field_title();
 	}
 
