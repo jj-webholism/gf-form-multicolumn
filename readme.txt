@@ -2,10 +2,10 @@
 Contributors: webholism
 Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
-Requires at least: 6.0
-Tested up to: 7.0
-Requires PHP: 8.0
-Stable tag: 4.1.0-beta3
+Requires at least: 4.6
+Tested up to: 6.7
+Requires PHP: 7.3
+Stable tag: 4.0.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -89,11 +89,9 @@ Yes.
 
 == Changelog ==
 
-= 4.1.0 =
+= 4.0.7 =
 
-**Security:** Form ID guard to reduce cross-form field-container interference.
-**Fixed:** Gravity Forms 2.10+ row-level grid behaviour for modern Gravity Forms markup.
-**Fixed:** Resolved PHP 8+ fatal errors in class signatures in admin files.
+Fix: Version comparison for Gravity Forms 2.10+ used float casting which incorrectly parsed "2.10.1" as 2.1, causing the plugin to fall back to the legacy ul/li markup even on sites using the modern div-based layout. Replaced with PHP's version_compare() in both the field container filter selection and the conditional logic JavaScript version selector.
 
 = 4.0.6 =
 

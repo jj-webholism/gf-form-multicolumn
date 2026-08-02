@@ -6,3 +6,5 @@ package-lock.json
 vendor/
 stubs/
 .phpunit.result.cache
+playwright-report/
+test-results/

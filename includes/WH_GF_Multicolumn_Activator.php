@@ -1,6 +1,6 @@
 <?php
 
-namespace WH\GF\Multicolumn;
+namespace WH\GF\Multicolumn\Classes;
 
 use GFAPI;
 
@@ -16,18 +16,15 @@ use GFAPI;
  * @author      jj <jj@webholism.com>
  */
 class WH_GF_Multicolumn_Activator {
-	public function gfmc_activate(): void {
-		if ( ! class_exists( 'GFAPI' ) ) {
-			return;
-		}
-
-		$forms = \GFAPI::get_forms();
-
+	public function gfmc_activate() {
+		$forms = GFAPI::get_forms();
 		foreach ( $forms as $form ) {
-			if ( ! isset( $form['gfmcEnableCSS'] ) ) {
+			if ( ! isset ( $form['gfmcEnableCSS'] ) ) {
+				// Add the gfmc_enable_css option and set it to 1
 				$form['gfmcEnableCSS'] = true;
 			}
-			if ( ! isset( $form['gfmcEnableJS'] ) ) {
+			if ( ! isset ( $form['gfmcEnableJS'] ) ) {
+				// Add the gfmc_enable_js option and set it to 1
 				$form['gfmcEnableJS'] = false;
 			}
 			GFAPI::update_form( $form );

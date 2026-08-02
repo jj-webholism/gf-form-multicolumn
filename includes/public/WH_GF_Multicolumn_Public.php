@@ -10,34 +10,46 @@
  * @subpackage gf-form-multicolumn/public
  */
 
-namespace WH\GF\Multicolumn\public;
+namespace WH\GF\Multicolumn\Site;
 
 \GFForms::include_addon_framework();
 
-// phpcs:ignore PHPCompatibility.Keywords.ForbiddenNames.publicFound
 class WH_GF_Multicolumn_Public {
+	private $plugin_name;
+	private $version;
+
+	private $form;
 	// Note: it appears that the markupVersion value is available is not
 	// accessible in the constructor of this class.
 	private $gfLegacyVersion;
 
-	public function __construct() {
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @param   string  $plugin_name  The name of the plugin.
+	 * @param   string  $version      The version of this plugin.
+	 *
+	 * @since    1.0.0
+	 */
+	public function __construct( $plugin_name, $version ) {
+		$this->plugin_name = $plugin_name;
+		$this->version     = $version;
 	}
 
 	public function display() {
-		add_filter( 'gform_pre_render', array( $this, 'pre_render_form' ), 10, 1 );
+		add_filter( 'gform_pre_render', [ $this, 'pre_render_form' ], 10, 4 );
 
 		// To run the conditional logic javascript mutator on AJAX form load.
-		add_action(
-			'gform_register_init_scripts',
-			array( $this, 'run_conditional_function' ),
-			10,
-			1
-		);
+		add_action( 'gform_register_init_scripts',
+		            array ( $this, 'run_conditional_function' ), 10, 2 );
 	}
 
 	public function pre_render_form( $form ) {
 		if ( $form !== false ) {
-			$gfmcForm = new WH_GF_Multicolumn_Public_Form_Current( $form );
+			$this->form = $form;
+
+			$gfmcForm = new
+			WH_GF_Multicolumn_Public_Form_Current( $this->version, $form );
 		}
 
 		// Stores form legacy value for ul/li (1), or divs (2) layout.
@@ -55,44 +67,10 @@ class WH_GF_Multicolumn_Public {
 		}
 	}
 
-	public function run_conditional_function( $form ) {
-		if ( $this->is_gfmc_javascript_to_be_loaded( $form ) ) {
-			$form_id = absint( rgar( $form, 'id' ) );
-
-			$script = sprintf(
-				'gfFormsAddConditionalColumns(%s, %d);',
-				$this->get_gfmc_javascript_version(),
-				$form_id
-			);
-
-			\GFFormDisplay::add_init_script(
-				$form_id,
-				'gfmc-conditional-ajax',
-				\GFFormDisplay::ON_PAGE_RENDER,
-				$script
-			);
-		}
-	}
-
-	/*
-	This is used for running the conditional logic mutator within AJAX
-	forms. */
-
-	private function is_gfmc_javascript_to_be_loaded( $form ) {
-		if ( rgar( $form, 'gfmcEnableJS' ) &&
-			( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private function is_gf_form_multicolumn_element_on_page( $form ) {
 		foreach ( $form['fields'] as $field ) {
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' || ( $field['type'] === 'section' && ( strpos(
-				$field['cssClass'],
-				'split-start'
-			) !== false ) ) ) {
+			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' || ( $field['type'] === 'section' && ( strpos( $field['cssClass'],
+			                                                                                                                         'split-start' ) !== false ) ) ) {
 				return true;
 			}
 		}
@@ -100,9 +78,31 @@ class WH_GF_Multicolumn_Public {
 		return false;
 	}
 
+	/* This is used for running the conditional logic mutator within AJAX
+	forms. */
+	public function run_conditional_function( $form ) {
+		if ( $this->is_gfmc_javascript_to_be_loaded($form) ) {
+			$script = 'gfFormsAddConditionalColumns(' .
+			          $this->get_gfmc_javascript_version() . ')';
+
+			\GFFormDisplay::add_init_script( $form['id'],
+			                                 'gfmc-conditional-ajax',
+			                                 \GFFormDisplay::ON_PAGE_RENDER,
+			                                 $script );
+		}
+	}
+
+	private function is_gfmc_javascript_to_be_loaded($form) {
+		if ( rgar( $form, 'gfmcEnableJS' ) &&
+		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private function get_gfmc_javascript_version() {
-		return ( floatval( \GFForms::$version ) >= 2.5 && $this->gfLegacyVersion >
-			1 )
+		return ( version_compare( \GFForms::$version, '2.5', '>=' ) && $this->gfLegacyVersion > 1 )
 			? '2.5' : '2.4';
 	}
 }
