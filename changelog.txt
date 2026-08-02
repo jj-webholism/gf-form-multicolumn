@@ -1,3 +1,11 @@
+= 4.0.8 =
+
+Fix: Alteration to Gravity Forms 3.0.0 results in an error when going to the wp-login.
+
+= 4.0.7 =
+
+Fix: Version comparison for Gravity Forms 2.10+ used float casting which incorrectly parsed "2.10.1" as 2.1, causing the plugin to fall back to the legacy ul/li markup even on sites using the modern div-based layout. Replaced with PHP's version_compare() in both the field container filter selection and the conditional logic JavaScript version selector.
+
 = 4.0.6 =
 
 **If upgrading from a previous version of this plugin it may be necessary to activate the CSS for each form that uses the multiple column functionality. This is done by going to the form -> Form Settings -> Check the box beside Load CSS Stylesheet -> Click Update Form Settings.**

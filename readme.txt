@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.6
 Tested up to: 6.7
 Requires PHP: 7.3
-Stable tag: 4.0.7
+Stable tag: 4.0.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,6 +88,10 @@ Yes.
 5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
 
 == Changelog ==
+
+= 4.0.8 =
+
+Fix: Alteration to Gravity Forms 3.0.0 results in an error when going to the wp-login.
 
 = 4.0.7 =
 
