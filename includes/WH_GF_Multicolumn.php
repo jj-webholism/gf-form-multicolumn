@@ -23,7 +23,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 	protected $plugin_name = 'gf-form-multicolumn';
 
 	// Gravity Forms Class Variables
-	protected $_version = '4.0.6';
+	protected $_version = '4.0.8';
 	protected $_min_gravityforms_version = '1.9';
 	protected $_slug = 'gfmc';
 	protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
