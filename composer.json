@@ -11,9 +11,9 @@
         "php-stubs/gravity-forms-stubs": "^2.9"
     },
     "autoload": {
-        "psr-4": {
-            "WH\\GF\\Multicolumn\\": "includes/"
-        }
+        "classmap": [
+            "includes/"
+        ]
     },
     "config": {
         "platform": {
