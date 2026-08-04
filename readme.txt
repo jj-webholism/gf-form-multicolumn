@@ -1,9 +1,9 @@
 === Multiple Columns for Gravity Forms ===
 Contributors: webholism
-Tags: gravityforms, gravity forms, multiple columns, multicolumn, multicolumns, multi column, multi columns, responsive, gravity forms multi column, gravity forms multicolumn, multi row, multirow, multiple rows
+Tags: gravity forms, multi column, responsive, layout, multicolumn
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6
-Tested up to: 6.7
+Tested up to: 7.0
 Requires PHP: 7.3
 Stable tag: 4.0.8
 License: GPLv3 or later
