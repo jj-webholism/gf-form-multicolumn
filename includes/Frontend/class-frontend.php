@@ -10,11 +10,13 @@
  * @subpackage gf-form-multicolumn/public
  */
 
-namespace WH\GF\Multicolumn\Site;
+namespace WH\GF\Multicolumn\Frontend;
 
-\GFForms::include_addon_framework();
+if ( class_exists( '\GFForms' ) ) {
+    \GFForms::include_addon_framework();
+}
 
-class WH_GF_Multicolumn_Public {
+class Frontend {
 	private $plugin_name;
 	private $version;
 

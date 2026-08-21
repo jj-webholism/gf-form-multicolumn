@@ -10,8 +10,8 @@ class ActivationTest extends WP_UnitTestCase {
      */
     public function test_main_plugin_file_is_loaded(): void {
         $this->assertTrue( defined( 'ABSPATH' ) );
-        // Verify main plugin constant or main class existence
-        $this->assertTrue( class_exists( 'WH\GF\Multicolumn\admin\WH_GF_Multicolumn_Admin' ) );
+        // If checking for class existence, update to the new Plugin class:
+        $this->assertTrue( class_exists( '\WH\GF\Multicolumn\Plugin' ) );
     }
 
     /**

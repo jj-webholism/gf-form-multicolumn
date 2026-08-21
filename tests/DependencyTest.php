@@ -24,7 +24,7 @@ class DependencyTest extends WP_UnitTestCase {
      * Test that main classes or functions load safely without fatal errors.
      */
     public function test_plugin_classes_are_safe_to_instantiate(): void {
-        $admin = new \WH\GF\Multicolumn\admin\WH_GF_Multicolumn_Admin();
+        $admin = new \WH\GF\Multicolumn\Admin\Admin( 'gf-form-multicolumn', '4.0.9' );
         $this->assertNotNull( $admin );
     }
 }

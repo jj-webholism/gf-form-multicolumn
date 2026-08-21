@@ -2,18 +2,18 @@
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-if ( ! class_exists( 'GFForms' ) ) {
-	die();
-}
-
 use GF_Field;
 use GF_Fields;
-use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Logger;
+use WH\GF\Multicolumn\Logger;
+
+if ( ! class_exists( '\GF_Field' ) ) {
+    return;
+}
 
 define( 'WH_GF_MULTICOLUMN_FIELD_GROUP_TITLE', 'Multiple Columns Fields' );
 
-class WH_GF_Multicolumn_Field_Group extends
-	GF_Field {
+
+class Group extends GF_Field {
 	public $type = 'multicolumn_group';
 
 	private $buttonLabel;

@@ -10,11 +10,11 @@
  * @subpackage gf-form-multicolumn/includes/public
  */
 
-namespace WH\GF\Multicolumn\Site;
+namespace WH\GF\Multicolumn\Frontend;
 
 use Exception;
 
-class WH_GF_Multicolumn_Public_Form_Current {
+class Form_Current {
 	private $gfLegacyVersion;
 	private $pluginDirectory;
 	private $rowColumnArray = [];

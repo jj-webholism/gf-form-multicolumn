@@ -22,7 +22,7 @@ use WH\GF\Multicolumn\Admin\Field\WH_GF_Multicolumn_Field_Group;
 
 define( 'GF_MULTICOLUMN_FIELD_GROUP_TITLE', 'multiple_columns_fields' );
 
-class WH_GF_Multicolumn_Admin {
+class Admin {
 	private $plugin_name;
 
 	private $version;
@@ -66,13 +66,14 @@ class WH_GF_Multicolumn_Admin {
 		return $form;
 	}
 
-	private function add_fields() {
-		$gfmcFieldGroup           = new WH_GF_Multicolumn_Field_Group();
-		$gfmcFieldColumnStart     = new WH_GF_Multicolumn_Field_Column_Start();
-		$gfmcFieldColumnEnd       = new WH_GF_Multicolumn_Field_Column_End();
-		$gfmcFieldColumnSeparator = new
-		WH_GF_Multicolumn_Field_Column_Separator();
-	}
+    private function add_fields() {
+        if ( class_exists( '\GF_Fields' ) ) {
+            $gfmcFieldGroup           = new Group();
+            $gfmcFieldColumnStart     = new Column_Start();
+            $gfmcFieldColumnEnd       = new Column_End();
+            $gfmcFieldColumnSeparator = new Column_Separator();
+        }
+    }
 
 	public function display_gfmc_form_settings( $settings, $form ) {
 		$enable_gfmc_css_checked = isset ( $form['gfmcEnableCSS'] ) && $form['gfmcEnableCSS'] === true ?

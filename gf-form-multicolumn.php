@@ -38,8 +38,8 @@ class WH_GF_Multicolumn_Bootstrap {
         if ( ! method_exists( '\GFForms', 'include_addon_framework' ) ) {
             return;
         } else {
-            GFAddOn::register( 'WH\GF\Multicolumn\Classes\WH_GF_Multicolumn' );
-            WH\GF\Multicolumn\Classes\WH_GF_Multicolumn::get_instance();
+            GFAddOn::register( 'WH\GF\Multicolumn\Plugin' );
+            WH\GF\Multicolumn\Plugin::get_instance();
         }
     }
 }

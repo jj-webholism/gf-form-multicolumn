@@ -2,16 +2,15 @@
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-if ( ! class_exists( 'GFForms' ) ) {
-	die();
-}
-
 use GF_Field;
 use GF_Fields;
-use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Logger;
+use WH\GF\Multicolumn\Logger;
 
-class WH_GF_Multicolumn_Field_Column_Separator extends
-	GF_Field {
+if ( ! class_exists( '\GF_Field' ) ) {
+    return;
+}
+
+class Column_Separator extends GF_Field {
 	public $type = 'column_break';
 
 	public function get_form_editor_inline_script_on_page_render() {

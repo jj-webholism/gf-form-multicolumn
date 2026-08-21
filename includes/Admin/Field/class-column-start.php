@@ -2,17 +2,16 @@
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-if ( ! class_exists( 'GFForms' ) ) {
-	die();
-}
-
 use GF_Field;
 use GF_Fields;
-use WH\GF\Multicolumn\Classes\WH_GF_Multicolumn_Logger;
+use WH\GF\Multicolumn\Logger;
 
-class WH_GF_Multicolumn_Field_Column_Start extends
-	GF_Field {
-	public $type = 'column_start';
+if ( ! class_exists( '\GF_Field' ) ) {
+    return;
+}
+
+class Column_Start extends GF_Field {
+    public $type = 'column_start';
 
 	public function get_form_editor_inline_script_on_page_render() {
 		$script = sprintf( "function SetDefaultValues_%s(field) {field.label = '%s';}",
