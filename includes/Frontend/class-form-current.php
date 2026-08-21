@@ -91,8 +91,18 @@ class Form_Current {
 	 *
 	 * @return string Processed HTML string.
 	 */
-	public function get_form() {
+	/*
+		public function get_form() {
 		return $this->structure_form_elements();
+	}*/
+	/**
+	 * Returns the processed form HTML.
+	 *
+	 * @param string $wrapper_type Element wrapper tag ('div' or 'li'). Default 'div'.
+	 * @return string Processed HTML.
+	 */
+	public function get_form( $wrapper_type = 'div' ) {
+		return $this->structure_form_elements( $wrapper_type );
 	}
 
 	/**
@@ -124,7 +134,8 @@ class Form_Current {
 	 *
 	 * @return string Modified form HTML string.
 	 */
-	private function structure_form_elements() {
+	/*
+		private function structure_form_elements() {
 		$this->row_counter    = 0;
 		$this->column_counter = 0;
 
@@ -135,7 +146,62 @@ class Form_Current {
 		}
 
 		return $this->define_output_elements_2_5();
+	}*/
+
+	/**
+	 * Formats multi-column layout wrapper elements across all Gravity Forms themes and versions.
+	 *
+	 * @param string $wrapper_type Target wrapper tag ('div' or 'li'). Default 'div'.
+	 * @return string Modified form HTML output string.
+	 */
+	private function structure_form_elements( $wrapper_type = 'div' ) {
+		if ( ! isset( $this->form['fields'] ) || ! is_array( $this->form['fields'] ) ) {
+			return $this->form_string;
+		}
+
+		$html_output          = $this->form_string;
+		$this->row_counter    = 0;
+		$this->column_counter = 0;
+
+		// Select wrapper tag dynamically based on parameter
+		$tag_name = 'li' === strtolower( $wrapper_type ) ? 'li' : 'div';
+
+		foreach ( $this->form['fields'] as $form_field ) {
+            // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$css_class  = isset( $form_field->cssClass ) ? $form_field->cssClass : '';
+			$field_type = isset( $form_field->type ) ? $form_field->type : '';
+
+			if ( ! $this->is_gfmc_field_type( $field_type ) ) {
+				continue;
+			}
+
+			$field_id = "field_{$this->instance_counter}_{$form_field->id}";
+
+			$class_map = array(
+				'column_start' => 'gfmc_row_start',
+				'column_break' => 'gfmc_column_break',
+				'column_end'   => 'gfmc_row_end',
+			);
+
+			$target_class = esc_attr( trim( $class_map[ $field_type ] . ' ' . $css_class ) );
+
+			/**
+			 * Matches any existing <li> or <div> wrapper for this field ID
+			 * and replaces it with the requested $tag_name ('div' or 'li').
+			 */
+			$pattern     = '/<(?:li|div)[^>]*id=[\'"]' . preg_quote( $field_id, '/' ) . '[\'"][^>]*>(.*?)<\/(?:li|div)>/s';
+			$replacement = "<{$tag_name} id=\"{$field_id}\" class=\"gfield {$target_class}\"></{$tag_name}>";
+
+			$html_output = preg_replace( $pattern, $replacement, $html_output );
+
+			if ( 'column_end' === $field_type ) {
+				++$this->row_counter;
+			}
+		}
+
+		return $html_output;
 	}
+
 
 	/**
 	 * Defines output structure for legacy Gravity Forms versions (< 2.5).
