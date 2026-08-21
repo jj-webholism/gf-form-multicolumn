@@ -1,110 +1,75 @@
 <?php
-
 /**
- * The public-specific functionality of the plugin.
+ * Frontend display functionality of the plugin.
  *
- * @link       https://wordpress.org/plugins/gf-form-multicolumn/
- * @since      3.1.1
- *
- * @package    gf-form-multicolumn
- * @subpackage gf-form-multicolumn/public
+ * @package WH\GF\Multicolumn\Frontend
  */
 
 namespace WH\GF\Multicolumn\Frontend;
 
-if ( class_exists( '\GFForms' ) ) {
-    \GFForms::include_addon_framework();
-}
-
+/**
+ * Handles frontend hooks, script dequeuing, and form manipulation.
+ */
 class Frontend {
-	private $plugin_name;
-	private $version;
-
-	private $form;
-	// Note: it appears that the markupVersion value is available is not
-	// accessible in the constructor of this class.
-	private $gfLegacyVersion;
 
 	/**
-	 * Initialize the class and set its properties.
+	 * Plugin slug identifier.
 	 *
-	 * @param   string  $plugin_name  The name of the plugin.
-	 * @param   string  $version      The version of this plugin.
+	 * @var string
+	 */
+	private $plugin_name;
+
+	/**
+	 * Current version.
 	 *
-	 * @since    1.0.0
+	 * @var string
+	 */
+	private $version;
+
+	/**
+	 * Initialize class properties.
+	 *
+	 * @param string $plugin_name Plugin slug.
+	 * @param string $version     Plugin version.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 	}
 
+	/**
+	 * Attaches frontend form processing filters.
+	 *
+	 * @return void
+	 */
 	public function display() {
-		add_filter( 'gform_pre_render', [ $this, 'pre_render_form' ], 10, 4 );
-
-		// To run the conditional logic javascript mutator on AJAX form load.
-		add_action( 'gform_register_init_scripts',
-		            array ( $this, 'run_conditional_function' ), 10, 2 );
+		add_filter( 'gform_get_form_filter', array( $this, 'process_form' ), 10, 2 );
 	}
 
-	public function pre_render_form( $form ) {
-		if ( $form !== false ) {
-			$this->form = $form;
-
-			$gfmcForm = new
-			WH_GF_Multicolumn_Public_Form_Current( $this->version, $form );
+	/**
+	 * Processes form output to inject column markup.
+	 *
+	 * @param string $form_string HTML string of form.
+	 * @param array  $form        Gravity Forms form object.
+	 * @return string Processed form markup.
+	 */
+	public function process_form( $form_string, $form ) {
+		if ( is_admin() ) {
+			return $form_string;
 		}
 
-		// Stores form legacy value for ul/li (1), or divs (2) layout.
-		$this->gfLegacyVersion = $form['markupVersion'] ?? 1;
-
-		return $form;
+		$current_form = new Form_Current( $form_string, $form );
+		return $current_form->get_form();
 	}
 
-	public function dequeue_selected_scripts( $form = '', $is_ajax = false ) {
-		if ( ! rgar( $form, 'gfmcEnableJS' ) ) {
+	/**
+	 * Dequeues unnecessary scripts on non-form pages.
+	 *
+	 * @return void
+	 */
+	public function dequeue_selected_scripts() {
+		if ( is_admin() ) {
 			wp_dequeue_script( 'gfmc_scripts_public' );
 		}
-		if ( ! rgar( $form, 'gfmcEnableCSS' ) ) {
-			wp_dequeue_style( 'gfmc_styles' );
-		}
-	}
-
-	private function is_gf_form_multicolumn_element_on_page( $form ) {
-		foreach ( $form['fields'] as $field ) {
-			if ( $field['type'] === 'column_start' || $field['type'] === 'column_end' || ( $field['type'] === 'section' && ( strpos( $field['cssClass'],
-			                                                                                                                         'split-start' ) !== false ) ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/* This is used for running the conditional logic mutator within AJAX
-	forms. */
-	public function run_conditional_function( $form ) {
-		if ( $this->is_gfmc_javascript_to_be_loaded($form) ) {
-			$script = 'gfFormsAddConditionalColumns(' .
-			          $this->get_gfmc_javascript_version() . ')';
-
-			\GFFormDisplay::add_init_script( $form['id'],
-			                                 'gfmc-conditional-ajax',
-			                                 \GFFormDisplay::ON_PAGE_RENDER,
-			                                 $script );
-		}
-	}
-
-	private function is_gfmc_javascript_to_be_loaded($form) {
-		if ( rgar( $form, 'gfmcEnableJS' ) &&
-		     ( $this->is_gf_form_multicolumn_element_on_page( $form ) ) ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private function get_gfmc_javascript_version() {
-		return ( version_compare( \GFForms::$version, '2.5', '>=' ) && $this->gfLegacyVersion > 1 )
-			? '2.5' : '2.4';
 	}
 }

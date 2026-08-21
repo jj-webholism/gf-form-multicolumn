@@ -1,56 +1,36 @@
 <?php
+/**
+ * Column End field class.
+ *
+ * @package WH\GF\Multicolumn\Admin\Field
+ */
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
 use GF_Field;
-use GF_Fields;
-use WH\GF\Multicolumn\Logger;
 
 if ( ! class_exists( '\GF_Field' ) ) {
-    return;
+	return;
 }
 
+/**
+ * Custom field for ending a column group.
+ */
 class Column_End extends GF_Field {
+
+	/**
+	 * Field type identifier.
+	 *
+	 * @var string
+	 */
 	public $type = 'column_end';
 
-	public function get_form_editor_inline_script_on_page_render() {
-		$script = sprintf( "function SetDefaultValues_%s(field) {field.label = '%s';}",
-		                   $this->type,
-		                   $this->get_form_editor_field_title() ) . PHP_EOL;
-
-		return $script;
-	}
-
+	/**
+	 * Returns the field title for display in the form editor.
+	 *
+	 * @return string Field title.
+	 */
 	public function get_form_editor_field_title() {
-		return __( 'Row End', 'gf-form-multicolumn' );
+		return esc_html__( 'Row End', 'gf-form-multicolumn' );
 	}
-
-	public function get_form_editor_field_settings() {
-		return array (
-			'css_class_setting',
-		);
-	}
-
-	public function is_conditional_logic_supported() {
-		return false;
-	}
-
-    public function get_field_label( $force_frontend_label = true, $value = '' ) {
-		return $this->get_form_editor_field_title();
-	}
-
-	public function get_form_editor_button() {
-		return array (
-			'group' => GF_MULTICOLUMN_FIELD_GROUP_TITLE,
-			'text'  => $this->get_form_editor_field_title(),
-		);
-	}
-}
-
-try {
-	GF_Fields::register( new WH_GF_Multicolumn_Field_Column_End() );
-}
-catch ( \Exception $e ) {
-	WH_GF_Multicolumn_Logger::log( 'ERROR',
-	                               'Register WH_GF_Multicolumn_Field_Column_End exception ' . $e );
 }

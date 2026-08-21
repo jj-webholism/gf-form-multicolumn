@@ -1,21 +1,27 @@
 <?php
+/**
+ * Logger class file.
+ *
+ * @package WH\GF\Multicolumn
+ */
 
 namespace WH\GF\Multicolumn;
 
+/**
+ * Handles plugin debug logging via Gravity Forms logging facility.
+ */
 class Logger {
-	const fileLocation = WP_CONTENT_DIR . '/gf-form-multicolumn.log';
 
-	public static function log( $logLevel, $logMessage ) {
-		if ( ! file_exists( self::fileLocation ) ) {
-			file_put_contents( self::fileLocation,
-			                   '/*****************************************************************/' . PHP_EOL .
-			                   '/* This is the log file for the Gravity Forms Multicolumn plugin */' . PHP_EOL .
-			                   '/*****************************************************************/' . PHP_EOL .
-			                   PHP_EOL );
+	/**
+	 * Log a message to Gravity Forms logs.
+	 *
+	 * @param string $message The message to log.
+	 * @param string $level   The log level (e.g. 'debug', 'error').
+	 * @return void
+	 */
+	public static function log( $message, $level = 'debug' ) {
+		if ( class_exists( '\KLogger' ) && method_exists( '\KLogger', 'log' ) ) {
+			\KLogger::log( $message, $level );
 		}
-		file_put_contents( self::fileLocation,
-		                   date( 'Y-m-d H:i:s' ) . ' ' . $logLevel . ' ' .
-		                   $logMessage . PHP_EOL,
-		                   FILE_APPEND );
 	}
 }

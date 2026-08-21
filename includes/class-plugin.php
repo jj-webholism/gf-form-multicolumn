@@ -1,208 +1,319 @@
 <?php
-
 /**
- * The core Multi Columns class that overrides GFAddOn.
+ * Main Plugin class file.
  *
- * @link       https://wordpress.org/plugins/gf-form-multicolumn/
- * @since      3.1.1
- *
- * @package    gf-form-multicolumn
- * @subpackage gf-form-multicolumn/includes
+ * @package WH\GF\Multicolumn
  */
 
 namespace {
-    // Fallback stub for test environments where Gravity Forms is not loaded.
-    if ( ! class_exists( 'GFAddOn' ) ) {
-        class GFAddOn {}
-    }
+	// Fallback stub for unit testing environments where Gravity Forms is not loaded.
+	if ( ! class_exists( 'GFAddOn' ) ) {
+		/**
+		 * Fallback GFAddOn stub.
+		 */
+		class GFAddOn {}
+	}
 }
 
 namespace WH\GF\Multicolumn {
 
-    use WH\GF\Multicolumn\Admin\Admin;
-    use WH\GF\Multicolumn\Frontend\Frontend;
+	use WH\GF\Multicolumn\Admin\Admin;
+	use WH\GF\Multicolumn\Frontend\Frontend;
 
-    if ( class_exists( '\GFForms' ) ) {
-        \GFForms::include_addon_framework();
-    }
+	if ( class_exists( '\GFForms' ) ) {
+		\GFForms::include_addon_framework();
+	}
 
-    if ( ! class_exists( 'WH\GF\Multicolumn\Plugin' ) ) {
+	if ( ! class_exists( 'WH\GF\Multicolumn\Plugin' ) ) {
 
-        class Plugin extends \GFAddOn {
-            protected $plugin_name = 'gf-form-multicolumn';
+		/**
+		 * Main plugin controller class extending Gravity Forms AddOn framework.
+		 */
+		class Plugin extends \GFAddOn {
 
-            // Gravity Forms Class Variables
-            protected $_version = '4.0.8';
-            protected $_min_gravityforms_version = '1.9';
-            protected $_slug = 'gfmc';
-            protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
-            protected $_full_path = __FILE__;
+			/**
+			 * Plugin name identifier.
+			 *
+			 * @var string
+			 */
+			protected $plugin_name = 'gf-form-multicolumn';
 
-            private static $_instance = null;
+			/**
+			 * Current plugin version.
+			 *
+			 * @var string
+			 */
+			protected $_version = '4.0.8';
 
-            public static function get_instance() {
-                if ( self::$_instance == null ) {
-                    self::$_instance = new self();
-                }
+			/**
+			 * Minimum required Gravity Forms version.
+			 *
+			 * @var string
+			 */
+			protected $_min_gravityforms_version = '1.9';
 
-                return self::$_instance;
-            }
+			/**
+			 * Gravity Forms AddOn slug.
+			 *
+			 * @var string
+			 */
+			protected $_slug = 'gfmc';
 
-            public function minimum_requirements() {
-                return array (
-                    'php' => array (
-                        'version' => '7.0',
-                    ),
-                );
-            }
+			/**
+			 * Relative path to main plugin file.
+			 *
+			 * @var string
+			 */
+			protected $_path = 'gf-form-multicolumn/gf-form-multicolumn.php';
 
-            public function pre_init() {
-                parent::pre_init();
+			/**
+			 * Full path to main plugin file.
+			 *
+			 * @var string
+			 */
+			protected $_full_path = __FILE__;
 
-                add_action( 'plugins_loaded', array ( $this, 'set_locale' ) );
-            }
+			/**
+			 * Plugin instance container.
+			 *
+			 * @var Plugin|null
+			 */
+			private static $_instance = null;
 
-            public function init() {
-                parent::init();
+			/**
+			 * Retrieves the single instance of the class.
+			 *
+			 * @return Plugin Singleton instance.
+			 */
+			public static function get_instance() {
+				if ( null === self::$_instance ) {
+					self::$_instance = new self();
+				}
 
-                add_filter( 'gform_preview_styles',
-                    array ( $this, 'enqueue_admin_preview_scripts' ), 10,
-                    2 );
-            }
+				return self::$_instance;
+			}
 
-            public function init_admin() {
+			/**
+			 * Minimum PHP version requirements.
+			 *
+			 * @return array Required specifications.
+			 */
+			public function minimum_requirements() {
+				return array(
+					'php' => array(
+						'version' => '7.0',
+					),
+				);
+			}
 
-                // Used to apply backend only functionality such as adding additional
-                // features to the Gravity Forms GUI.
-                if ( is_admin() ) {
-                    new Admin(
-                        $this->get_plugin_name(), $this->_version
-                    );
+			/**
+			 * Pre-initialization hook handler.
+			 *
+			 * @return void
+			 */
+			public function pre_init() {
+				parent::pre_init();
 
-                    parent::init_admin();
-                }
-            }
+				add_action( 'plugins_loaded', array( $this, 'set_locale' ) );
+			}
 
-            public function init_frontend() {
-                parent::init_frontend();
+			/**
+			 * Initialization hook handler.
+			 *
+			 * @return void
+			 */
+			public function init() {
+				parent::init();
 
-                $public = new Frontend(
-                    $this->get_plugin_name(), $this->get_version() );
+				add_filter(
+					'gform_preview_styles',
+					array( $this, 'enqueue_admin_preview_scripts' ),
+					10,
+					2
+				);
+			}
 
-                add_action( 'gform_enqueue_scripts',
-                    array ( $public, 'dequeue_selected_scripts' ), 11 );
+			/**
+			 * Initializes backend-only features.
+			 *
+			 * @return void
+			 */
+			public function init_admin() {
+				if ( is_admin() ) {
+					new Admin(
+						$this->get_plugin_name(),
+						$this->_version
+					);
 
-                $public->display();
-            }
+					parent::init_admin();
+				}
+			}
 
-            public function init_ajax() {
-                parent::init_ajax();
+			/**
+			 * Initializes frontend functionality.
+			 *
+			 * @return void
+			 */
+			public function init_frontend() {
+				parent::init_frontend();
 
-                $ajaxForm = new Frontend(
-                    $this->get_plugin_name(), $this->get_version() );
+				$public = new Frontend(
+					$this->get_plugin_name(),
+					$this->get_version()
+				);
 
-                $ajaxForm->display();
-            }
+				add_action(
+					'gform_enqueue_scripts',
+					array( $public, 'dequeue_selected_scripts' ),
+					11
+				);
 
-            public function scripts() {
-                $scripts[] =
-                    array (
-                        'handle'    => 'gfmc_scripts_public',
-                        'src' => plugins_url( '../assets/js/gf-form-multicolumn.min.js', __FILE__ ),
-                        'version'   => $this->get_version(),
-                        'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
-                        'in_footer' => true,
-                        'callback'  => array ( $this, 'dequeue_if_in_admin_area' ),
-                        'enqueue'   => array (
-                            array (
-                                'field_types' => array (
-                                    'column_start',
-                                    'column_break',
-                                    'column_end',
-                                ),
-                            ),
-                        ),
-                    );
+				$public->display();
+			}
 
-                $scripts[] =
-                    array (
-                        'handle'  => 'gfmc_scripts_admin',
-                        'src' => plugins_url( '../assets/js/gf-form-multicolumn-admin.min.js', __FILE__ ),
-                        'version' => $this->get_version(),
-                        'strings' => array (
-                            'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.',
-                                'gf-form-multicolumn' ),
-                            'tooManyColumnEnds'   => __( ' too many Row Ends to Row Starts. Please review and remove the excess Row Ends.',
-                                'gf-form-multicolumn' ),
-                        ),
-                        'enqueue' => array (
-                            array (
-                                'admin_page' => array (
-                                    'form_editor',
-                                    'form_settings',
-                                ),
-                            ),
-                        ),
-                    );
+			/**
+			 * Initializes AJAX handlers.
+			 *
+			 * @return void
+			 */
+			public function init_ajax() {
+				parent::init_ajax();
 
-                return array_merge( parent::scripts(), $scripts );
-            }
+				$ajax_form = new Frontend(
+					$this->get_plugin_name(),
+					$this->get_version()
+				);
 
-            public function dequeue_if_in_admin_area() {
-                if ( is_admin() ) {
-                    wp_dequeue_script(
-                        'gfmc_scripts_public'
-                    );
-                    wp_deregister_script( 'gfmc_scripts_public' );
-                }
+				$ajax_form->display();
+			}
 
-                return true;
-            }
+			/**
+			 * Registers frontend and backend JavaScript files.
+			 *
+			 * @return array Array of script specifications.
+			 */
+			public function scripts() {
+				$scripts[] = array(
+					'handle'    => 'gfmc_scripts_public',
+					'src'       => plugins_url( '../assets/js/gf-form-multicolumn.min.js', __FILE__ ),
+					'version'   => $this->get_version(),
+					'deps'      => array( 'jquery', 'gform_conditional_logic' ),
+					'in_footer' => true,
+					'callback'  => array( $this, 'dequeue_if_in_admin_area' ),
+					'enqueue'   => array(
+						array(
+							'field_types' => array(
+								'column_start',
+								'column_break',
+								'column_end',
+							),
+						),
+					),
+				);
 
-            public function styles() {
-                // Styles needs to be present in admin also for Gutenberg blocks preview
-                $styles = array (
-                    array (
-                        'handle'  => 'gfmc_styles',
-                        'src' => plugins_url( '../assets/css/gf-form-multicolumn.min.css', __FILE__ ),
-                        'version' => $this->get_version(),
-                        'enqueue' => array (
-                            array (
-                                'field_types' => array (
-                                    'column_start',
-                                    'column_break',
-                                    'column_end',
-                                ),
-                            ),
-                        ),
-                    ),
-                );
+				$scripts[] = array(
+					'handle'  => 'gfmc_scripts_admin',
+					'src'     => plugins_url( '../assets/js/gf-form-multicolumn-admin.min.js', __FILE__ ),
+					'version' => $this->get_version(),
+					'strings' => array(
+						'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.', 'gf-form-multicolumn' ),
+						'tooManyColumnEnds'   => __( ' too many Row Ends to Row Starts. Please review and remove the excess Row Ends.', 'gf-form-multicolumn' ),
+					),
+					'enqueue' => array(
+						array(
+							'admin_page' => array(
+								'form_editor',
+								'form_settings',
+							),
+						),
+					),
+				);
 
-                return array_merge( parent::styles(), $styles );
-            }
+				return array_merge( parent::scripts(), $scripts );
+			}
 
-            public function enqueue_admin_preview_scripts() {
-                wp_register_style(                          'preview_stylesheet',
-                    plugins_url( '../assets/css/gf-form-multicolumn.css', __FILE__ ),
-                    array (), $this->_version );
+			/**
+			 * Prevents public scripts from enqueueing inside WordPress Admin.
+			 *
+			 * @return bool True after dequeuing.
+			 */
+			public function dequeue_if_in_admin_area() {
+				if ( is_admin() ) {
+					wp_dequeue_script( 'gfmc_scripts_public' );
+					wp_deregister_script( 'gfmc_scripts_public' );
+				}
 
-                return array ( 'preview_stylesheet' );
+				return true;
+			}
 
-            }
+			/**
+			 * Registers frontend and backend CSS stylesheets.
+			 *
+			 * @return array Array of style specifications.
+			 */
+			public function styles() {
+				$styles = array(
+					array(
+						'handle'  => 'gfmc_styles',
+						'src'     => plugins_url( '../assets/css/gf-form-multicolumn.min.css', __FILE__ ),
+						'version' => $this->get_version(),
+						'enqueue' => array(
+							array(
+								'field_types' => array(
+									'column_start',
+									'column_break',
+									'column_end',
+								),
+							),
+						),
+					),
+				);
 
-            public function set_locale() {
-                new I18n();
-            }
+				return array_merge( parent::styles(), $styles );
+			}
 
-            public function get_plugin_name() {
-                return $this->plugin_name;
-            }
+			/**
+			 * Registers preview stylesheets for admin context.
+			 *
+			 * @return array List of registered style handles.
+			 */
+			public function enqueue_admin_preview_scripts() {
+				wp_register_style(
+					'preview_stylesheet',
+					plugins_url( '../assets/css/gf-form-multicolumn.css', __FILE__ ),
+					array(),
+					$this->_version
+				);
 
-            public function get_version() {
-                return $this->_version;
-            }
-        }
+				return array( 'preview_stylesheet' );
+			}
 
-    } // End class_exists
+			/**
+			 * Loads internationalization domain.
+			 *
+			 * @return void
+			 */
+			public function set_locale() {
+				new I18n();
+			}
 
-} // End namespace WH\GF\Multicolumn
+			/**
+			 * Gets the plugin slug name.
+			 *
+			 * @return string Plugin name.
+			 */
+			public function get_plugin_name() {
+				return $this->plugin_name;
+			}
+
+			/**
+			 * Gets current plugin version string.
+			 *
+			 * @return string Version string.
+			 */
+			public function get_version() {
+				return $this->_version;
+			}
+		}
+	}
+}

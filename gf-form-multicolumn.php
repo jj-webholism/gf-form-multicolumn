@@ -1,68 +1,67 @@
 <?php
-/*
- * Plugin Name: Multiple Columns for Gravity Forms
- * Plugin URI: https://wordpress.org/plugins/gf-form-multicolumn/
- * Description: Introduces new form elements into Gravity Forms which allow rows to be split into multiple columns.
- * Author: WebHolism
- * Author URI: http://www.webholism.com
- * Version: 4.0.9
- * Text Domain: gf-form-multicolumn
- * License: GPLv3
- * License URI: http://www.gnu.org/licenses/gpl-3.0
- * Domain Path: /languages
+/**
+ * Plugin Name:       Gravity Forms Multiple Columns
+ * Plugin URI:        https://webholism.com/
+ * Description:       Adds multi-column capabilities to Gravity Forms.
+ * Version:           4.0.9
+ * Author:            Webholism
+ * Author URI:        https://webholism.com/
+ * Text Domain:       gf-form-multicolumn
+ * Domain Path:       /languages
+ *
+ * @package WH\GF\Multicolumn
  */
+
+namespace WH\GF\Multicolumn;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	die;
 }
 
-define( 'LOG_PATH', __DIR__ . '/log/' );
-define( 'LOG_LEVEL', 'DEBUG' );
-
-require __DIR__ . '/vendor/autoload.php';
-
-use WH\GF\Multicolumn\Activator;
-use WH\GF\Multicolumn\Uninstaller;
-
-add_action( 'gform_loaded', array(
-    'WH_GF_Multicolumn_Bootstrap',
-    'load',
-), 5 );
-
-/**
- * Class GFMC_Bootstrap
- */
-class WH_GF_Multicolumn_Bootstrap {
-    public static function load() {
-        if ( ! method_exists( '\GFForms', 'include_addon_framework' ) ) {
-            return;
-        } else {
-            GFAddOn::register( 'WH\GF\Multicolumn\Plugin' );
-            WH\GF\Multicolumn\Plugin::get_instance();
-        }
-    }
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-WH_GF_Multicolumn_Bootstrap::load();
+add_action( 'gform_loaded', array( 'WH\GF\Multicolumn\GFMC_Loader', 'load' ), 5 );
 
 /**
- * Activation is responsible for adding form options
- * gfmc_enable_css and gfmc_enable_js.
- * Uninstall will remove those settings and delete all multicolumn form
- * element entries.
+ * Main loader class for initializing the Gravity Forms AddOn.
  */
-register_activation_hook( __FILE__, 'gfmc_plugin_activate' );
-register_uninstall_hook( __FILE__, 'gfmc_plugin_uninstall' );
+class GFMC_Loader {
 
+	/**
+	 * Instantiates and registers the main plugin controller.
+	 *
+	 * @return void
+	 */
+	public static function load() {
+		if ( ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
+			return;
+		}
+
+		\GFForms::include_addon_framework();
+		Plugin::get_instance();
+	}
+}
+
+/**
+ * Plugin activation hook callback.
+ *
+ * @return void
+ */
 function gfmc_plugin_activate() {
-    $activator = new Activator();
-    $activator->gfmc_activate();
+	Activator::activate();
 }
 
+/**
+ * Plugin uninstallation hook callback.
+ *
+ * @return void
+ */
 function gfmc_plugin_uninstall() {
-    // The Gravity Forms AddOns automatically deletes: Form settings, Plugin
-    // settings, Entry meta & Version information
-    $uninstaller = new Uninstaller();
-    $uninstaller->gfmc_uninstall();
+	// Execute uninstaller routines.
+	Uninstaller::uninstall();
 }
+
+register_activation_hook( __FILE__, __NAMESPACE__ . '\gfmc_plugin_activate' );

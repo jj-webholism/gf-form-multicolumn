@@ -1,64 +1,27 @@
 <?php
+/**
+ * Multi-column field group loader.
+ *
+ * @package WH\GF\Multicolumn\Admin\Field
+ */
 
 namespace WH\GF\Multicolumn\Admin\Field;
 
-use GF_Field;
 use GF_Fields;
-use WH\GF\Multicolumn\Logger;
 
-if ( ! class_exists( '\GF_Field' ) ) {
-    return;
-}
+/**
+ * Registers multi-column field group and custom field controls.
+ */
+class Group {
 
-define( 'WH_GF_MULTICOLUMN_FIELD_GROUP_TITLE', 'Multiple Columns Fields' );
-
-
-class Group extends GF_Field {
-	public $type = 'multicolumn_group';
-
-	private $buttonLabel;
-	private $button_group = GF_MULTICOLUMN_FIELD_GROUP_TITLE;
-
-	/*
-	 * Prevent adding a separate button for this field group
+	/**
+	 * Initialize and register custom field types with Gravity Forms.
 	 */
-	public function get_form_editor_button() {
-		return null;
-	}
-
-	public function add_button( $field_groups ) {
-		$field_groups = $this->add_custom_field_group( $field_groups );
-
-		return parent::add_button( $field_groups );
-	}
-
-	public function add_custom_field_group( $field_groups ) {
-		$this->set_button_label();
-		foreach ( $field_groups as $field_group ) {
-			if ( $field_group['name'] === $this->button_group ) {
-				return $field_groups;
-			}
+	public function __construct() {
+		if ( class_exists( '\GF_Fields' ) ) {
+			GF_Fields::register( new Column_Start() );
+			GF_Fields::register( new Column_End() );
+			GF_Fields::register( new Column_Separator() );
 		}
-
-		$field_groups[] = array (
-			'name'   => $this->button_group,
-			'label'  => __( $this->buttonLabel, 'gf-form-multicolumn' ),
-			'fields' => array (),
-		);
-
-		return $field_groups;
 	}
-
-	private function set_button_label() {
-		$this->buttonLabel = __( 'Multiple Columns Fields',
-		                         'gf-form-multicolumn' );
-	}
-}
-
-try {
-	GF_Fields::register( new WH_GF_Multicolumn_Field_Group() );
-}
-catch ( \Exception $e ) {
-	WH_GF_Multicolumn_Logger::log( 'ERROR',
-	                               'Register WH_GF_Multicolumn_Field_Group exception ' . $e );
 }

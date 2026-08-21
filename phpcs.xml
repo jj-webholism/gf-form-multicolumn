@@ -27,33 +27,47 @@
     <config name="testVersion" value="8.1-"/>
     <rule ref="PHPCompatibilityWP"/>
     <!-- Ignore PHP false positive for /public/ folder name -->
-    <rule ref="PHPCompatibility.Keywords.ForbiddenNames.publicFound"><severity>0</severity></rule>
+    <rule ref="PHPCompatibility.Keywords.ForbiddenNames.publicFound">
+        <severity>0</severity>
+    </rule>
 
     <!-- WordPress Coding Standards -->
     <config name="minimum_supported_wp_version" value="6.4"/>
     <rule ref="WordPress"/>
 
-    <!-- Ignore short prefix warning for legacy "wh" namespace -->
+    <!-- Disable Strict WordPress Class File Naming (Allows PSR-4 Autoloading) -->
+    <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Allow Multiple Namespace Declarations / Stubs (For Test Compatibility) -->
+    <rule ref="Universal.Namespaces.DisallowCurlyBraceSyntax">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Universal.Namespaces.DisallowDeclarationWithoutName">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Universal.Namespaces.OneDeclarationPerFile">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Generic.Files.OneObjectStructurePerFile">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Allow Leading Underscores on Class Properties (Required by Gravity Forms AddOn Framework) -->
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Ignore Short Prefix Warnings for "wh" Namespace -->
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals.ShortPrefixPassed">
         <severity>0</severity>
     </rule>
 
-    <!-- Ignore legacy constant prefix checks -->
+    <!-- Ignore Legacy Constant Prefix Checks -->
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound">
         <severity>0</severity>
     </rule>
-
-    <!-- Enable PSR-4 Class File Naming -->
-    <rule ref="WordPress.Files.FileName"><severity>0</severity></rule>
-
-    <!-- Suppress Strict Commenting Sniffs -->
-    <rule ref="Squiz.Commenting"><severity>0</severity></rule>
-    <rule ref="WordPress.NamingConventions.ValidVariableName"><severity>0</severity></rule>
-    <rule ref="WordPress.PHP.YodaConditions"><severity>0</severity></rule>
-    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"><severity>0</severity></rule>
-    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore"><severity>0</severity></rule>
-    <rule ref="Squiz.PHP.CommentedOutCode"><severity>0</severity></rule>
-    <rule ref="Universal.Files.SeparateFunctionsFromOO"><severity>0</severity></rule>
 
     <!-- Prefixing Rules for Globals, Functions, Classes -->
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
@@ -74,5 +88,20 @@
                 <element value="gf-form-multicolumn"/>
             </property>
         </properties>
+    </rule>
+
+    <!-- Exclude NonPrefixedClassFound for third-party GFAddOn base class -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Exclude procedural functions mixed with class loader in entry file -->
+    <rule ref="Universal.Files.SeparateFunctionsFromOO">
+        <exclude-pattern>gf-form-multicolumn.php</exclude-pattern>
+    </rule>
+
+    <!-- Exclude NonPrefixedClassFound for third-party GFAddOn base class -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+        <severity>0</severity>
     </rule>
 </ruleset>
