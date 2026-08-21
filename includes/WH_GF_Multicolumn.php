@@ -14,7 +14,7 @@ namespace WH\GF\Multicolumn\Classes;
 
 use GFAddOn;
 use GFForms;
-use WH\GF\Multicolumn\Admin\WH_GF_Multicolumn_Admin;
+use WH\GF\Multicolumn\Admin\Admin;
 use WH\GF\Multicolumn\Site\WH_GF_Multicolumn_Public;
 
 GFForms::include_addon_framework();
@@ -66,7 +66,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		// Used to apply backend only functionality such as adding additional
 		// features to the Gravity Forms GUI.
 		if ( is_admin() ) {
-			new WH_GF_Multicolumn_Admin(
+			new Admin(
 				$this->get_plugin_name(), $this->_version
 			);
 
