@@ -99,8 +99,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		$scripts[] =
 			array (
 				'handle'    => 'gfmc_scripts_public',
-				'src'       => plugins_url( '/public/js/gf-form-multicolumn.min.js',
-				                            __FILE__ ),
+                'src' => plugins_url( '../assets/js/gf-form-multicolumn.min.js', __FILE__ ),
 				'version'   => $this->get_version(),
 				'deps'      => array ( 'jquery', 'gform_conditional_logic' ),
 				'in_footer' => true,
@@ -119,8 +118,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		$scripts[] =
 			array (
 				'handle'  => 'gfmc_scripts_admin',
-				'src'     => plugins_url( '/admin/js/gf-form-multicolumn-admin.min.js',
-				                          __FILE__ ),
+                'src' => plugins_url( '../assets/js/gf-form-multicolumn-admin.min.js', __FILE__ ),
 				'version' => $this->get_version(),
 				'strings' => array (
 					'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.',
@@ -157,8 +155,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 		$styles = array (
 			array (
 				'handle'  => 'gfmc_styles',
-				'src'     => plugins_url( '/public/css/gf-form-multicolumn.min.css',
-				                          __FILE__ ),
+                'src' => plugins_url( '../assets/css/gf-form-multicolumn.min.css', __FILE__ ),
 				'version' => $this->get_version(),
 				'enqueue' => array (
 					array (
@@ -177,8 +174,7 @@ class WH_GF_Multicolumn extends GFAddOn {
 
 	public function enqueue_admin_preview_scripts() {
 		wp_register_style(                          'preview_stylesheet',
-		                                            plugins_url( '/public/css/gf-form-multicolumn.css',
-		                                                         __FILE__ ),
+            plugins_url( '../assets/css/gf-form-multicolumn.css', __FILE__ ),
 		                                            array (), $this->_version );
 
 		return array ( 'preview_stylesheet' );
