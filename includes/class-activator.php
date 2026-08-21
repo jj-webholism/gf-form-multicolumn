@@ -1,6 +1,6 @@
 <?php
 
-namespace WH\GF\Multicolumn\Classes;
+namespace WH\GF\Multicolumn;
 
 use GFAPI;
 
@@ -15,7 +15,7 @@ use GFAPI;
  * @subpackage  gf-form-multicolumn/includes
  * @author      jj <jj@webholism.com>
  */
-class WH_GF_Multicolumn_Activator {
+class Activator {
 	public function gfmc_activate() {
 		$forms = GFAPI::get_forms();
 		foreach ( $forms as $form ) {

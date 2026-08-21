@@ -1,6 +1,6 @@
 <?php
 
-namespace WH\GF\Multicolumn\Classes;
+namespace WH\GF\Multicolumn;
 
 use Exception;
 
@@ -16,7 +16,7 @@ use Exception;
  * @subpackage  gf-form-multicolumn/includes
  * @author      jj <jj@webholism.com>
  */
-class WH_GF_Multicolumn_Uninstaller {
+class Uninstaller {
 	public function gfmc_uninstall() {
 		$forms = \GFAPI::get_forms();
 		foreach ( $forms as $form ) {

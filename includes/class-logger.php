@@ -1,8 +1,8 @@
 <?php
 
-namespace WH\GF\Multicolumn\Classes;
+namespace WH\GF\Multicolumn;
 
-class WH_GF_Multicolumn_Logger {
+class Logger {
 	const fileLocation = WP_CONTENT_DIR . '/gf-form-multicolumn.log';
 
 	public static function log( $logLevel, $logMessage ) {
