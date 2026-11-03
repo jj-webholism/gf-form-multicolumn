@@ -6,11 +6,12 @@ parameters:
     paths:
         - gf-form-multicolumn.php
         - includes/
+    scanFiles:
+        - vendor/php-stubs/gravity-forms-stubs/gravity-forms-stubs.php
     scanDirectories:
         - stubs/gf-2.9/
     excludePaths:
         - vendor/
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - identifier: function.alreadyNarrowedType
-        - identifier: isset.offset
-        - identifier: booleanAnd.rightAlwaysFalse

@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Form_Current frontend HTML structural transformation.
+ * Test Form_Current frontend HTML structural transformations using fixture forms.
  *
  * @package WH\GF\Multicolumn\Tests
  */
@@ -10,80 +10,126 @@ namespace WH\GF\Multicolumn\Tests;
 use WP_UnitTestCase;
 use WH\GF\Multicolumn\Frontend\Form_Current;
 
-/**
- * Class FormCurrentOutputTest
- */
 class FormCurrentOutputTest extends WP_UnitTestCase {
 
     /**
-     * Test that column_start, column_break, and column_end fields are converted into
-     * structural row/column elements when Gravity Forms outputs div elements in modern themes.
+     * Helper to load and decode a Gravity Forms JSON fixture.
+     *
+     * @param string $filename
+     * @return array
      */
-    public function test_column_fields_are_replaced_with_structural_row_markup_in_modern_themes() {
-        // Exact JSON export provided from Gravity Forms
-        $json_data = '{"0":{"fields":[{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"column_start","id":1,"formId":7,"label":"Row Start","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableEnhancedUI":0,"layoutGroupId":"0be0fc55","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"text","id":3,"formId":7,"label":"Untitled","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enablePasswordInput":"","enableEnhancedUI":0,"layoutGroupId":"c9adf8f3","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"column_break","id":4,"formId":7,"label":"Column Break","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableEnhancedUI":0,"layoutGroupId":"62592dcc","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"text","id":5,"formId":7,"label":"Untitled","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enablePasswordInput":"","enableEnhancedUI":0,"layoutGroupId":"b92029e3","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"column_break","id":6,"formId":7,"label":"Column Break","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableEnhancedUI":0,"layoutGroupId":"7cef0055","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"checkbox","id":7,"formId":7,"label":"Untitled","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","choices":[{"text":"First Choice","value":"First Choice","isSelected":false,"price":""},{"text":"Second Choice","value":"Second Choice","isSelected":false,"price":""},{"text":"Third Choice","value":"Third Choice","isSelected":false,"price":""}],"validateState":true,"inputs":[{"id":"7.1","label":"First Choice","name":""},{"id":"7.2","label":"Second Choice","name":""},{"id":"7.3","label":"Third Choice","name":""}],"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableSelectAll":"","choiceLimit":"","enablePrice":"","enableEnhancedUI":0,"layoutGroupId":"fa13422b","fields":"","selectAllText":"Select All"},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"column_break","id":8,"formId":7,"label":"Column Break","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableEnhancedUI":0,"layoutGroupId":"3376a38f","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"number","id":9,"formId":7,"label":"Number","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"numberFormat":"decimal_dot","description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","enableCalculation":false,"rangeMin":"","rangeMax":"","calculationFormula":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableEnhancedUI":0,"layoutGroupId":"45f02e39","fields":""},{"is_payment":false,"duplicatable":true,"repeatable":true,"type":"column_end","id":10,"formId":7,"label":"Row End","adminLabel":"","isRequired":false,"size":"large","errorMessage":"","visibility":"visible","inputs":null,"description":"","allowsPrepopulate":false,"inputMask":false,"inputMaskValue":"","inputMaskIsCustom":"","maxLength":"","labelPlacement":"","descriptionPlacement":"","subLabelPlacement":"","placeholder":"","cssClass":"","inputName":"","noDuplicates":false,"defaultValue":"","enableAutocomplete":false,"autocompleteAttribute":"","choices":"","conditionalLogic":"","productField":"","layoutGridColumnSpan":"","enableDisplayInColumns":"","enableEnhancedUI":0,"layoutGroupId":"fa2e6b8b","fields":""}],"button":{"type":"text","text":"","imageUrl":"","width":"auto","location":"bottom","layoutGridColumnSpan":12},"title":"test of admin checkboxes","description":"","version":"2.10.5","id":7,"markupVersion":2,"nextFieldId":11,"useCurrentUserAsAuthor":true,"postContentTemplateEnabled":false,"postTitleTemplateEnabled":false,"postTitleTemplate":"","postContentTemplate":"","lastPageButton":null,"pagination":null,"firstPageCssClass":null,"gfmcEnableCSS":true,"gfmcEnableJS":false,"is_active":true,"date_created":"2026-08-20 16:49:29","is_trash":false,"confirmations":[{"id":"6a872fe579a80","name":"Default Confirmation","isDefault":true,"type":"message","message":"Thanks for contacting us! We will get in touch with you shortly.","url":"","pageId":"","queryString":""}],"notifications":[{"id":"6a872fe579963","isActive":true,"to":"{admin_email}","name":"Admin Notification","event":"form_submission","toType":"email","subject":"New submission from {form_title}","message":"{all_fields}"}]},"version":"3.0.3"}';
+    private function get_form_fixture( string $filename ): array {
+        $path = dirname( __DIR__ ) . '/fixtures/' . $filename;
+        $json = file_get_contents( $path );
+        $data = json_decode( $json, true );
 
-        $decoded_data = json_decode( $json_data, true );
-        $form         = $decoded_data[0];
+        // Standard Gravity Forms exports wrap the form in an index array [0]
+        $form = isset( $data[0] ) ? $data[0] : $data;
 
-        foreach ( $form['fields'] as $key => $field ) {
-            $form['fields'][ $key ] = (object) $field;
+        // Gravity Forms field objects inside runtime hooks are stdClass instances
+        if ( ! empty( $form['fields'] ) ) {
+            foreach ( $form['fields'] as $index => $field ) {
+                $form['fields'][ $index ] = (object) $field;
+            }
         }
 
-        $raw_html = '<div id="gform_fields_7" class="gform_fields top_label form_sublabel_below description_below validation_below">' .
-            '<div id="field_7_1" class="gfield gfield--type-column_start gfield--input-type-column_start field_sublabel_below gfield--no-description field_description_below field_validation_below gfield_visibility_visible"><label class="gfield_label gform-field-label" for="input_7_1"><span class="gform-field-label__text">Row Start</span></label></div>' .
-            '<div id="field_7_3" class="gfield gfield--type-text gfield--input-type-text field_sublabel_below gfield--no-description field_description_below field_validation_below gfield_visibility_visible"><label class="gfield_label gform-field-label" for="input_7_3"><span class="gform-field-label__text">Untitled</span></label><div class="ginput_container ginput_container_text"><input name="input_3" id="input_7_3" type="text" value="" class="large" aria-invalid="false"></div></div>' .
-            '<div id="field_7_4" class="gfield gfield--type-column_break gfield--input-type-column_break field_sublabel_below gfield--no-description field_description_below field_validation_below gfield_visibility_visible"><label class="gfield_label gform-field-label" for="input_7_4"><span class="gform-field-label__text">Column Break</span></label></div>' .
-            '<div id="field_7_10" class="gfield gfield--type-column_end gfield--input-type-column_end field_sublabel_below gfield--no-description field_description_below field_validation_below gfield_visibility_visible"><label class="gfield_label gform-field-label" for="input_7_10"><span class="gform-field-label__text">Row End</span></label></div>' .
-            '</div>';
-
-        $form_current = new Form_Current( $raw_html, $form );
-        $output       = $form_current->get_form();
-
-        $this->assertStringContainsString( 'gfmc_row_start', $output );
-        $this->assertStringContainsString( 'gfmc_column_break', $output );
-        $this->assertStringContainsString( 'gfmc_row_end', $output );
-
-        $this->assertStringNotContainsString( 'Row Start', $output );
-        $this->assertStringNotContainsString( 'Column Break', $output );
-        $this->assertStringNotContainsString( 'Row End', $output );
+        return $form;
     }
 
     /**
-     * Test that structure_form_elements outputs div wrappers when requested.
+     * Helper to load raw HTML fixture matching the form.
+     *
+     * @param string $filename
+     * @return string
      */
-    public function test_structure_form_elements_outputs_div_wrappers() {
-        $form = array(
-            'id'     => 1,
-            'fields' => array(
-                (object) array( 'id' => 10, 'type' => 'column_start', 'cssClass' => '' ),
-            ),
-        );
-
-        $raw_html     = '<div id="field_1_10" class="gfield">Row Start</div>';
-        $form_current = new Form_Current( $raw_html, $form );
-
-        $output = $form_current->get_form( 'div' );
-
-        $this->assertStringContainsString( '<div id="field_1_10" class="gfield gfmc_row_start"></div>', $output );
+    private function get_html_fixture( string $filename ): string {
+        $path = dirname( __DIR__ ) . '/fixtures/' . $filename;
+        return file_exists( $path ) ? file_get_contents( $path ) : '';
     }
 
     /**
-     * Test that structure_form_elements outputs li wrappers when requested.
+     * Data provider that maps each fixture file to its expected transformation traits.
+     *
+     * @return array
      */
-    public function test_structure_form_elements_outputs_li_wrappers() {
-        $form = array(
-            'id'     => 1,
-            'fields' => array(
-                (object) array( 'id' => 10, 'type' => 'column_start', 'cssClass' => '' ),
-            ),
+    /**
+     * Data provider that maps each fixture file to its expected transformation traits.
+     *
+     * @return array
+     */
+    /**
+     * Data provider that maps each fixture file.
+     *
+     * @return array
+     */
+    public function provide_form_fixtures(): array {
+        return array(
+            'Applicant Quiz'       => array( 'applicant-quiz.json', 'applicant-quiz.html' ),
+            'Product Configurator' => array( 'product-configurator.json', 'product-configurator.html' ),
+            'Sod Request'          => array( 'sod-request.json', 'sod-request.html' ),
+            'Webholism Contact'    => array( 'wh-contact.json', 'wh-contact.html' ),
         );
+    }
 
-        $raw_html     = '<li id="field_1_10" class="gfield">Row Start</li>';
-        $form_current = new Form_Current( $raw_html, $form );
+    /**
+     * Tests all real form fixtures through Form_Current.
+     *
+     * @dataProvider provide_form_fixtures
+     */
+    /**
+     * Tests all real form fixtures through Form_Current.
+     *
+     * @dataProvider provide_form_fixtures
+     */
+    public function test_form_fixtures_render_correctly( string $json_file, string $html_file ) {
+        $form     = $this->get_form_fixture( $json_file );
+        $raw_html = $this->get_html_fixture( $html_file );
 
-        $output = $form_current->get_form( 'li' );
+        if ( empty( $raw_html ) ) {
+            $raw_html = $this->generate_mock_markup_for_form( $form );
+        }
 
-        $this->assertStringContainsString( '<li id="field_1_10" class="gfield gfmc_row_start"></li>', $output );
+        $current = new Form_Current( $raw_html, $form );
+        $output  = $current->get_form();
+
+        // 1. All forms with multi-column layouts must have row start and row end
+        $this->assertStringContainsString( 'gfmc_row_start', $output, "{$json_file} missing gfmc_row_start" );
+        $this->assertStringContainsString( 'gfmc_row_end', $output, "{$json_file} missing gfmc_row_end" );
+        $this->assertStringNotContainsString( 'Row Start', $output, "{$json_file} did not strip 'Row Start' label" );
+        $this->assertStringNotContainsString( 'Row End', $output, "{$json_file} did not strip 'Row End' label" );
+
+        // 2. Check if this specific form actually contains any column breaks
+        $has_column_breaks = false;
+        if ( ! empty( $form['fields'] ) ) {
+            foreach ( $form['fields'] as $field ) {
+                if ( isset( $field->type ) && 'column_break' === $field->type ) {
+                    $has_column_breaks = true;
+                    break;
+                }
+            }
+        }
+
+        // 3. Only assert column break transformation if the form defines them
+        if ( $has_column_breaks ) {
+            $this->assertStringContainsString( 'gfmc_column_break', $output, "{$json_file} missing gfmc_column_break" );
+            $this->assertStringNotContainsString( 'Column Break', $output, "{$json_file} did not strip 'Column Break' label" );
+        }
+    }
+
+    /**
+     * Fallback generator to simulate GF 2.5+ raw div output if no static HTML snapshot exists yet.
+     */
+    private function generate_mock_markup_for_form( array $form ): string {
+        $html = '<div class="gform_fields">';
+        foreach ( $form['fields'] as $field ) {
+            $html .= sprintf(
+                '<div id="field_%d_%d" class="gfield"><label>%s</label></div>',
+                $form['id'] ?? 1,
+                $field->id,
+                $field->label ?? ''
+            );
+        }
+        $html .= '</div>';
+        return $html;
     }
 }

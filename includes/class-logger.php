@@ -12,16 +12,21 @@ namespace WH\GF\Multicolumn;
  */
 class Logger {
 
+
 	/**
 	 * Log a message to Gravity Forms logs.
 	 *
 	 * @param string $message The message to log.
-	 * @param string $level   The log level (e.g. 'debug', 'error').
+	 * @param string $level The log level (e.g. 'debug', 'error').
 	 * @return void
 	 */
-	public static function log( $message, $level = 'debug' ) {
-		if ( class_exists( '\KLogger' ) && method_exists( '\KLogger', 'log' ) ) {
-			\KLogger::log( $message, $level );
+	public static function log( $message, $level = 'debug' ): void {
+		if ( class_exists( '\GFCommon' ) ) {
+			if ( 'error' === $level ) {
+				\GFCommon::log_error( 'gf-form-multicolumn: ' . $message );
+			} else {
+				\GFCommon::log_debug( 'gf-form-multicolumn: ' . $message );
+			}
 		}
 	}
 }

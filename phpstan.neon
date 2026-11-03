@@ -10,7 +10,6 @@ parameters:
         - vendor/php-stubs/gravity-forms-stubs/gravity-forms-stubs.php
     excludePaths:
         - vendor/
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - identifier: function.alreadyNarrowedType
-        - identifier: isset.offset
-        - identifier: booleanAnd.rightAlwaysFalse

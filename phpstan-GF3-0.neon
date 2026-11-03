@@ -1,0 +1,17 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - gf-form-multicolumn.php
+        - includes/
+    scanFiles:
+        - vendor/php-stubs/gravity-forms-stubs/gravity-forms-stubs.php
+    scanDirectories:
+        - stubs/gf-3.0/
+    excludePaths:
+        - vendor/
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - identifier: function.alreadyNarrowedType

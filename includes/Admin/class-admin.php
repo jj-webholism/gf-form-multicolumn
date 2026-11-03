@@ -7,6 +7,8 @@
 
 namespace WH\GF\Multicolumn\Admin;
 
+use GFForms;
+use GFCommon;
 use WH\GF\Multicolumn\Admin\Field\Column_End;
 use WH\GF\Multicolumn\Admin\Field\Column_Start;
 use WH\GF\Multicolumn\Admin\Field\Column_Separator;
@@ -18,6 +20,7 @@ use WH\GF\Multicolumn\Admin\Field\Group;
  * Defines the plugin name, version, and hooks for admin page manipulation.
  */
 class Admin {
+
 
 	/**
 	 * The ID of this plugin.
@@ -37,13 +40,32 @@ class Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version     The version of this plugin.
+	 * @param string $version The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name = 'gf-form-multicolumn', $version = '4.0.9' ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
 		$this->add_fields();
+		$this->register_settings_hooks();
+	}
+
+	/**
+	 * Get the plugin name.
+	 *
+	 * @return string
+	 */
+	public function get_plugin_name(): string {
+		return $this->plugin_name;
+	}
+
+	/**
+	 * Get the plugin version.
+	 *
+	 * @return string
+	 */
+	public function get_version(): string {
+		return $this->version;
 	}
 
 	/**
@@ -51,12 +73,194 @@ class Admin {
 	 *
 	 * @return void
 	 */
-	private function add_fields() {
+	private function add_fields(): void {
 		if ( class_exists( '\GF_Fields' ) ) {
 			new Group();
 			new Column_Start();
 			new Column_End();
 			new Column_Separator();
 		}
+	}
+
+	/**
+	 * Register hooks for form settings and editor field buttons.
+	 *
+	 * @return void
+	 */
+	public function register_settings_hooks(): void {
+		if ( $this->is_legacy_gf() ) {
+			add_filter( 'gform_form_settings', array( $this, 'register_legacy_settings' ), 10, 2 );
+			add_filter( 'gform_pre_form_settings_save', array( $this, 'save_legacy_settings' ), 10, 1 );
+		} else {
+			add_filter( 'gform_form_settings_fields', array( $this, 'register_settings_fields' ), 10, 2 );
+		}
+
+		add_filter( 'gform_add_field_buttons', array( $this, 'add_field_buttons' ), 10, 1 );
+	}
+
+	/**
+	 * Determine if running a pre-2.5 version of Gravity Forms.
+	 * Defaults to false (modern) if version cannot be determined.
+	 *
+	 * @return bool
+	 */
+	private function is_legacy_gf(): bool {
+		if ( class_exists( 'GFForms' ) && ! empty( GFForms::$version ) ) {
+			return version_compare( GFForms::$version, '2.5', '<' );
+		}
+		if ( class_exists( 'GFCommon' ) && ! empty( GFCommon::$version ) ) {
+			return version_compare( GFCommon::$version, '2.5', '<' );
+		}
+
+		return false;
+	}
+
+    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
+
+	/**
+	 * Register Multi-Column settings into modern Gravity Forms (2.5 through 3.0+).
+	 *
+	 * @param array $fields Existing settings fields array.
+	 * @param array $form Current form object.
+	 * @return array Filtered settings fields.
+	 */
+	public function register_settings_fields( array $fields, array $form ): array {
+        // phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
+		$fields['gfmc_settings'] = array(
+			'title'  => esc_html__( 'Multiple Columns Settings', 'gf-form-multicolumn' ),
+			'fields' => array(
+				array(
+					'name'    => 'gfmcEnableCSS',
+					'label'   => esc_html__( 'Enable CSS', 'gf-form-multicolumn' ),
+					'type'    => 'checkbox',
+					'choices' => array(
+						array(
+							'name'          => 'gfmcEnableCSS',
+							'label'         => esc_html__( 'Load CSS stylesheet for this form', 'gf-form-multicolumn' ),
+							'default_value' => 1,
+						),
+					),
+				),
+				array(
+					'name'    => 'gfmcEnableJS',
+					'label'   => esc_html__( 'Enable JS', 'gf-form-multicolumn' ),
+					'type'    => 'checkbox',
+					'choices' => array(
+						array(
+							'name'          => 'gfmcEnableJS',
+							'label'         => esc_html__( 'Load spacing JavaScript helper', 'gf-form-multicolumn' ),
+							'default_value' => 0,
+						),
+					),
+				),
+				array(
+					'name'          => 'gfmc_layout_engine',
+					'label'         => esc_html__( 'Layout Engine', 'gf-form-multicolumn' ),
+					'type'          => 'radio',
+					'default_value' => 'grid',
+					'choices'       => array(
+						array(
+							'label' => esc_html__( 'Modern CSS Grid', 'gf-form-multicolumn' ),
+							'value' => 'grid',
+						),
+						array(
+							'label' => esc_html__( 'Legacy Formatter', 'gf-form-multicolumn' ),
+							'value' => 'legacy',
+						),
+					),
+				),
+			),
+		);
+
+		return $fields;
+	}
+
+	/**
+	 * Add Multi-Column buttons to the Gravity Forms editor palette if not already present.
+	 *
+	 * @param array $field_groups Existing field groups.
+	 * @return array Modified field groups.
+	 */
+	public function add_field_buttons( array $field_groups ): array {
+		// Collect existing field data-types across all groups.
+		$existing_types = array();
+		foreach ( $field_groups as $group ) {
+			if ( ! empty( $group['fields'] ) && is_array( $group['fields'] ) ) {
+				foreach ( $group['fields'] as $field ) {
+					if ( isset( $field['data-type'] ) ) {
+						$existing_types[] = $field['data-type'];
+					}
+				}
+			}
+		}
+
+		// Only append if not already registered by GF_Field classes.
+		if ( ! in_array( 'column_start', $existing_types, true ) ) {
+			$field_groups[] = array(
+				'name'   => 'gfmc_fields',
+				'label'  => esc_html__( 'Multi-Column', 'gf-form-multicolumn' ),
+				'fields' => array(
+					array(
+						'class'     => 'button',
+						'value'     => esc_html__( 'Column Start', 'gf-form-multicolumn' ),
+						'data-type' => 'column_start',
+					),
+					array(
+						'class'     => 'button',
+						'value'     => esc_html__( 'Column Break', 'gf-form-multicolumn' ),
+						'data-type' => 'column_break',
+					),
+					array(
+						'class'     => 'button',
+						'value'     => esc_html__( 'Column End', 'gf-form-multicolumn' ),
+						'data-type' => 'column_end',
+					),
+				),
+			);
+		}
+
+		return $field_groups;
+	}
+
+	/**
+	 * Output raw table HTML settings for legacy Gravity Forms (< 2.5).
+	 *
+	 * @param array $settings Existing settings array.
+	 * @param array $form Current form object.
+	 * @return array
+	 */
+	public function register_legacy_settings( array $settings, array $form ): array {
+		$enable_css = ! array_key_exists( 'gfmcEnableCSS', $form ) || (bool) $form['gfmcEnableCSS'];
+		$enable_js  = ! empty( $form['gfmcEnableJS'] );
+
+		$html  = '<tr>';
+		$html .= '<th><label>' . esc_html__( 'Multiple Columns', 'gf-form-multicolumn' ) . '</label></th>';
+		$html .= '<td>';
+		$html .= '<label for="gfmcEnableCSS"><input type="checkbox" id="gfmcEnableCSS" name="gfmcEnableCSS" value="1" ' . checked( true, $enable_css, false ) . ' /> ' . esc_html__( 'Load CSS stylesheet', 'gf-form-multicolumn' ) . '</label><br />';
+		$html .= '<label for="gfmcEnableJS"><input type="checkbox" id="gfmcEnableJS" name="gfmcEnableJS" value="1" ' . checked( true, $enable_js, false ) . ' /> ' . esc_html__( 'Load spacing JavaScript helper', 'gf-form-multicolumn' ) . '</label>';
+		$html .= '</td>';
+		$html .= '</tr>';
+
+		$section = __( 'Form Options', 'gf-form-multicolumn' );
+		if ( ! isset( $settings[ $section ] ) ) {
+			$section = array_key_first( $settings ) ?? 'Multi-Column';
+		}
+
+		$settings[ $section ]['gfmc_settings'] = $html;
+
+		return $settings;
+	}
+
+	/**
+	 * Save settings for legacy Gravity Forms (< 2.5).
+	 *
+	 * @param array $form Current form array.
+	 * @return array
+	 */
+	public function save_legacy_settings( array $form ): array {
+		$form['gfmcEnableCSS'] = rgpost( 'gfmcEnableCSS' ) ? 1 : 0;
+		$form['gfmcEnableJS']  = rgpost( 'gfmcEnableJS' ) ? 1 : 0;
+
+		return $form;
 	}
 }

@@ -1,20 +1,28 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Gravity Forms Visual Verification', () => {
+test.describe('Gravity Forms Multi-Column Editor UI', () => {
 
-  test('Render Gravity Form across viewports', async ({ page }) => {
-    // 1. Change to the slug of the WP page where your Gravity Form is embedded
-    await page.goto('/sample-page/');
+  test.beforeEach(async ({ page }) => {
+    // 1. Visit the login page
+    await page.goto('http://localhost:8888/wp-login.php');
 
-    // 2. Wait for the Gravity Forms wrapper element to load on the page
-    const formWrapper = page.locator('.gform_wrapper');
-    await expect(formWrapper).toBeVisible();
+    // 2. Fill in your Local WP admin username and password
+    await page.fill('#user_login', process.env.WP_ADMIN_USER || 'admin_user');
+    await page.fill('#user_pass', process.env.WP_ADMIN_PASS || 'admin_pass');
 
-    // 3. Take a full-page screenshot saved with the project/viewport name
-    await page.screenshot({
-      path: `tests/e2e/screenshots/${test.info().project.name}-render.png`,
-      fullPage: true
-    });
+    // 3. Submit and wait for redirect to wp-admin
+    await Promise.all([
+      page.waitForURL(/.*wp-admin.*/),
+      page.click('#wp-submit'),
+    ]);
   });
 
+  test('verifies multi-column fields appear in the editor palette', async ({ page }) => {
+    // 4. Navigate directly to the form editor (adjust ID to match your test form)
+    await page.goto('http://localhost:8888/wp-admin/admin.php?page=gf_edit_forms&id=4');
+
+    // 5. Open the field palette if collapsed, or locate the field button
+    const columnStartBtn = page.locator('button[data-type="column_start"]');
+    await expect(columnStartBtn).toBeVisible();
+  });
 });

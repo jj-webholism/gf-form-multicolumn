@@ -11,7 +11,10 @@ namespace {
 		/**
 		 * Fallback GFAddOn stub.
 		 */
-		class GFAddOn {}
+		class GFAddOn {
+
+
+		}
 	}
 }
 
@@ -30,6 +33,8 @@ namespace WH\GF\Multicolumn {
 		 * Main plugin controller class extending Gravity Forms AddOn framework.
 		 */
 		class Plugin extends \GFAddOn {
+
+
 
 			/**
 			 * Plugin name identifier.
@@ -129,7 +134,7 @@ namespace WH\GF\Multicolumn {
 					'gform_preview_styles',
 					array( $this, 'enqueue_admin_preview_scripts' ),
 					10,
-					2
+					1
 				);
 			}
 
@@ -273,19 +278,14 @@ namespace WH\GF\Multicolumn {
 			}
 
 			/**
-			 * Registers preview stylesheets for admin context.
+			 * Enqueue preview styles.
 			 *
-			 * @return array List of registered style handles.
+			 * @param array $styles Existing styles.
+			 * @return array Modified styles.
 			 */
-			public function enqueue_admin_preview_scripts() {
-				wp_register_style(
-					'preview_stylesheet',
-					plugins_url( '../assets/css/gf-form-multicolumn.css', __FILE__ ),
-					array(),
-					$this->_version
-				);
-
-				return array( 'preview_stylesheet' );
+			public function enqueue_admin_preview_scripts( $styles = array() ): array {
+				$styles[] = 'preview_stylesheet';
+				return $styles;
 			}
 
 			/**
@@ -294,7 +294,8 @@ namespace WH\GF\Multicolumn {
 			 * @return void
 			 */
 			public function set_locale() {
-				new I18n();
+				$plugin_i18n = new I18n();
+				$plugin_i18n->load_plugin_textdomain();
 			}
 
 			/**

@@ -9,13 +9,12 @@ require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 // Path to WordPress test environment
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
-// Check environment variable first, then fallback to system temp folder
-if ( ! $_tests_dir || ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
-    $_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+if ( ! $_tests_dir || ! file_exists( $_tests_dir . '/includes/bootstrap.php' ) ) {
+    $_tests_dir = dirname( __DIR__ ) . '/.wp-tests';
 }
 
-if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
-    echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh?" . PHP_EOL;
+if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
+    echo "Could not find {$_tests_dir}/includes/functions.php, have you run bin/install-wp-tests.sh?" . PHP_EOL;
     exit( 1 );
 }
 
@@ -39,9 +38,9 @@ function _manually_load_plugin() {
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // FORCE DATABASE SOCKET FOR LOCAL WP BEFORE BOOTSTRAP
-if ( ! defined( 'DB_HOST' ) ) {
-    define( 'DB_HOST', 'localhost:/tmp/local_mysql.sock' );
-}
+// if ( ! defined( 'DB_HOST' ) ) {
+//     define( 'DB_HOST', 'localhost:/tmp/local_mysql.sock' );
+// }
 
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";

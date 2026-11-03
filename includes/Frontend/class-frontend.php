@@ -38,6 +38,24 @@ class Frontend {
 	}
 
 	/**
+	 * Get the plugin slug.
+	 *
+	 * @return string
+	 */
+	public function get_plugin_name(): string {
+		return $this->plugin_name;
+	}
+
+	/**
+	 * Get the plugin version.
+	 *
+	 * @return string
+	 */
+	public function get_version(): string {
+		return $this->version;
+	}
+
+	/**
 	 * Attaches frontend form processing filters.
 	 *
 	 * @return void

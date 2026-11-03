@@ -1,0 +1,30 @@
+{
+  "name": "gf-form-multicolumn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "test": "./run-tests.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jj-webholism/gf-form-multicolumn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jj-webholism/gf-form-multicolumn/issues"
+  },
+  "homepage": "https://github.com/jj-webholism/gf-form-multicolumn#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.1.2",
+    "husky": "^8.0.0"
+  }
+}

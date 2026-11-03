@@ -1,0 +1,8 @@
+watch:
+  directories:
+    - includes
+    - tests
+  fileMask: '*.php'
+phpunit:
+  binaryPath: ./vendor/bin/phpunit
+  arguments: 'tests/frontend/FormCurrentOutputTest.php'

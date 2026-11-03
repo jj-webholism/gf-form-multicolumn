@@ -1,41 +1,53 @@
 {
-    "require-dev": {
-        "phpstan/phpstan": "^2.2",
-        "szepeviktor/phpstan-wordpress": "^2.0",
-        "squizlabs/php_codesniffer": "^3.13",
-        "wp-coding-standards/wpcs": "^3.4",
-        "phpcompatibility/phpcompatibility-wp": "^2.1",
-        "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
-        "phpunit/phpunit": "^9.6.20",
-        "yoast/phpunit-polyfills": "^3.0",
-        "php-stubs/gravity-forms-stubs": "^2.9"
+  "require-dev": {
+    "phpstan/phpstan": "^2.2",
+    "szepeviktor/phpstan-wordpress": "^2.0",
+    "squizlabs/php_codesniffer": "^3.13",
+    "wp-coding-standards/wpcs": "^3.4",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+    "phpunit/phpunit": "^9.6.20",
+    "yoast/phpunit-polyfills": "^3.0",
+    "php-stubs/gravity-forms-stubs": "^2.9",
+    "spatie/phpunit-watcher": "^1.24"
+  },
+  "autoload": {
+    "psr-4": {
+      "WH\\GF\\Multicolumn\\": "includes/"
     },
-    "autoload": {
-        "psr-4": {
-            "WH\\GF\\Multicolumn\\": "includes/"
-        },
-        "classmap": [
-            "includes/"
-        ]
+    "classmap": [
+      "includes/"
+    ]
+  },
+  "config": {
+    "platform": {
+      "php": "8.1.0"
     },
-    "config": {
-        "platform": {
-            "php": "8.1.0"
-        },
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "scripts": {
-        "check-cs": "vendor/bin/phpcs",
-        "fix-cs": "vendor/bin/phpcbf",
-        "stan": "vendor/bin/phpstan analyse --memory-limit=1G",
-        "stan:v2.9": "vendor/bin/phpstan analyse -c phpstan-GF2-9.neon --memory-limit=1G",
-        "stan:v2.10": "vendor/bin/phpstan analyse -c phpstan-GF2-10.neon --memory-limit=1G",
-        "stan:all": [
-            "@stan",
-            "@stan:v2.9",
-            "@stan:v2.10"
-        ]
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
+  },
+  "scripts": {
+    "lint": "find includes -name '*.php' -exec php -l {} \\;",
+    "check-cs": "vendor/bin/phpcs",
+    "cs": "@check-cs",
+    "fix-cs": "vendor/bin/phpcbf",
+    "cbf": "@fix-cs",
+    "stan": "vendor/bin/phpstan analyse --memory-limit=1G",
+    "stan:v2.9": "vendor/bin/phpstan analyse -c phpstan-GF2-9.neon --memory-limit=1G",
+    "stan:v2.10": "vendor/bin/phpstan analyse -c phpstan-GF2-10.neon --memory-limit=1G",
+    "stan:v3.0": "vendor/bin/phpstan analyse -c phpstan-GF3-0.neon --memory-limit=1G",
+    "stan:all": [
+      "@stan",
+      "@stan:v2.9",
+      "@stan:v2.10",
+      "@stan:v3.0"
+    ],
+    "check": [
+      "@lint",
+      "@check-cs",
+      "@stan:all"
+    ],
+    "test": "./run-tests.sh"
+  }
 }
