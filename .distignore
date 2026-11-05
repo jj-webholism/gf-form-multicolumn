@@ -4,6 +4,7 @@
 .git/
 .gitignore
 .distignore
+.husky/
 
 # --- Development & Testing Folders ---
 bin/
@@ -11,16 +12,17 @@ playwright-report/
 stubs/
 test-results/
 tests/
+run-tests.sh
 
 # --- Dependency Folders ---
-# (Exclude local dependencies; your production zip should only package
-#  optimized composer dependencies if vendor/ is required at runtime)
 node_modules/
 
 # --- Test Caches & Environment Configs ---
 .phpunit.result.cache
 .wp-env.json
 .wp-envignore
+.DS_Store
+*.log
 
 # --- Dev Tooling & Linting Configs ---
 phpcs.xml
