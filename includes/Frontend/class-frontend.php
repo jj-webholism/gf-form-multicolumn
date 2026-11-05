@@ -80,13 +80,34 @@ class Frontend {
 		return $current_form->get_form();
 	}
 
+    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
 	/**
-	 * Dequeues unnecessary scripts on non-form pages.
+	 * Dequeues stylesheets and scripts based on per-form settings.
 	 *
+	 * @param array<string, mixed> $form    The current form object.
+	 * @param bool                 $is_ajax Whether the form is submitted via AJAX.
 	 * @return void
 	 */
-	public function dequeue_selected_scripts() {
+	public function dequeue_selected_scripts( $form = array(), $is_ajax = false ): void {
+        // phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
 		if ( is_admin() ) {
+			wp_dequeue_script( 'gfmc_scripts_public' );
+			return;
+		}
+
+		if ( empty( $form ) || ! is_array( $form ) ) {
+			return;
+		}
+
+		// CSS defaults to enabled (1) unless explicitly disabled (0).
+		$enable_css = ! array_key_exists( 'gfmcEnableCSS', $form ) || (bool) $form['gfmcEnableCSS'];
+		if ( ! $enable_css ) {
+			wp_dequeue_style( 'gfmc_styles' );
+		}
+
+		// JS helper defaults to disabled (0) unless explicitly enabled (1).
+		$enable_js = ! empty( $form['gfmcEnableJS'] );
+		if ( ! $enable_js ) {
 			wp_dequeue_script( 'gfmc_scripts_public' );
 		}
 	}

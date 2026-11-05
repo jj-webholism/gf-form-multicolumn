@@ -48,6 +48,7 @@
       "@check-cs",
       "@stan:all"
     ],
-    "test": "./run-tests.sh"
+    "test": "./run-tests.sh",
+    "test:e2e": "playwright test --workers=1"
   }
 }
