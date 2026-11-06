@@ -7,10 +7,14 @@
 
 namespace WH\GF\Multicolumn\Frontend;
 
+use WH\GF\Multicolumn\Frontend\Form_Current;
+
 /**
  * Handles frontend hooks, script dequeuing, and form manipulation.
  */
 class Frontend {
+
+
 
 	/**
 	 * Plugin slug identifier.
@@ -30,11 +34,13 @@ class Frontend {
 	 * Initialize class properties.
 	 *
 	 * @param string $plugin_name Plugin slug.
-	 * @param string $version     Plugin version.
+	 * @param string $version Plugin version.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+
+		add_filter( 'gform_enable_legacy_markup', array( $this, 'filter_legacy_markup' ), 10, 2 );
 	}
 
 	/**
@@ -68,7 +74,7 @@ class Frontend {
 	 * Processes form output to inject column markup.
 	 *
 	 * @param string $form_string HTML string of form.
-	 * @param array  $form        Gravity Forms form object.
+	 * @param array  $form Gravity Forms form object.
 	 * @return string Processed form markup.
 	 */
 	public function process_form( $form_string, $form ) {
@@ -81,10 +87,11 @@ class Frontend {
 	}
 
     // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
+
 	/**
 	 * Dequeues stylesheets and scripts based on per-form settings.
 	 *
-	 * @param array<string, mixed> $form    The current form object.
+	 * @param array<string, mixed> $form The current form object.
 	 * @param bool                 $is_ajax Whether the form is submitted via AJAX.
 	 * @return void
 	 */
@@ -99,16 +106,45 @@ class Frontend {
 			return;
 		}
 
-		// CSS defaults to enabled (1) unless explicitly disabled (0).
-		$enable_css = ! array_key_exists( 'gfmcEnableCSS', $form ) || (bool) $form['gfmcEnableCSS'];
-		if ( ! $enable_css ) {
-			wp_dequeue_style( 'gfmc_styles' );
+		$mode = Form_Current::resolve_mode( $form );
+
+		// Dequeue stylesheet if either 'none' mode is selected or legacy CSS was disabled.
+		if ( ! $mode['enqueue_css'] ) {
+			wp_dequeue_style( 'gf-form-multicolumn' );
 		}
 
 		// JS helper defaults to disabled (0) unless explicitly enabled (1).
 		$enable_js = ! empty( $form['gfmcEnableJS'] );
 		if ( ! $enable_js ) {
-			wp_dequeue_script( 'gfmc_scripts_public' );
+			wp_dequeue_script( 'gf-form-multicolumn-public' );
 		}
+	}
+
+	/**
+	 * Filters whether Gravity Forms should render legacy <ul><li> markup.
+	 *
+	 * @param bool  $is_legacy Default legacy status.
+	 * @param mixed $form      Current form array, form object, or form ID.
+	 * @return bool
+	 */
+	public function filter_legacy_markup( $is_legacy, $form = null ): bool {
+		if ( empty( $form ) ) {
+			return (bool) $is_legacy;
+		}
+
+		// Handle Form ID passed as integer or numeric string.
+		if ( is_numeric( $form ) && class_exists( '\GFAPI' ) ) {
+			$form = \GFAPI::get_form( (int) $form );
+		} elseif ( is_object( $form ) ) {
+			$form = (array) $form;
+		}
+
+		if ( empty( $form ) || ! is_array( $form ) ) {
+			return (bool) $is_legacy;
+		}
+
+		$mode = Form_Current::resolve_mode( $form );
+
+		return 'legacy' === $mode['engine'];
 	}
 }

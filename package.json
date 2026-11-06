@@ -8,6 +8,8 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "build:css": "clean-css-cli -o assets/css/gf-form-multicolumn.min.css assets/css/gf-form-multicolumn.css",
+    "watch:css": "chokidar \"assets/css/gf-form-multicolumn.css\" -c \"npm run build:css\"",
     "test": "./run-tests.sh",
     "test:e2e": "playwright test --workers=1"
   },

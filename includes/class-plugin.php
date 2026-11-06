@@ -48,7 +48,7 @@ namespace WH\GF\Multicolumn {
 			 *
 			 * @var string
 			 */
-			protected $_version = '4.0.8';
+			protected $_version = '4.0.9';
 
 			/**
 			 * Minimum required Gravity Forms version.
@@ -136,6 +136,18 @@ namespace WH\GF\Multicolumn {
 					10,
 					1
 				);
+
+				$public = new Frontend(
+					$this->get_plugin_name(),
+					$this->get_version()
+				);
+
+				add_filter(
+					'gform_enable_legacy_markup',
+					array( $public, 'filter_legacy_markup' ),
+					10,
+					2
+				);
 			}
 
 			/**
@@ -199,7 +211,7 @@ namespace WH\GF\Multicolumn {
 			 */
 			public function scripts() {
 				$scripts[] = array(
-					'handle'    => 'gfmc_scripts_public',
+					'handle'    => 'gf-form-multicolumn-public',
 					'src'       => plugins_url( '../assets/js/gf-form-multicolumn.min.js', __FILE__ ),
 					'version'   => $this->get_version(),
 					'deps'      => array( 'jquery', 'gform_conditional_logic' ),
@@ -244,8 +256,8 @@ namespace WH\GF\Multicolumn {
 			 */
 			public function dequeue_if_in_admin_area() {
 				if ( is_admin() ) {
-					wp_dequeue_script( 'gfmc_scripts_public' );
-					wp_deregister_script( 'gfmc_scripts_public' );
+					wp_dequeue_script( 'gf-form-multicolumn-public' );
+					wp_deregister_script( 'gf-form-multicolumn-public' );
 				}
 
 				return true;
@@ -259,7 +271,7 @@ namespace WH\GF\Multicolumn {
 			public function styles() {
 				$styles = array(
 					array(
-						'handle'  => 'gfmc_styles',
+						'handle'  => 'gf-form-multicolumn',
 						'src'     => plugins_url( '../assets/css/gf-form-multicolumn.min.css', __FILE__ ),
 						'version' => $this->get_version(),
 						'enqueue' => array(

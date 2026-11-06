@@ -10,7 +10,13 @@ namespace WH\GF\Multicolumn\Tests;
 use WP_UnitTestCase;
 use WH\GF\Multicolumn\Frontend\Form_Current;
 
-class FormCurrentOutputTest extends WP_UnitTestCase {
+/**
+ * Tests for Form_Current output rendering.
+ *
+ * @mixin \PHPUnit\Framework\Assert
+ */
+class FormCurrentOutputTest extends WP_UnitTestCase
+{
 
     /**
      * Helper to load and decode a Gravity Forms JSON fixture.
@@ -18,18 +24,19 @@ class FormCurrentOutputTest extends WP_UnitTestCase {
      * @param string $filename
      * @return array
      */
-    private function get_form_fixture( string $filename ): array {
-        $path = dirname( __DIR__ ) . '/fixtures/' . $filename;
-        $json = file_get_contents( $path );
-        $data = json_decode( $json, true );
+    private function get_form_fixture(string $filename): array
+    {
+        $path = dirname(__DIR__) . '/fixtures/' . $filename;
+        $json = file_get_contents($path);
+        $data = json_decode($json, true);
 
         // Standard Gravity Forms exports wrap the form in an index array [0]
-        $form = isset( $data[0] ) ? $data[0] : $data;
+        $form = isset($data[0]) ? $data[0] : $data;
 
         // Gravity Forms field objects inside runtime hooks are stdClass instances
-        if ( ! empty( $form['fields'] ) ) {
-            foreach ( $form['fields'] as $index => $field ) {
-                $form['fields'][ $index ] = (object) $field;
+        if (!empty($form['fields'])) {
+            foreach ($form['fields'] as $index => $field) {
+                $form['fields'][$index] = (object)$field;
             }
         }
 
@@ -42,9 +49,10 @@ class FormCurrentOutputTest extends WP_UnitTestCase {
      * @param string $filename
      * @return string
      */
-    private function get_html_fixture( string $filename ): string {
-        $path = dirname( __DIR__ ) . '/fixtures/' . $filename;
-        return file_exists( $path ) ? file_get_contents( $path ) : '';
+    private function get_html_fixture(string $filename): string
+    {
+        $path = dirname(__DIR__) . '/fixtures/' . $filename;
+        return file_exists($path) ? file_get_contents($path) : '';
     }
 
     /**
@@ -62,12 +70,13 @@ class FormCurrentOutputTest extends WP_UnitTestCase {
      *
      * @return array
      */
-    public function provide_form_fixtures(): array {
+    public function provide_form_fixtures(): array
+    {
         return array(
-            'Applicant Quiz'       => array( 'applicant-quiz.json', 'applicant-quiz.html' ),
-            'Product Configurator' => array( 'product-configurator.json', 'product-configurator.html' ),
-            'Sod Request'          => array( 'sod-request.json', 'sod-request.html' ),
-            'Webholism Contact'    => array( 'wh-contact.json', 'wh-contact.html' ),
+            'Applicant Quiz' => array('applicant-quiz.json', 'applicant-quiz.html'),
+            'Product Configurator' => array('product-configurator.json', 'product-configurator.html'),
+            'Sod Request' => array('sod-request.json', 'sod-request.html'),
+            'Webholism Contact' => array('wh-contact.json', 'wh-contact.html'),
         );
     }
 
@@ -81,47 +90,56 @@ class FormCurrentOutputTest extends WP_UnitTestCase {
      *
      * @dataProvider provide_form_fixtures
      */
-    public function test_form_fixtures_render_correctly( string $json_file, string $html_file ) {
-        $form     = $this->get_form_fixture( $json_file );
-        $raw_html = $this->get_html_fixture( $html_file );
+    public function test_form_fixtures_render_correctly(string $json_file, string $html_file)
+    {
+        $form = $this->get_form_fixture($json_file);
+        $raw_html = $this->get_html_fixture($html_file);
 
-        if ( empty( $raw_html ) ) {
-            $raw_html = $this->generate_mock_markup_for_form( $form );
+        if (empty($raw_html)) {
+            $raw_html = $this->generate_mock_markup_for_form($form);
         }
 
-        $current = new Form_Current( $raw_html, $form );
-        $output  = $current->get_form();
+        $current = new Form_Current($raw_html, $form);
+        $output = $current->get_form();
 
-        // 1. All forms with multi-column layouts must have row start and row end
-        $this->assertStringContainsString( 'gfmc_row_start', $output, "{$json_file} missing gfmc_row_start" );
-        $this->assertStringContainsString( 'gfmc_row_end', $output, "{$json_file} missing gfmc_row_end" );
-        $this->assertStringNotContainsString( 'Row Start', $output, "{$json_file} did not strip 'Row Start' label" );
-        $this->assertStringNotContainsString( 'Row End', $output, "{$json_file} did not strip 'Row End' label" );
+        $mode = Form_Current::resolve_mode($form);
 
-        // 2. Check if this specific form actually contains any column breaks
+        // 1. Verify structural wrapper elements based on layout engine.
+        if ('grid' === $mode['engine']) {
+            $this->assertStringContainsString('gfmc-row', $output, "{$json_file} missing gfmc-row container");
+            $this->assertStringContainsString('gfmc-col', $output, "{$json_file} missing gfmc-col container");
+        } else {
+            $this->assertStringContainsString('gfmc-column', $output, "{$json_file} missing gfmc-column wrapper");
+            $this->assertStringContainsString('flex-wrapper', $output, "{$json_file} missing flex-wrapper container");
+        }
+
+        // 2. Multi-column marker labels must always be stripped.
+        $this->assertStringNotContainsString('Row Start', $output, "{$json_file} did not strip 'Row Start' label");
+        $this->assertStringNotContainsString('Row End', $output, "{$json_file} did not strip 'Row End' label");
+
+        // 3. Verify column break handling if defined on the form.
         $has_column_breaks = false;
-        if ( ! empty( $form['fields'] ) ) {
-            foreach ( $form['fields'] as $field ) {
-                if ( isset( $field->type ) && 'column_break' === $field->type ) {
+        if (!empty($form['fields'])) {
+            foreach ($form['fields'] as $field) {
+                if (isset($field->type) && 'column_break' === $field->type) {
                     $has_column_breaks = true;
                     break;
                 }
             }
         }
 
-        // 3. Only assert column break transformation if the form defines them
-        if ( $has_column_breaks ) {
-            $this->assertStringContainsString( 'gfmc_column_break', $output, "{$json_file} missing gfmc_column_break" );
-            $this->assertStringNotContainsString( 'Column Break', $output, "{$json_file} did not strip 'Column Break' label" );
+        if ($has_column_breaks) {
+            $this->assertStringNotContainsString('Column Break', $output, "{$json_file} did not strip 'Column Break' label");
         }
     }
 
     /**
      * Fallback generator to simulate GF 2.5+ raw div output if no static HTML snapshot exists yet.
      */
-    private function generate_mock_markup_for_form( array $form ): string {
+    private function generate_mock_markup_for_form(array $form): string
+    {
         $html = '<div class="gform_fields">';
-        foreach ( $form['fields'] as $field ) {
+        foreach ($form['fields'] as $field) {
             $html .= sprintf(
                 '<div id="field_%d_%d" class="gfield"><label>%s</label></div>',
                 $form['id'] ?? 1,

@@ -16,6 +16,8 @@ use WH\GF\Multicolumn\Frontend\Formatters\Legacy_Formatter;
  */
 class Form_Current {
 
+
+
 	/**
 	 * Output HTML string.
 	 *
@@ -34,7 +36,7 @@ class Form_Current {
 	 * Initialize class properties.
 	 *
 	 * @param string $form_string Form HTML output.
-	 * @param array  $form        Gravity Forms configuration array.
+	 * @param array  $form Gravity Forms configuration array.
 	 */
 	public function __construct( $form_string = '', $form = array() ) {
 		$this->form_string = $form_string;
@@ -53,20 +55,77 @@ class Form_Current {
 	}
 
 	/**
+	 * Resolves the multicolumn layout engine and CSS requirement for a given form.
+	 *
+	 * @param array<string, mixed> $form Form configuration array.
+	 * @return array{engine: string, enqueue_css: bool}
+	 */
+	public static function resolve_mode( array $form ): array {
+		if ( ! empty( $form['gfmc_layout_css'] ) ) {
+			switch ( (string) $form['gfmc_layout_css'] ) {
+				case 'grid_none':
+					return array(
+						'engine'      => 'grid',
+						'enqueue_css' => false,
+					);
+				case 'legacy':
+					return array(
+						'engine'      => 'legacy',
+						'enqueue_css' => true,
+					);
+				case 'legacy_none':
+					return array(
+						'engine'      => 'legacy',
+						'enqueue_css' => false,
+					);
+				case 'grid':
+				default:
+					return array(
+						'engine'      => 'grid',
+						'enqueue_css' => true,
+					);
+			}
+		}
+
+		// Backward compatibility for existing forms saved with legacy key.
+		if ( array_key_exists( 'gfmcEnableCSS', $form ) ) {
+			return array(
+				'engine'      => 'legacy',
+				'enqueue_css' => (bool) $form['gfmcEnableCSS'],
+			);
+		}
+
+		// Backward compatibility for forms with only gfmc_layout_engine set.
+		if ( ! empty( $form['gfmc_layout_engine'] ) ) {
+			$engine = ( 'legacy_list' === $form['gfmc_layout_engine'] || 'legacy' === $form['gfmc_layout_engine'] ) ? 'legacy' : 'grid';
+			return array(
+				'engine'      => $engine,
+				'enqueue_css' => true,
+			);
+		}
+
+		// Brand new form default.
+		return array(
+			'engine'      => 'grid',
+			'enqueue_css' => true,
+		);
+	}
+
+	/**
 	 * Resolves which formatter strategy to instantiate.
 	 *
 	 * @param string|null $override_engine Optional manual engine override.
 	 * @return Formatter_Interface
 	 */
-	private function resolve_formatter( $override_engine = null ) {
-		$engine = $override_engine;
-
-		if ( empty( $engine ) ) {
-			// Check form settings; default to modern 'grid'.
-			$engine = isset( $this->form['gfmc_layout_engine'] ) ? $this->form['gfmc_layout_engine'] : 'grid';
+	private function resolve_formatter( $override_engine = null ): Formatter_Interface {
+		if ( ! empty( $override_engine ) ) {
+			$engine = $override_engine;
+		} else {
+			$mode   = self::resolve_mode( $this->form );
+			$engine = $mode['engine'];
 		}
 
-		if ( 'legacy_list' === $engine || 'li' === $engine ) {
+		if ( 'legacy' === $engine || 'legacy_list' === $engine ) {
 			return new Legacy_Formatter();
 		}
 

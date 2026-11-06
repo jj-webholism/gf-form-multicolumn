@@ -28,68 +28,90 @@ class AssetEnqueueTest extends WP_UnitTestCase {
         $GLOBALS['wp_scripts'] = new \WP_Scripts();
         $GLOBALS['wp_styles']  = new \WP_Styles();
 
-        // Register handles matching includes/class-plugin.php
-        wp_register_style( 'gfmc_styles', 'https://example.com/gf-form-multicolumn.css' );
-        wp_register_script( 'gfmc_scripts_public', 'https://example.com/gf-form-multicolumn.js', array(), '4.0.9', true );
+        wp_register_style( 'gf-form-multicolumn', 'https://example.com/gf-form-multicolumn.css' );
+        wp_register_script( 'gf-form-multicolumn-public', 'https://example.com/gf-form-multicolumn.js', array(), '4.0.9', true );
 
         $this->frontend = new Frontend( 'gf-form-multicolumn', '4.0.9' );
     }
 
     /**
-     * Test CSS remains enqueued and JS is dequeued under default form settings.
+     * Test CSS remains enqueued for 'grid' mode.
      */
-    public function test_assets_enqueued_with_default_settings(): void {
-        // GFAddOn enqueues both when column fields exist:
-        wp_enqueue_style( 'gfmc_styles' );
-        wp_enqueue_script( 'gfmc_scripts_public' );
+    public function test_css_enqueued_for_grid_mode(): void {
+        wp_enqueue_style( 'gf-form-multicolumn' );
 
         $form = array(
-            'id'            => 1,
-            'gfmcEnableCSS' => 1,
-            'gfmcEnableJS'  => 0,
+            'id'              => 1,
+            'gfmc_layout_css' => 'grid',
         );
 
         $this->frontend->dequeue_selected_scripts( $form, false );
 
-        $this->assertTrue( wp_style_is( 'gfmc_styles', 'enqueued' ), 'CSS should remain enqueued when gfmcEnableCSS is 1.' );
-        $this->assertFalse( wp_script_is( 'gfmc_scripts_public', 'enqueued' ), 'JS should be dequeued when gfmcEnableJS is 0.' );
+        $this->assertTrue( wp_style_is( 'gf-form-multicolumn', 'enqueued' ) );
     }
 
     /**
-     * Test CSS is dequeued when disabled and JS is kept when enabled.
+     * Test CSS is dequeued for 'grid_none' mode.
      */
-    public function test_css_suppressed_and_js_enqueued_when_toggled(): void {
-        wp_enqueue_style( 'gfmc_styles' );
-        wp_enqueue_script( 'gfmc_scripts_public' );
+    public function test_css_suppressed_for_grid_none_mode(): void {
+        wp_enqueue_style( 'gf-form-multicolumn' );
 
         $form = array(
-            'id'            => 2,
-            'gfmcEnableCSS' => 0,
-            'gfmcEnableJS'  => 1,
+            'id'              => 2,
+            'gfmc_layout_css' => 'grid_none',
         );
 
         $this->frontend->dequeue_selected_scripts( $form, false );
 
-        $this->assertFalse( wp_style_is( 'gfmc_styles', 'enqueued' ), 'CSS should be dequeued when gfmcEnableCSS is 0.' );
-        $this->assertTrue( wp_script_is( 'gfmc_scripts_public', 'enqueued' ), 'JS should remain enqueued when gfmcEnableJS is 1.' );
+        $this->assertFalse( wp_style_is( 'gf-form-multicolumn', 'enqueued' ) );
     }
 
     /**
-     * Test both assets are dequeued when both settings are disabled.
+     * Test CSS is dequeued for 'legacy_none' mode.
      */
-    public function test_all_assets_suppressed_when_both_disabled(): void {
-        wp_enqueue_style( 'gfmc_styles' );
-        wp_enqueue_script( 'gfmc_scripts_public' );
+    public function test_css_suppressed_for_legacy_none_mode(): void {
+        wp_enqueue_style( 'gf-form-multicolumn' );
 
         $form = array(
-            'id'            => 3,
-            'gfmcEnableCSS' => 0,
-            'gfmcEnableJS'  => 0,
+            'id'              => 3,
+            'gfmc_layout_css' => 'legacy_none',
         );
 
         $this->frontend->dequeue_selected_scripts( $form, false );
 
-        $this->assertFalse( wp_style_is( 'gfmc_styles', 'enqueued' ) );
-        $this->assertFalse( wp_script_is( 'gfmc_scripts_public', 'enqueued' ) );
+        $this->assertFalse( wp_style_is( 'gf-form-multicolumn', 'enqueued' ) );
+    }
+
+    /**
+     * Test backward compatibility with legacy keys (gfmcEnableCSS = 0).
+     */
+    public function test_css_suppressed_with_legacy_disabled_key(): void {
+        wp_enqueue_style( 'gf-form-multicolumn' );
+
+        $form = array(
+            'id'            => 4,
+            'gfmcEnableCSS' => 0,
+        );
+
+        $this->frontend->dequeue_selected_scripts( $form, false );
+
+        $this->assertFalse( wp_style_is( 'gf-form-multicolumn', 'enqueued' ) );
+    }
+
+    /**
+     * Test that filter_legacy_markup returns true for legacy mode and false for grid mode.
+     */
+    public function test_filter_legacy_markup_returns_correct_flag(): void {
+        $legacy_form = array(
+            'id'              => 6,
+            'gfmc_layout_css' => 'legacy',
+        );
+        $grid_form = array(
+            'id'              => 7,
+            'gfmc_layout_css' => 'grid',
+        );
+
+        $this->assertTrue( $this->frontend->filter_legacy_markup( false, $legacy_form ) );
+        $this->assertFalse( $this->frontend->filter_legacy_markup( false, $grid_form ) );
     }
 }

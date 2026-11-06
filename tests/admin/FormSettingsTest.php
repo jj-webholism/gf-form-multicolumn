@@ -27,30 +27,34 @@ class FormSettingsTest extends WP_UnitTestCase
     }
 
     /**
-     * Test that the plugin registers custom settings fields into Gravity Forms form settings.
+     * Test that form settings include the unified layout/CSS dropdown and JS toggle.
      */
-    public function test_form_settings_include_layout_engine_and_asset_controls()
-    {
-        $initial_fields = array();
-        $form = array('id' => 1);
+    public function test_form_settings_include_layout_engine_and_asset_controls(): void {
+        $admin    = new Admin( 'gf-form-multicolumn', '4.0.9' );
+        $form     = array( 'id' => 1 );
+        $settings = $admin->register_settings_fields( array(), $form );
 
-        // 1. Trigger the Gravity Forms settings filter
-        $settings_fields = apply_filters('gform_form_settings_fields', $initial_fields, $form);
+        $this->assertArrayHasKey( 'gfmc_settings', $settings );
+        $fields = $settings['gfmc_settings']['fields'];
 
-        // 2. Find the Multi-Column settings section or fields
-        $flattened_fields = array();
-        foreach ($settings_fields as $section) {
-            if (isset($section['fields']) && is_array($section['fields'])) {
-                foreach ($section['fields'] as $field) {
-                    $flattened_fields[$field['name'] ?? ''] = $field;
-                }
-            }
-        }
+        // Index fields by name for clean assertion
+        $field_names = array_column( $fields, 'name' );
+        $this->assertContains( 'gfmc_layout_css', $field_names, 'gfmc_layout_css select is missing from form settings.' );
+        $this->assertContains( 'gfmcEnableJS', $field_names, 'gfmcEnableJS checkbox is missing from form settings.' );
 
-        // 3. Assert your CSS and JS checkboxes and layout engine settings are registered
-        $this->assertArrayHasKey('gfmcEnableCSS', $flattened_fields, 'gfmcEnableCSS checkbox is missing from form settings');
-        $this->assertArrayHasKey('gfmcEnableJS', $flattened_fields, 'gfmcEnableJS checkbox is missing from form settings');
-        $this->assertArrayHasKey('gfmc_layout_engine', $flattened_fields, 'gfmc_layout_engine selector is missing from form settings');
+        $fields_by_name = array_combine( $field_names, $fields );
+
+        // Validate gfmc_layout_css dropdown configuration
+        $layout_css_field = $fields_by_name['gfmc_layout_css'];
+        $this->assertSame( 'select', $layout_css_field['type'] );
+        $this->assertSame( 'grid', $layout_css_field['default_value'] );
+
+        $choice_values = array_column( $layout_css_field['choices'], 'value' );
+        $this->assertSame( array( 'grid', 'grid_none', 'legacy', 'legacy_none' ), $choice_values );
+
+        // Validate gfmcEnableJS checkbox configuration
+        $js_field = $fields_by_name['gfmcEnableJS'];
+        $this->assertSame( 'checkbox', $js_field['type'] );
     }
 
     /**

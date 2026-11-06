@@ -13,6 +13,7 @@ use WH\GF\Multicolumn\Admin\Field\Column_End;
 use WH\GF\Multicolumn\Admin\Field\Column_Start;
 use WH\GF\Multicolumn\Admin\Field\Column_Separator;
 use WH\GF\Multicolumn\Admin\Field\Group;
+use WH\GF\Multicolumn\Frontend\Form_Current;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -20,6 +21,7 @@ use WH\GF\Multicolumn\Admin\Field\Group;
  * Defines the plugin name, version, and hooks for admin page manipulation.
  */
 class Admin {
+
 
 
 	/**
@@ -115,6 +117,22 @@ class Admin {
 		return false;
 	}
 
+	/**
+	 * Gets the form setting value, resolving legacy fallbacks when unset.
+	 *
+	 * @param array<string, mixed> $form Current form array.
+	 * @return string Current layout mode ('grid', 'grid_none', 'legacy', 'legacy_none').
+	 */
+	public function get_layout_css_setting( array $form ): string {
+		$mode = Form_Current::resolve_mode( $form );
+
+		if ( 'legacy' === $mode['engine'] ) {
+			return $mode['enqueue_css'] ? 'legacy' : 'legacy_none';
+		}
+
+		return $mode['enqueue_css'] ? 'grid' : 'grid_none';
+	}
+
     // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
 
 	/**
@@ -125,19 +143,34 @@ class Admin {
 	 * @return array Filtered settings fields.
 	 */
 	public function register_settings_fields( array $fields, array $form ): array {
-        // phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
+		$current_value = $this->get_layout_css_setting( $form );
+
 		$fields['gfmc_settings'] = array(
 			'title'  => esc_html__( 'Multiple Columns Settings', 'gf-form-multicolumn' ),
 			'fields' => array(
 				array(
-					'name'    => 'gfmcEnableCSS',
-					'label'   => esc_html__( 'Enable CSS', 'gf-form-multicolumn' ),
-					'type'    => 'checkbox',
-					'choices' => array(
+					'name'          => 'gfmc_layout_css',
+					'label'         => esc_html__( 'Layout & Stylesheet', 'gf-form-multicolumn' ),
+					'type'          => 'select',
+					'value'         => $current_value,
+					'default_value' => $current_value,
+					'tooltip'       => esc_html__( 'Select whether columns use modern div grids or legacy list items, and whether to load the plugin stylesheet.', 'gf-form-multicolumn' ),
+					'choices'       => array(
 						array(
-							'name'          => 'gfmcEnableCSS',
-							'label'         => esc_html__( 'Load CSS stylesheet for this form', 'gf-form-multicolumn' ),
-							'default_value' => 1,
+							'label' => esc_html__( 'Modern Grid (Load CSS)', 'gf-form-multicolumn' ),
+							'value' => 'grid',
+						),
+						array(
+							'label' => esc_html__( 'Modern Grid (No CSS - Custom Styling)', 'gf-form-multicolumn' ),
+							'value' => 'grid_none',
+						),
+						array(
+							'label' => esc_html__( 'Legacy List (Load Legacy CSS)', 'gf-form-multicolumn' ),
+							'value' => 'legacy',
+						),
+						array(
+							'label' => esc_html__( 'Legacy List (No CSS - Custom Styling)', 'gf-form-multicolumn' ),
+							'value' => 'legacy_none',
 						),
 					),
 				),
@@ -150,22 +183,6 @@ class Admin {
 							'name'          => 'gfmcEnableJS',
 							'label'         => esc_html__( 'Load spacing JavaScript helper', 'gf-form-multicolumn' ),
 							'default_value' => 0,
-						),
-					),
-				),
-				array(
-					'name'          => 'gfmc_layout_engine',
-					'label'         => esc_html__( 'Layout Engine', 'gf-form-multicolumn' ),
-					'type'          => 'radio',
-					'default_value' => 'grid',
-					'choices'       => array(
-						array(
-							'label' => esc_html__( 'Modern CSS Grid', 'gf-form-multicolumn' ),
-							'value' => 'grid',
-						),
-						array(
-							'label' => esc_html__( 'Legacy Formatter', 'gf-form-multicolumn' ),
-							'value' => 'legacy',
 						),
 					),
 				),
