@@ -1,5 +1,5 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+const {defineConfig, devices} = require('@playwright/test');
 
 module.exports = defineConfig({
     testDir: './tests/e2e',
@@ -7,12 +7,12 @@ module.exports = defineConfig({
     expect: {
         timeout: 5000,
     },
-    fullyParallel: true,
+    fullyParallel: false, // Run sequentially for reliable WordPress session state
     reporter: 'html',
     use: {
         // Automatically accept Local WP self-signed SSL certificates
         ignoreHTTPSErrors: true,
-        // Base URL so you can use relative paths like page.goto('/test-form/')
+        // Base URL using HTTPS
         baseURL: 'http://localhost:8888',
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
@@ -20,7 +20,7 @@ module.exports = defineConfig({
     projects: [
         {
             name: 'chromium',
-            use: { ...devices['Desktop Chrome'] },
+            use: {...devices['Desktop Chrome']},
         },
     ],
 });
