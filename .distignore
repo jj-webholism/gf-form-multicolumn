@@ -23,6 +23,9 @@ node_modules/
 .wp-envignore
 .DS_Store
 *.log
+.env
+.env.*
+.env.example
 
 # --- Dev Tooling & Linting Configs ---
 phpcs.xml
