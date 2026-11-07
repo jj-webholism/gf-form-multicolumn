@@ -14,6 +14,7 @@ namespace {
 		class GFAddOn {
 
 
+
 		}
 	}
 }
@@ -22,6 +23,7 @@ namespace WH\GF\Multicolumn {
 
 	use WH\GF\Multicolumn\Admin\Admin;
 	use WH\GF\Multicolumn\Frontend\Frontend;
+	use WH\GF\Multicolumn\Preview\Preview;
 
 	if ( class_exists( '\GFForms' ) ) {
 		\GFForms::include_addon_framework();
@@ -130,12 +132,12 @@ namespace WH\GF\Multicolumn {
 			public function init() {
 				parent::init();
 
-				add_filter(
-					'gform_preview_styles',
-					array( $this, 'enqueue_admin_preview_scripts' ),
-					10,
-					1
+				// Initialize dedicated preview handler.
+				$preview = new Preview(
+					$this->get_plugin_name(),
+					$this->get_version()
 				);
+				$preview->init();
 
 				$public = new Frontend(
 					$this->get_plugin_name(),
@@ -163,6 +165,8 @@ namespace WH\GF\Multicolumn {
 					);
 
 					parent::init_admin();
+
+					add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_assets' ) );
 				}
 			}
 
@@ -290,14 +294,24 @@ namespace WH\GF\Multicolumn {
 			}
 
 			/**
-			 * Enqueue preview styles.
+			 * Enqueues multi-column stylesheet inside the Gutenberg block editor canvas iframe.
 			 *
-			 * @param array $styles Existing styles.
-			 * @return array Modified styles.
+			 * @return void
 			 */
-			public function enqueue_admin_preview_scripts( $styles = array() ): array {
-				$styles[] = 'preview_stylesheet';
-				return $styles;
+			public function enqueue_block_editor_assets(): void {
+				if ( ! is_admin() ) {
+					return;
+				}
+
+				$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+				$src    = plugins_url( "../assets/css/gf-form-multicolumn{$suffix}.css", __FILE__ );
+
+				wp_enqueue_style(
+					'gf-form-multicolumn',
+					$src,
+					array(),
+					$this->get_version()
+				);
 			}
 
 			/**
