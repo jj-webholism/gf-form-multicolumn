@@ -38,4 +38,5 @@ playwright.config.js
 composer.json
 composer.lock
 package.json
-package-lock.json
+package-lock.json.wp-tests/
+.wp-tests/
