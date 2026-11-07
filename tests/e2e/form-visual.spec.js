@@ -1,28 +1,22 @@
-import { test, expect } from '@playwright/test';
+import {test, expect} from '@playwright/test';
+
+const ADMIN_USER = process.env.WP_ADMIN_USER || 'admin';
+const ADMIN_PASS = process.env.WP_ADMIN_PASS || 'password';
+const FORM_ID = process.env.WP_TEST_FORM_ID || '4';
 
 test.describe('Gravity Forms Multi-Column Editor UI', () => {
 
-  test.beforeEach(async ({ page }) => {
-    // 1. Visit the login page
-    await page.goto('http://localhost:8888/wp-login.php');
+    test.beforeEach(async ({page}) => {
+        await page.goto('/wp-login.php');
+        await page.locator('#user_login').fill(ADMIN_USER);
+        await page.locator('#user_pass').fill(ADMIN_PASS);
+        await page.locator('#wp-submit').click();
+        await page.waitForURL('**/wp-admin/**');
+    });
 
-    // 2. Fill in your Local WP admin username and password
-    await page.fill('#user_login', process.env.WP_ADMIN_USER || 'admin_user');
-    await page.fill('#user_pass', process.env.WP_ADMIN_PASS || 'admin_pass');
-
-    // 3. Submit and wait for redirect to wp-admin
-    await Promise.all([
-      page.waitForURL(/.*wp-admin.*/),
-      page.click('#wp-submit'),
-    ]);
-  });
-
-  test('verifies multi-column fields appear in the editor palette', async ({ page }) => {
-    // 4. Navigate directly to the form editor (adjust ID to match your test form)
-    await page.goto('http://localhost:8888/wp-admin/admin.php?page=gf_edit_forms&id=4');
-
-    // 5. Open the field palette if collapsed, or locate the field button
-    const columnStartBtn = page.locator('button[data-type="column_start"]');
-    await expect(columnStartBtn).toBeVisible();
-  });
+    test('verifies multi-column fields appear in the editor palette', async ({page}) => {
+        await page.goto(`/wp-admin/admin.php?page=gf_edit_forms&id=${FORM_ID}`);
+        const columnStartBtn = page.locator('button[data-type="column_start"]');
+        await expect(columnStartBtn).toBeVisible();
+    });
 });

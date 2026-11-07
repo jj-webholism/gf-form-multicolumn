@@ -52,3 +52,21 @@ Thumbs.db
 *.sln
 *.sw?
 *~
+
+# Playwright test artifacts & reports
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Local Gravity Forms import/export dumps & archives
+*gravityforms-export*.json
+*.zip
+tests/e2e/fixtures/*.json
+!tests/e2e/fixtures/example.json
+
+# Local environment configuration
+.env
+.env.local
+.env.*.local
+!.env.example
