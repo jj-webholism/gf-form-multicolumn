@@ -130,7 +130,9 @@ class Grid_Formatter implements Formatter_Interface {
 	private function get_field_css_class( $field ): string {
 		$class = '';
 
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 		if ( is_object( $field ) && ! empty( $field->cssClass ) ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$class = (string) $field->cssClass;
 		} elseif ( is_array( $field ) && ! empty( $field['cssClass'] ) ) {
 			$class = (string) $field['cssClass'];
