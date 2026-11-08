@@ -99,10 +99,12 @@ class Legacy_Formatter implements Formatter_Interface {
 					return $type;
 				}
 			}
-			return isset( $field->type ) ? (string) $field->type : '';
+			if ( ! empty( $field->type ) ) {
+				return (string) $field->type;
+			}
 		}
 
-		if ( is_array( $field ) && isset( $field['type'] ) ) {
+		if ( ( is_array( $field ) || $field instanceof \ArrayAccess ) && ! empty( $field['type'] ) ) {
 			return (string) $field['type'];
 		}
 
@@ -116,11 +118,13 @@ class Legacy_Formatter implements Formatter_Interface {
 	 * @return string
 	 */
 	private function get_field_id( $field ): string {
-		if ( is_object( $field ) && isset( $field->id ) ) {
-			return (string) $field->id;
+		if ( is_object( $field ) ) {
+			if ( ! empty( $field->id ) ) {
+				return (string) $field->id;
+			}
 		}
 
-		if ( is_array( $field ) && isset( $field['id'] ) ) {
+		if ( ( is_array( $field ) || $field instanceof \ArrayAccess ) && ! empty( $field['id'] ) ) {
 			return (string) $field['id'];
 		}
 
