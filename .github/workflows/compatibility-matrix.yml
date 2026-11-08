@@ -1,0 +1,41 @@
+name: Compatibility Matrix
+
+on:
+  push:
+    branches: [ develop, main ]
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  test-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
+        wordpress: [ '5.9', '6.2', '6.5', 'latest' ]
+
+    name: "PHP ${{ matrix.php }} | WP ${{ matrix.wordpress }}"
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run PHPCompatibility Lint
+        run: vendor/bin/phpcs -p -s includes/ gf-form-multicolumn.php
+
+      - name: Run PHPUnit Test Suite
+        run: vendor/bin/phpunit
+        env:
+          WP_VERSION: ${{ matrix.wordpress }}

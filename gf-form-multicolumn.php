@@ -19,8 +19,45 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Load Composer autoloader in development, or register native SPL fallback in production.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
+} else {
+	spl_autoload_register(
+		function ( $class_name ) {
+			$prefix = 'WH\\GF\\Multicolumn\\';
+			$len    = strlen( $prefix );
+
+			if ( 0 !== strncmp( $prefix, $class_name, $len ) ) {
+				return;
+			}
+
+			$relative_class = substr( $class_name, $len );
+			$parts          = explode( '\\', $relative_class );
+			$short_class    = array_pop( $parts );
+			$slug           = strtolower( str_replace( '_', '-', $short_class ) );
+
+			$subpath = empty( $parts ) ? '' : implode( DIRECTORY_SEPARATOR, $parts ) . DIRECTORY_SEPARATOR;
+			$base    = __DIR__ . '/includes/' . $subpath;
+
+			$class_file = $base . 'class-' . $slug . '.php';
+			if ( file_exists( $class_file ) ) {
+				require_once $class_file;
+				return;
+			}
+
+			$interface_file = $base . 'interface-' . $slug . '.php';
+			if ( file_exists( $interface_file ) ) {
+				require_once $interface_file;
+				return;
+			}
+
+			$trait_file = $base . 'trait-' . $slug . '.php';
+			if ( file_exists( $trait_file ) ) {
+				require_once $trait_file;
+			}
+		}
+	);
 }
 
 add_action( 'gform_loaded', array( 'WH\GF\Multicolumn\GFMC_Loader', 'load' ), 5 );

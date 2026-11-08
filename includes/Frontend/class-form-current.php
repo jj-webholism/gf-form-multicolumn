@@ -55,12 +55,13 @@ class Form_Current {
 	}
 
 	/**
-	 * Resolves the multicolumn layout engine and CSS requirement for a given form.
+	 * Resolves layout engine and whether to enqueue CSS for a given form.
 	 *
 	 * @param array<string, mixed> $form Form configuration array.
 	 * @return array{engine: string, enqueue_css: bool}
 	 */
 	public static function resolve_mode( array $form ): array {
+		// 1. Explicit admin per-form setting always takes top precedence.
 		if ( ! empty( $form['gfmc_layout_css'] ) ) {
 			switch ( (string) $form['gfmc_layout_css'] ) {
 				case 'grid_none':
@@ -87,7 +88,7 @@ class Form_Current {
 			}
 		}
 
-		// Backward compatibility for existing forms saved with legacy key.
+		// 2. Backward compatibility fallback: legacy forms saved with gfmcEnableCSS (v3).
 		if ( array_key_exists( 'gfmcEnableCSS', $form ) ) {
 			return array(
 				'engine'      => 'legacy',
@@ -95,7 +96,7 @@ class Form_Current {
 			);
 		}
 
-		// Backward compatibility for forms with only gfmc_layout_engine set.
+		// 3. Backward compatibility fallback: early v4 meta key.
 		if ( ! empty( $form['gfmc_layout_engine'] ) ) {
 			$engine = ( 'legacy_list' === $form['gfmc_layout_engine'] || 'legacy' === $form['gfmc_layout_engine'] ) ? 'legacy' : 'grid';
 			return array(
@@ -104,11 +105,53 @@ class Form_Current {
 			);
 		}
 
-		// Brand new form default.
+		// 4. Backward compatibility fallback: form contains legacy marker fields.
+		if ( self::has_legacy_layout_fields( $form ) ) {
+			return array(
+				'engine'      => 'legacy',
+				'enqueue_css' => true,
+			);
+		}
+
+		// 5. Default modern form.
 		return array(
 			'engine'      => 'grid',
 			'enqueue_css' => true,
 		);
+	}
+
+	/**
+	 * Determines whether a form contains legacy column marker fields.
+	 *
+	 * @param array<string, mixed> $form Form configuration array.
+	 * @return bool
+	 */
+	public static function has_legacy_layout_fields( array $form ): bool {
+		if ( empty( $form['fields'] ) || ! is_array( $form['fields'] ) ) {
+			return false;
+		}
+
+		$legacy_types = array( 'column_start', 'column_break', 'column_end' );
+
+		foreach ( $form['fields'] as $field ) {
+			$type = '';
+			if ( is_object( $field ) ) {
+				if ( method_exists( $field, 'get_input_type' ) ) {
+					$type = (string) $field->get_input_type();
+				}
+				if ( empty( $type ) && isset( $field->type ) ) {
+					$type = (string) $field->type;
+				}
+			} elseif ( is_array( $field ) && isset( $field['type'] ) ) {
+				$type = (string) $field['type'];
+			}
+
+			if ( in_array( $type, $legacy_types, true ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -31,7 +31,7 @@ class Frontend {
 	private $version;
 
 	/**
-	 * Initialize class properties.
+	 * Initialize class properties and attach hooks.
 	 *
 	 * @param string $plugin_name Plugin slug.
 	 * @param string $version Plugin version.
@@ -40,6 +40,7 @@ class Frontend {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
+		add_filter( 'gform_get_form_filter', array( $this, 'process_form' ), 10, 2 );
 		add_filter( 'gform_enable_legacy_markup', array( $this, 'filter_legacy_markup' ), 10, 2 );
 	}
 
@@ -68,6 +69,7 @@ class Frontend {
 	 */
 	public function display() {
 		add_filter( 'gform_get_form_filter', array( $this, 'process_form' ), 10, 2 );
+		add_filter( 'gform_enable_legacy_markup', array( $this, 'filter_legacy_markup' ), 10, 2 );
 	}
 
 	/**
@@ -86,7 +88,7 @@ class Frontend {
 		return $current_form->get_form();
 	}
 
-    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
+	// phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
 
 	/**
 	 * Dequeues stylesheets and scripts based on per-form settings.
@@ -96,7 +98,7 @@ class Frontend {
 	 * @return void
 	 */
 	public function dequeue_selected_scripts( $form = array(), $is_ajax = false ): void {
-        // phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
+		// phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
 		if ( is_admin() ) {
 			wp_dequeue_script( 'gfmc_scripts_public' );
 			return;
@@ -121,10 +123,10 @@ class Frontend {
 	}
 
 	/**
-	 * Filters whether Gravity Forms should render legacy <ul><li> markup.
+	 * Filters whether legacy markup should be enabled for a given form.
 	 *
-	 * @param bool  $is_legacy Default legacy status.
-	 * @param mixed $form      Current form array, form object, or form ID.
+	 * @param bool  $is_legacy Current legacy status.
+	 * @param mixed $form Form configuration array, object, ID, or null.
 	 * @return bool
 	 */
 	public function filter_legacy_markup( $is_legacy, $form = null ): bool {

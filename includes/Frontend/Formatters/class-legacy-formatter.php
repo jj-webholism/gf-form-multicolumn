@@ -13,6 +13,7 @@ namespace WH\GF\Multicolumn\Frontend\Formatters;
 class Legacy_Formatter implements Formatter_Interface {
 
 
+
 	/**
 	 * Formats raw form HTML into legacy <li> structural columns with nested <ul> containers.
 	 *
@@ -21,45 +22,30 @@ class Legacy_Formatter implements Formatter_Interface {
 	 * @return string Processed HTML markup.
 	 */
 	public function format( $form_string, array $form ) {
-		if ( ! isset( $form['fields'] ) || ! is_array( $form['fields'] ) ) {
+		if ( empty( $form['fields'] ) || ! is_array( $form['fields'] ) ) {
 			return $form_string;
 		}
 
 		$instance_counter = isset( $form['id'] ) ? (int) $form['id'] : 0;
+		$calculator       = new Layout_Calculator();
+		$layout_map       = $calculator->calculate( $form );
 
-		// Pre-calculate column divisor for each row block.
-		$row_cols  = array();
-		$row_idx   = 1;
-		$col_count = 1;
-
-		foreach ( $form['fields'] as $field ) {
-			$type = isset( $field->type ) ? $field->type : '';
-			if ( 'column_break' === $type ) {
-				++$col_count;
-			} elseif ( 'column_end' === $type ) {
-				$row_cols[ $row_idx ] = $col_count;
-				++$row_idx;
-				$col_count = 1;
-			}
-		}
-
+		$form_id     = isset( $form['id'] ) ? (int) $form['id'] : 0;
 		$current_row = 1;
 		$current_col = 0;
 		$html_output = $form_string;
 
 		foreach ( $form['fields'] as $form_field ) {
-			$field_type = isset( $form_field->type ) ? $form_field->type : '';
+			$field_type = $this->get_field_type( $form_field );
 
 			if ( ! in_array( $field_type, array( 'column_start', 'column_break', 'column_end' ), true ) ) {
 				continue;
 			}
 
-            // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$field_id = "field_{$instance_counter}_{$form_field->id}";
-            // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$css_class = ! empty( $form_field->cssClass ) ? ' ' . esc_attr( trim( $form_field->cssClass ) ) : '';
+			$field_id  = 'field_' . $form_id . '_' . $this->get_field_id( $form_field );
+			$css_class = $this->get_field_css_class( $form_field );
 
-			$divisor          = isset( $row_cols[ $current_row ] ) ? $row_cols[ $current_row ] : 1;
+			$divisor          = isset( $layout_map['rows'][ $current_row ]['columns'] ) ? $layout_map['rows'][ $current_row ]['columns'] : 1;
 			$width_percentage = (int) floor( 100 / $divisor );
 
 			$replacement = '';
@@ -67,7 +53,8 @@ class Legacy_Formatter implements Formatter_Interface {
 			if ( 'column_start' === $field_type ) {
 				++$current_col;
 				$replacement = sprintf(
-					'<li class="gfmc-column gfmc-column%1$d gfmc-row-%2$d-column gfmc-row-%2$d-col-%3$d-of-%4$d%5$s"><ul class="flex-wrapper flex-wrapper-%4$d">',
+					'<li class="gfmc-column gfmc-column%2$d gfmc-row-%3$d-column gfmc-row-%3$d-col-%4$d-of-%5$d gfmc-form-%1$d-row-%3$d-col-%4$d%6$s" data-gfmc-form="%1$d" data-gfmc-row="%3$d" data-gfmc-col="%4$d"><ul class="flex-wrapper flex-wrapper-%5$d">',
+					(int) $form_id,
 					(int) $width_percentage,
 					(int) $current_row,
 					(int) $current_col,
@@ -77,7 +64,8 @@ class Legacy_Formatter implements Formatter_Interface {
 			} elseif ( 'column_break' === $field_type ) {
 				++$current_col;
 				$replacement = sprintf(
-					'</ul></li><li class="gfmc-column gfmc-column%1$d gfmc-row-%2$d-column gfmc-row-%2$d-col-%3$d-of-%4$d%5$s"><ul class="flex-wrapper flex-wrapper-%4$d">',
+					'</ul></li><li class="gfmc-column gfmc-column%2$d gfmc-row-%3$d-column gfmc-row-%3$d-col-%4$d-of-%5$d gfmc-form-%1$d-row-%3$d-col-%4$d%6$s" data-gfmc-form="%1$d" data-gfmc-row="%3$d" data-gfmc-col="%4$d"><ul class="flex-wrapper flex-wrapper-%5$d">',
+					(int) $form_id,
 					(int) $width_percentage,
 					(int) $current_row,
 					(int) $current_col,
@@ -91,9 +79,70 @@ class Legacy_Formatter implements Formatter_Interface {
 			}
 
 			$pattern     = '/<(?:li|div)[^>]*id=[\'"]' . preg_quote( $field_id, '/' ) . '[\'"][^>]*>(.*?)<\/(?:li|div)>/s';
-			$html_output = preg_replace( $pattern, $replacement, $html_output );
+			$html_output = (string) preg_replace( $pattern, $replacement, $html_output );
 		}
 
 		return $html_output;
+	}
+
+	/**
+	 * Safely extracts field type from object or array representations.
+	 *
+	 * @param mixed $field Field object or array.
+	 * @return string
+	 */
+	private function get_field_type( $field ): string {
+		if ( is_object( $field ) ) {
+			if ( method_exists( $field, 'get_input_type' ) ) {
+				$type = (string) $field->get_input_type();
+				if ( '' !== $type ) {
+					return $type;
+				}
+			}
+			return isset( $field->type ) ? (string) $field->type : '';
+		}
+
+		if ( is_array( $field ) && isset( $field['type'] ) ) {
+			return (string) $field['type'];
+		}
+
+		return '';
+	}
+
+	/**
+	 * Safely extracts field ID from object or array representations.
+	 *
+	 * @param mixed $field Field object or array.
+	 * @return string
+	 */
+	private function get_field_id( $field ): string {
+		if ( is_object( $field ) && isset( $field->id ) ) {
+			return (string) $field->id;
+		}
+
+		if ( is_array( $field ) && isset( $field['id'] ) ) {
+			return (string) $field['id'];
+		}
+
+		return '';
+	}
+
+	/**
+	 * Safely extracts sanitized CSS class string from object or array representations.
+	 *
+	 * @param mixed $field Field object or array.
+	 * @return string
+	 */
+	private function get_field_css_class( $field ): string {
+		$class = '';
+
+		if ( is_object( $field ) ) {
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$class = ! empty( $field->cssClass ) ? (string) $field->cssClass : '';
+		} elseif ( is_array( $field ) ) {
+			$class = ! empty( $field['cssClass'] ) ? (string) $field['cssClass'] : '';
+		}
+
+		return '' !== $class ? ' ' . esc_attr( trim( $class ) ) : '';
 	}
 }

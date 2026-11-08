@@ -9,7 +9,8 @@
     "phpunit/phpunit": "^9.6.20",
     "yoast/phpunit-polyfills": "^3.0",
     "php-stubs/gravity-forms-stubs": "^2.9",
-    "spatie/phpunit-watcher": "^1.24"
+    "spatie/phpunit-watcher": "^1.24",
+    "phpcompatibility/php-compatibility": "^9.3"
   },
   "autoload": {
     "psr-4": {
@@ -28,7 +29,9 @@
     }
   },
   "scripts": {
+    "build": "bash bin/build-zip.sh",
     "lint": "find includes -name '*.php' -exec php -l {} \\;",
+    "lint:php": "phpcs -p -s -v --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- includes/ gf-form-multicolumn.php",
     "check-cs": "vendor/bin/phpcs",
     "cs": "@check-cs",
     "fix-cs": "vendor/bin/phpcbf",
