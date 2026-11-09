@@ -74,6 +74,65 @@ test.describe('Automated Multi-Column Layout Test Suite', () => {
                         }
                     }
                 }
+
+                // --- Choice Field & Label Alignment Verifications ---
+                const choiceInputs = page.locator('.gfmc-row input[type="checkbox"], .gfmc-row input[type="radio"]');
+                const choiceCount = await choiceInputs.count();
+
+                if (choiceCount > 0) {
+                    // 1. Verify checkboxes & radios do not stretch into wide bars
+                    for (let i = 0; i < choiceCount; i++) {
+                        const input = choiceInputs.nth(i);
+                        const box = await input.boundingBox();
+                        if (box) {
+                            expect(
+                                box.width,
+                                `Form ${id} choice input at index ${i} stretched wider than standard controls (${box.width}px)`
+                            ).toBeLessThan(35);
+                        }
+                    }
+
+                    // 2. Verify choices sit side-by-side (label to the right of input, not wrapped below)
+                    const choiceItems = page.locator('.gfmc-row .gchoice');
+                    const choiceItemCount = await choiceItems.count();
+
+                    for (let i = 0; i < choiceItemCount; i++) {
+                        const item = choiceItems.nth(i);
+                        const input = item.locator('input');
+                        const label = item.locator('label');
+
+                        if (await input.count() > 0 && await label.count() > 0) {
+                            const inputBox = await input.boundingBox();
+                            const labelBox = await label.boundingBox();
+
+                            if (inputBox && labelBox) {
+                                expect(
+                                    labelBox.x,
+                                    `Form ${id} choice label at index ${i} wrapped underneath input instead of beside it`
+                                ).toBeGreaterThanOrEqual(inputBox.x + inputBox.width * 0.8);
+
+                                expect(
+                                    Math.abs(inputBox.y - labelBox.y),
+                                    `Form ${id} choice input and label at index ${i} are vertically misaligned`
+                                ).toBeLessThan(12);
+                            }
+                        }
+                    }
+                }
+
+                // 3. Verify field labels remain left-aligned and are not centered
+                const fieldLabels = page.locator('.gfmc-row .gfield_label, .gfmc-row .gform-field-label');
+                const labelCount = await fieldLabels.count();
+
+                if (labelCount > 0) {
+                    const computedAlign = await fieldLabels.first().evaluate(
+                        (el) => window.getComputedStyle(el).textAlign
+                    );
+                    expect(
+                        ['left', 'start'],
+                        `Form ${id} field label is centered (${computedAlign}) instead of left-aligned`
+                    ).toContain(computedAlign);
+                }
             }
         }
     });

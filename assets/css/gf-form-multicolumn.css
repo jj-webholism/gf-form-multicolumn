@@ -207,12 +207,52 @@ li[class*="column-count-1"] > div > ul {
     grid-column: auto;
 }
 
-.gform_wrapper .gfmc-row input,
+/* Enforce left alignment on all grid elements to counteract centering theme cascades */
+.gform_wrapper .gfmc-row,
+.gform_wrapper .gfmc-row > .gfmc-col,
+.gform_wrapper .gfmc-row .gfield,
+.gform_wrapper .gfmc-row .gfield_label,
+.gform_wrapper .gfmc-row .gform-field-label,
+.gform_wrapper .gfmc-row legend.gfield_label,
+.gform_wrapper .gfmc-row .ginput_container,
+.gform_wrapper .gfmc-row .gfield_radio,
+.gform_wrapper .gfmc-row .gfield_checkbox,
+.gform_wrapper .gfmc-row .gchoice {
+    text-align: left;
+}
+
+/* Apply 100% width ONLY to standard text/select/textarea inputs */
+.gform_wrapper .gfmc-row input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]):not([type="hidden"]),
 .gform_wrapper .gfmc-row select,
 .gform_wrapper .gfmc-row textarea {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+}
+
+/* Maintain native / Orbital design-token dimensions on checkboxes and radios */
+.gform_wrapper .gfmc-row input[type="checkbox"],
+.gform_wrapper .gfmc-row input[type="radio"] {
+    width: var(--gf-ctrl-choice-size, auto);
+    height: var(--gf-ctrl-choice-size, auto);
+    max-width: none;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+    margin-top: 0.15rem;
+}
+
+/* Keep choices aligned side-by-side (control next to label) */
+.gform_wrapper .gfmc-row .gchoice {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-bottom: 0.35rem;
+}
+
+.gform_wrapper .gfmc-row .gchoice label {
+    margin-bottom: 0;
+    text-align: left;
+    display: inline-block;
 }
 
 @media (max-width: 767px) {
