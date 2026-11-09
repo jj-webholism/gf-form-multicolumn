@@ -162,5 +162,17 @@ class LegacyFormMetaTest extends WP_UnitTestCase
 			'fields' => [['id' => 1, 'type' => 'text']],
 		];
 		$this->assertFalse($this->frontend->filter_legacy_markup(false, $modern_form));
+
+		// Test that modern forms (markupVersion = 2) with multi-column fields default to grid mode (false).
+		$modern_form_with_columns = [
+			'id' => 102,
+			'markupVersion' => 2,
+			'fields' => [
+				['id' => 1, 'type' => 'column_start'],
+				['id' => 2, 'type' => 'text'],
+				['id' => 3, 'type' => 'column_end'],
+			],
+		];
+		$this->assertFalse($this->frontend->filter_legacy_markup(false, $modern_form_with_columns));
 	}
 }

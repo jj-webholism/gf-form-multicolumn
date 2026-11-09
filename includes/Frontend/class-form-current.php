@@ -105,8 +105,11 @@ class Form_Current {
 			);
 		}
 
-		// 4. Backward compatibility fallback: form contains legacy marker fields.
-		if ( self::has_legacy_layout_fields( $form ) ) {
+		// 4. Backward compatibility fallback: historic forms with legacy markup (markupVersion < 2 or unset) containing column marker fields.
+		$markup_version   = $form['markupVersion'] ?? null;
+		$is_legacy_markup = null === $markup_version || (int) $markup_version < 2;
+
+		if ( $is_legacy_markup && self::has_legacy_layout_fields( $form ) ) {
 			return array(
 				'engine'      => 'legacy',
 				'enqueue_css' => true,
