@@ -188,8 +188,6 @@ namespace WH\GF\Multicolumn {
 					array( $public, 'dequeue_selected_scripts' ),
 					11
 				);
-
-				$public->display();
 			}
 
 			/**
@@ -204,8 +202,6 @@ namespace WH\GF\Multicolumn {
 					$this->get_plugin_name(),
 					$this->get_version()
 				);
-
-				$ajax_form->display();
 			}
 
 			/**
@@ -216,7 +212,7 @@ namespace WH\GF\Multicolumn {
 			public function scripts() {
 				$scripts[] = array(
 					'handle'    => 'gf-form-multicolumn-public',
-					'src'       => plugins_url( '../assets/js/gf-form-multicolumn.min.js', __FILE__ ),
+					'src'       => plugins_url( 'assets/js/gf-form-multicolumn.min.js', dirname( __DIR__ ) . '/gf-form-multicolumn.php' ),
 					'version'   => $this->get_version(),
 					'deps'      => array( 'jquery', 'gform_conditional_logic' ),
 					'in_footer' => true,
@@ -234,7 +230,7 @@ namespace WH\GF\Multicolumn {
 
 				$scripts[] = array(
 					'handle'  => 'gfmc_scripts_admin',
-					'src'     => plugins_url( '../assets/js/gf-form-multicolumn-admin.min.js', __FILE__ ),
+					'src'     => plugins_url( 'assets/js/gf-form-multicolumn-admin.min.js', dirname( __DIR__ ) . '/gf-form-multicolumn.php' ),
 					'version' => $this->get_version(),
 					'strings' => array(
 						'tooManyColumnStarts' => __( ' too many Row Starts to Row Ends. Please review and remove the excess Row Starts.', 'gf-form-multicolumn' ),
@@ -276,7 +272,7 @@ namespace WH\GF\Multicolumn {
 				$styles = array(
 					array(
 						'handle'  => 'gf-form-multicolumn',
-						'src'     => plugins_url( '../assets/css/gf-form-multicolumn.min.css', __FILE__ ),
+						'src'     => plugins_url( 'assets/css/gf-form-multicolumn.min.css', dirname( __DIR__ ) . '/gf-form-multicolumn.php' ),
 						'version' => $this->get_version(),
 						'enqueue' => array(
 							array(
@@ -304,7 +300,7 @@ namespace WH\GF\Multicolumn {
 				}
 
 				$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-				$src    = plugins_url( "../assets/css/gf-form-multicolumn{$suffix}.css", __FILE__ );
+				$src    = plugins_url( "assets/css/gf-form-multicolumn{$suffix}.css", dirname( __DIR__ ) . '/gf-form-multicolumn.php' );
 
 				wp_enqueue_style(
 					'gf-form-multicolumn',

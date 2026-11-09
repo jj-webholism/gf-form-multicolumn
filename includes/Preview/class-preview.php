@@ -15,6 +15,7 @@ use WH\GF\Multicolumn\Frontend\Form_Current;
 class Preview {
 
 
+
 	/**
 	 * Plugin slug identifier.
 	 *
@@ -69,7 +70,7 @@ class Preview {
 		add_filter( 'gform_get_form_filter', array( $this, 'process_preview_form' ), 20, 2 );
 	}
 
-    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
+	// phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
 
 	/**
 	 * Registers the plugin stylesheet during the preview initialization lifecycle.
@@ -78,9 +79,9 @@ class Preview {
 	 * @return void
 	 */
 	public function register_preview_assets( $form_id = null ): void {
-        // phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
+		// phpcs:enable Generic.CodeAnalysis.UnusedFunctionParameter
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		$src    = plugins_url( "../../assets/css/gf-form-multicolumn{$suffix}.css", __FILE__ );
+		$src    = plugins_url( "assets/css/gf-form-multicolumn{$suffix}.css", dirname( __DIR__, 2 ) . '/gf-form-multicolumn.php' );
 
 		if ( ! wp_style_is( $this->plugin_name, 'registered' ) ) {
 			wp_register_style(
@@ -140,7 +141,7 @@ class Preview {
 	 * @return bool
 	 */
 	private function is_preview_request(): bool {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return isset( $_GET['gf_page'] ) && 'preview' === $_GET['gf_page'];
 	}
 }
