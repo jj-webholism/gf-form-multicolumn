@@ -97,6 +97,10 @@ class Admin {
 			add_filter( 'gform_form_settings_fields', array( $this, 'register_settings_fields' ), 10, 2 );
 		}
 
+		// Modern GF 2.5+ editor group registration.
+		add_filter( 'gform_field_groups_form_editor', array( $this, 'add_field_group' ), 10, 1 );
+
+		// Editor field palette button registration & test compatibility.
 		add_filter( 'gform_add_field_buttons', array( $this, 'add_field_buttons' ), 10, 1 );
 	}
 
@@ -133,7 +137,7 @@ class Admin {
 		return $mode['enqueue_css'] ? 'grid' : 'grid_none';
 	}
 
-    // phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
+	// phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
 
 	/**
 	 * Register Multi-Column settings into modern Gravity Forms (2.5 through 3.0+).
@@ -193,6 +197,28 @@ class Admin {
 	}
 
 	/**
+	 * Registers the Multiple Columns field group in the modern form editor sidebar.
+	 *
+	 * @param array $field_groups Existing field groups.
+	 * @return array Modified field groups.
+	 */
+	public function add_field_group( array $field_groups ): array {
+		foreach ( $field_groups as $group ) {
+			if ( isset( $group['name'] ) && 'multiple_columns_fields' === $group['name'] ) {
+				return $field_groups;
+			}
+		}
+
+		$field_groups[] = array(
+			'name'   => 'multiple_columns_fields',
+			'label'  => esc_html__( 'Multiple Columns Fields', 'gf-form-multicolumn' ),
+			'fields' => array(),
+		);
+
+		return $field_groups;
+	}
+
+	/**
 	 * Add Multi-Column buttons to the Gravity Forms editor palette if not already present.
 	 *
 	 * @param array $field_groups Existing field groups.
@@ -213,30 +239,55 @@ class Admin {
 
 		// Only append if not already registered by GF_Field classes.
 		if ( ! in_array( 'column_start', $existing_types, true ) ) {
-			$field_groups[] = array(
-				'name'   => 'gfmc_fields',
-				'label'  => esc_html__( 'Multi-Column', 'gf-form-multicolumn' ),
-				'fields' => array(
-					array(
-						'class'     => 'button',
-						'value'     => esc_html__( 'Column Start', 'gf-form-multicolumn' ),
-						'data-type' => 'column_start',
-					),
-					array(
-						'class'     => 'button',
-						'value'     => esc_html__( 'Column Break', 'gf-form-multicolumn' ),
-						'data-type' => 'column_break',
-					),
-					array(
-						'class'     => 'button',
-						'value'     => esc_html__( 'Column End', 'gf-form-multicolumn' ),
-						'data-type' => 'column_end',
-					),
-				),
-			);
+			// Find existing group if present, otherwise create it.
+			$found = false;
+			foreach ( $field_groups as &$group ) {
+				if ( isset( $group['name'] ) && 'multiple_columns_fields' === $group['name'] ) {
+					$group['fields'] = array_merge(
+						$group['fields'] ?? array(),
+						$this->get_field_button_definitions()
+					);
+					$found           = true;
+					break;
+				}
+			}
+			unset( $group );
+
+			if ( ! $found ) {
+				$field_groups[] = array(
+					'name'   => 'multiple_columns_fields',
+					'label'  => esc_html__( 'Multiple Columns Fields', 'gf-form-multicolumn' ),
+					'fields' => $this->get_field_button_definitions(),
+				);
+			}
 		}
 
 		return $field_groups;
+	}
+
+	/**
+	 * Get standard button definitions for the multi-column fields.
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	private function get_field_button_definitions(): array {
+		return array(
+			array(
+				'class'     => 'button',
+				'value'     => esc_html__( 'Row Start', 'gf-form-multicolumn' ),
+				'data-type' => 'column_start',
+			),
+			array(
+				'class'     => 'button',
+				'value'     => esc_html__( 'Column Break', 'gf-form-multicolumn' ),
+				'data-type' => 'column_break',
+			),
+			array(
+				'class'     => 'button',
+				'value'     => esc_html__( 'Row End', 'gf-form-multicolumn' ),
+				'data-type' => 'column_end',
+			),
+		);
 	}
 
 	/**
