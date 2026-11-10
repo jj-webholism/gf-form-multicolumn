@@ -25,7 +25,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip
+          extensions: dom, curl, libxml, mbstring, zip, mysqli
           tools: composer:v2
           coverage: none
 
@@ -35,7 +35,15 @@ jobs:
       - name: Run PHPCompatibility Lint
         run: vendor/bin/phpcs -p -s includes/ gf-form-multicolumn.php
 
+      - name: Set up WordPress Test Environment
+        run: |
+          sudo systemctl start mysql.service
+          export WP_TESTS_DIR="${GITHUB_WORKSPACE}/.wp-tests"
+          export WP_CORE_DIR="/tmp/wordpress"
+          bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${{ matrix.wordpress }}
+
       - name: Run PHPUnit Test Suite
         run: vendor/bin/phpunit
         env:
           WP_VERSION: ${{ matrix.wordpress }}
+          WP_TESTS_DIR: ${{ github.workspace }}/.wp-tests

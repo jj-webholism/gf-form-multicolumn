@@ -1,0 +1,63 @@
+name: Automated Release & Deployment
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build, Release & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, zip
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run Version Consistency Test
+        run: vendor/bin/phpunit tests/phpunit/VersionConsistencyTest.php
+
+      - name: Extract Tag & Version
+        id: vars
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG_NAME#v}
+          echo "tag=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Build Distribution Archive
+        run: |
+          bash bin/build-zip.sh
+          cp gf-form-multicolumn.zip gf-form-multicolumn-${{ steps.vars.outputs.version }}.zip
+          shasum -a 256 gf-form-multicolumn-${{ steps.vars.outputs.version }}.zip > gf-form-multicolumn-${{ steps.vars.outputs.version }}.zip.sha256
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          name: "Release ${{ steps.vars.outputs.version }}"
+          generate_release_notes: true
+          files: |
+            gf-form-multicolumn-${{ steps.vars.outputs.version }}.zip
+            gf-form-multicolumn-${{ steps.vars.outputs.version }}.zip.sha256
+
+      - name: Deploy to WordPress.org Plugin Directory
+        if: env.SVN_PASSWORD != ''
+        uses: 10up/action-wordpress-plugin-deploy@v2.2.3
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: gf-form-multicolumn
