@@ -71,3 +71,12 @@ tests/e2e/fixtures/*.json
 .env.*.local
 !.env.example*.zip
 *.sha256
+
+# Client test fixtures (private)
+tests/fixtures/applicant-quiz.*
+tests/fixtures/product-configurator.*
+tests/fixtures/sod-request.*
+tests/fixtures/applicant-quiz.*
+tests/fixtures/product-configurator.*
+tests/fixtures/sod-request.*
+tests/fixtures/wh-contact.*
