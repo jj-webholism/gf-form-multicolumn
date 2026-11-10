@@ -112,4 +112,48 @@ class VersionConsistencyTest extends TestCase
 			}
 		}
 	}
+
+	/**
+	 * Verifies that the plugin naming convention remains strictly compliant and un-altered.
+	 */
+	public function test_plugin_name_follows_naming_convention(): void
+	{
+		$expected_name = 'Multiple Columns for Gravity Forms';
+
+		// 1. Verify main plugin file header.
+		$main_file = $this->root_dir . '/gf-form-multicolumn.php';
+		$this->assertFileExists($main_file);
+		$main_content = (string)file_get_contents($main_file);
+
+		preg_match('/\*\s*Plugin Name:\s*([^\r\n]+)/i', $main_content, $header_matches);
+		$this->assertNotEmpty($header_matches, 'Could not find "Plugin Name:" header in gf-form-multicolumn.php.');
+		$plugin_name = trim($header_matches[1]);
+
+		$this->assertSame(
+			$expected_name,
+			$plugin_name,
+			"Plugin Name in gf-form-multicolumn.php must remain '{$expected_name}' to comply with WordPress.org guidelines."
+		);
+
+		// 2. Verify readme.txt title header.
+		$readme_file = $this->root_dir . '/readme.txt';
+		$this->assertFileExists($readme_file);
+		$readme_content = (string)file_get_contents($readme_file);
+
+		preg_match('/===\s*([^=\r\n]+)\s*===/i', $readme_content, $readme_matches);
+		$this->assertNotEmpty($readme_matches, 'Could not find "=== Title ===" header in readme.txt.');
+		$readme_title = trim($readme_matches[1]);
+
+		$this->assertSame(
+			$expected_name,
+			$readme_title,
+			"Plugin Title in readme.txt must remain '{$expected_name}' to comply with WordPress.org guidelines."
+		);
+
+		// 3. Ensure the name does not start with the third-party trademark.
+		$this->assertFalse(
+			stripos($plugin_name, 'Gravity Forms') === 0,
+			'Plugin name must not start with the trademark "Gravity Forms" per WordPress.org guidelines.'
+		);
+	}
 }

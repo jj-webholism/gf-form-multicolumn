@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       Gravity Forms Multiple Columns
+ * Plugin Name:       Multiple Columns for Gravity Forms
  * Plugin URI:        https://webholism.com/
  * Description:       Adds multi-column capabilities to Gravity Forms.
- * Version:           4.0.9
+ * Version:           4.1.0
  * Author:            Webholism
  * Author URI:        https://webholism.com/
  * Text Domain:       gf-form-multicolumn
@@ -66,6 +66,8 @@ add_action( 'gform_loaded', array( 'WH\GF\Multicolumn\GFMC_Loader', 'load' ), 5 
  * Main loader class for initializing the Gravity Forms AddOn.
  */
 class GFMC_Loader {
+
+
 
 	/**
 	 * Instantiates and registers the main plugin controller.

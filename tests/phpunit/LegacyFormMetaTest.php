@@ -37,8 +37,8 @@ class LegacyFormMetaTest extends WP_UnitTestCase
 	public function set_up(): void
 	{
 		parent::set_up();
-		$this->frontend = new Frontend('gf-form-multicolumn', '4.0.9');
-		$this->preview = new Preview('gf-form-multicolumn', '4.0.9');
+		$this->frontend = new Frontend('gf-form-multicolumn', '4.1.0');
+		$this->preview = new Preview('gf-form-multicolumn', '4.1.0');
 	}
 
 	/**

@@ -50,7 +50,7 @@ namespace WH\GF\Multicolumn {
 			 *
 			 * @var string
 			 */
-			protected $_version = '4.0.9';
+			protected $_version = '4.1.0';
 
 			/**
 			 * Minimum required Gravity Forms version.

@@ -69,4 +69,5 @@ tests/e2e/fixtures/*.json
 .env
 .env.local
 .env.*.local
-!.env.example
+!.env.example*.zip
+*.sha256
