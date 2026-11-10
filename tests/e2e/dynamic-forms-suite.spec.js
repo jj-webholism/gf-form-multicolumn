@@ -109,7 +109,7 @@ test.describe('Automated Multi-Column Layout Test Suite', () => {
                                 expect(
                                     labelBox.x,
                                     `Form ${id} choice label at index ${i} wrapped underneath input instead of beside it`
-                                ).toBeGreaterThanOrEqual(inputBox.x + inputBox.width * 0.8);
+                                ).toBeGreaterThanOrEqual(inputBox.x + (inputBox.width * 0.8));
 
                                 expect(
                                     Math.abs(inputBox.y - labelBox.y),
@@ -118,9 +118,32 @@ test.describe('Automated Multi-Column Layout Test Suite', () => {
                             }
                         }
                     }
+
+                    // 3. Verify selection state and label bolding feedback
+                    const firstChoice = choiceInputs.first();
+                    if (await firstChoice.count() > 0) {
+                        await firstChoice.check({force: true});
+                        expect(await firstChoice.isChecked()).toBe(true);
+
+                        const activeLabel = page.locator(
+                            '.gfmc-row .gchoice input:checked + label, ' +
+                            '.gfmc-row .gchoice input:checked ~ label, ' +
+                            '.gfmc-row .gchoice input:checked + .gform-field-label--type-inline'
+                        ).first();
+
+                        if (await activeLabel.count() > 0) {
+                            const weight = await activeLabel.evaluate(
+                                (el) => window.getComputedStyle(el).fontWeight
+                            );
+                            expect(
+                                ['700', 'bold', 'bolder'],
+                                `Form ${id} choice label was not bolded when selected (font-weight: ${weight})`
+                            ).toContain(weight);
+                        }
+                    }
                 }
 
-                // 3. Verify field labels remain left-aligned and are not centered
+                // 4. Verify field labels remain left-aligned and are not centered
                 const fieldLabels = page.locator('.gfmc-row .gfield_label, .gfmc-row .gform-field-label');
                 const labelCount = await fieldLabels.count();
 

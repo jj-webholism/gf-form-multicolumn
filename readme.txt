@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Requires at least: 4.6
 Tested up to: 7.0
 Requires PHP: 7.3
-Stable tag: 4.0.9
+Stable tag: 4.1.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,7 +15,7 @@ Introduces new form elements into Gravity Forms which allow for simple column cr
 
 When activated this plugin allows Gravity Forms elements to be split into columns. To implement the columns three new elements (Row Start, Column Break, and Row End) which are introduced into the Gravity Forms administration area in a group labelled as Multiple Columns Fields.
 
-For each form, in its form settings it is possible to enable and disable the plugin's CSS and JS that are used by the plugin. The CSS file is responsible for the layout of the form, and the JS file is used to remove unwanted spacing generated if using conditional logic to hide form elements. It is advised to keep the CSS enabled at all times, but the JS should only be enabled in the case of hidden elements through the use of conditional logic.
+For each form, in its Form Settings under "Multiple Columns", you can configure the layout engine and whether the plugin's stylesheet is loaded. Newly created forms default to the Modern CSS Grid engine utilising <div> containers, whilst historic forms retain the Legacy List (<ul><li>) format for complete backwards compatibility. The accompanying JS helper can be toggled on if using conditional logic to tidy up spacing around hidden fields.
 
 ** Note: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.**
 
@@ -47,9 +47,13 @@ are new options related to the Multiple Columns for Gravity Forms plugin.
 
 == Frequently Asked Questions ==
 
-= I have updated from an earlier version, where have my columns gone? =
+= Where do I configure the layout engine and CSS loading? =
 
-For each Gravity Form that you had prior to update, please visit the Form Settings for each and check the Enable CSS checkbox.
+In the WordPress admin, navigate to Forms -> select your form -> Settings -> Form Settings, and scroll down to the "Multiple Columns" section. Here you can choose your preferred layout engine (Modern Grid or Legacy List) and specify whether the plugin's default stylesheet should be loaded.
+
+= I am not seeing columns on the front end after adding Multiple Column elements =
+
+Visit your form's Form Settings, check the "Multiple Columns" section, and ensure that your layout option is set to one of the "Load CSS" options (such as "Modern Grid (Load CSS)" or "Legacy List (Load CSS)"). Save the form settings and refresh your page.
 
 = How many columns can I make? =
 
@@ -73,7 +77,7 @@ The Row End field will default to ending a given row.
 
 = I am not seeing columns on the front end, after adding Multiple Column elements to my form =
 
-Check the form settings, and ensure that the Enable CSS checkbox has been checked, and save the form.  If the Enable CSS checkbox is checked, please uncheck it, save the form, recheck it, and resave.  Then try again.
+Check the form settings, and ensure that the `Load CSS` or `Load Legacy CSS` has been selected for the specific styling, and save the form.  If the load CSS option has been selected, please try switching to an alternative option, save the form, change it back to the desired, and resave.  Then try again.  If that fials, please create a support ticket.
 
 = Can I use this plugin with multisite? =
 
@@ -88,6 +92,13 @@ Yes.
 5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
 
 == Changelog ==
+
+= 4.1.0 =
+
+Feature: Introduced modern CSS Grid layout formatting utilising <div> containers for Gravity Forms 2.5+, providing a cleaner, fully responsive layout out of the box.
+Improvement: Refined the Form Settings interface under "Multiple Columns", replacing the previous basic "Enable CSS" checkbox with a layout engine selector that allows forms to be set to Modern Grid or Legacy List, with or without stylesheet loading.
+Improvement: Automatic backwards compatibility ensures existing and historic forms created with legacy markup automatically retain their established <ul><li> layout without requiring manual reconfiguration.
+Fix: Refined theme styling to ensure choice inputs, labels, and text fields render consistently across modern Gravity Forms themes.
 
 = 4.0.8 =
 
@@ -223,6 +234,10 @@ Altered details related to the supporting files. No functional alterations. Upgr
 Initial Release. Trumpets sound!
 
 == Upgrade Notice ==
+
+= 4.1.0 =
+
+Introduces the Modern CSS Grid engine for clean <div> layouts on new forms, upgrades the "Enable CSS" setting to a dedicated layout selection control, and preserves full backwards compatibility for historic forms.
 
 = 4.0.0 =
 

@@ -1,3 +1,10 @@
+= 4.1.0 =
+
+Feature: Introduced modern CSS Grid layout formatting utilising <div> containers for Gravity Forms 2.5+, providing a cleaner, fully responsive layout out of the box.
+Improvement: Refined the Form Settings interface under "Multiple Columns", replacing the previous basic "Enable CSS" checkbox with a layout engine selector that allows forms to be set to Modern Grid or Legacy List, with or without stylesheet loading.
+Improvement: Automatic backwards compatibility ensures existing and historic forms created with legacy markup automatically retain their established <ul><li> layout without requiring manual reconfiguration.
+Fix: Refined theme styling to ensure choice inputs, labels, and text fields render consistently across modern Gravity Forms themes.
+
 = 4.0.8 =
 
 Fix: Alteration to Gravity Forms 3.0.0 results in an error when going to the wp-login.

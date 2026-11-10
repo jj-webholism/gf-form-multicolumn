@@ -172,42 +172,46 @@ li[class*="column-count-1"] > div > ul {
    Modern CSS Grid Engine
    ========================================================================== */
 
+/* 1. Grid container definition */
 .gform_wrapper .gfmc-row,
+.gform_wrapper .gform_fields .gfmc-row,
 .gform_editor.gform_wrapper {
-    display: grid;
-    grid-template-columns: repeat(var(--gfmc-cols, 1), minmax(0, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-    width: 100%;
-    grid-column: 1 / -1;
-    box-sizing: border-box;
+    display: grid !important;
+    grid-template-columns: repeat(var(--gfmc-cols, 1), minmax(0, 1fr)) !important;
+    gap: 1.5rem !important;
+    margin-bottom: 1rem !important;
+    width: 100% !important;
+    grid-column: 1 / -1 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    clear: both !important;
 }
 
+/* 2. Grid cell definition */
 .gform_wrapper .gfmc-row > .gfmc-col {
-    min-width: 0;
-    width: auto;
-    max-width: 100%;
-    box-sizing: border-box;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    grid-column: auto !important;
+    float: none !important;
 }
 
-.gform_wrapper .gfmc-row > .gfmc-col > .gfield {
-    min-width: 0;
-    width: auto;
-    max-width: 100%;
-    margin-bottom: 0;
-    grid-column: auto;
-}
-
+/* 3. Neutralize Gravity Forms width-span classes inside grid columns */
+.gform_wrapper .gfmc-row > .gfmc-col > .gfield,
 .gform_wrapper .gfmc-row .gfield--width-full,
 .gform_wrapper .gfmc-row .gfield--width-half,
 .gform_wrapper .gfmc-row .gfield--width-third,
 .gform_wrapper .gfmc-row .gfield--width-quarter {
-    width: auto;
-    max-width: 100%;
-    grid-column: auto;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-bottom: 0 !important;
+    grid-column: auto !important;
+    box-sizing: border-box !important;
 }
 
-/* Enforce left alignment on all grid elements to counteract centering theme cascades */
+/* 4. Enforce left alignment against centering theme cascades */
 .gform_wrapper .gfmc-row,
 .gform_wrapper .gfmc-row > .gfmc-col,
 .gform_wrapper .gfmc-row .gfield,
@@ -217,57 +221,69 @@ li[class*="column-count-1"] > div > ul {
 .gform_wrapper .gfmc-row .ginput_container,
 .gform_wrapper .gfmc-row .gfield_radio,
 .gform_wrapper .gfmc-row .gfield_checkbox,
-.gform_wrapper .gfmc-row .gchoice {
-    text-align: left;
+.gform_wrapper .gfmc-row .gchoice,
+.gform_wrapper .gfmc-row .gchoice label {
+    text-align: left !important;
 }
 
-/* Apply 100% width ONLY to standard text/select/textarea inputs */
+/* 5. Apply 100% width ONLY to standard text/select/textarea inputs */
 .gform_wrapper .gfmc-row input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="image"]):not([type="file"]):not([type="hidden"]),
 .gform_wrapper .gfmc-row select,
 .gform_wrapper .gfmc-row textarea {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-/* Maintain native / Orbital design-token dimensions on checkboxes and radios */
+/* 6. Standard HTML element appearance & dimensions for checkboxes and radios */
 .gform_wrapper .gfmc-row input[type="checkbox"],
-.gform_wrapper .gfmc-row input[type="radio"] {
-    width: var(--gf-ctrl-choice-size, auto);
-    height: var(--gf-ctrl-choice-size, auto);
-    max-width: none;
-    flex-shrink: 0;
-    margin-right: 0.5rem;
-    margin-top: 0.15rem;
+.gform_wrapper .gfmc-row input[type="radio"],
+.gform_wrapper .gfmc-row .gfield-choice-input {
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    width: var(--gf-ctrl-choice-size, 18px) !important;
+    height: var(--gf-ctrl-choice-size, 18px) !important;
+    min-width: var(--gf-ctrl-choice-size, 18px) !important;
+    max-width: var(--gf-ctrl-choice-size, 18px) !important;
+    flex: 0 0 var(--gf-ctrl-choice-size, 18px) !important;
+    margin: 0.15rem 0.5rem 0 0 !important;
+    display: inline-block !important;
+    cursor: pointer;
 }
 
-/* Keep choices aligned side-by-side (control next to label) */
+/* 7. Ensure choices sit side-by-side */
 .gform_wrapper .gfmc-row .gchoice {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-bottom: 0.35rem;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    margin-bottom: 0.35rem !important;
 }
 
-.gform_wrapper .gfmc-row .gchoice label {
-    margin-bottom: 0;
-    text-align: left;
-    display: inline-block;
+.gform_wrapper .gfmc-row .gchoice label,
+.gform_wrapper .gfmc-row .gchoice .gform-field-label--type-inline {
+    margin-bottom: 0 !important;
+    text-align: left !important;
+    display: inline-block !important;
+    width: auto !important;
+    max-width: none !important;
+    cursor: pointer;
+    transition: font-weight 0.1s ease-in-out;
 }
 
+/* 8. Consistent selection feedback: bold the label when the input is checked */
+.gform_wrapper .gfmc-row .gchoice input:checked + label,
+.gform_wrapper .gfmc-row .gchoice input:checked ~ label,
+.gform_wrapper .gfmc-row .gchoice input:checked + .gform-field-label--type-inline {
+    font-weight: 700 !important;
+}
+
+/* 8. Mobile collapse below 768px */
 @media (max-width: 767px) {
-    .gform_wrapper .gfmc-row {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-    .gform_wrapper .gfmc-row > .gfmc-col,
-    .gform_wrapper .gfmc-row > .gfmc-col > .gfield,
-    .gform_wrapper .gfmc-row .gfield--width-full,
-    .gform_wrapper .gfmc-row .gfield--width-half,
-    .gform_wrapper .gfmc-row .gfield--width-third,
-    .gform_wrapper .gfmc-row .gfield--width-quarter {
-        width: 100%;
-        max-width: 100%;
-        grid-column: auto;
+    .gform_wrapper .gfmc-row,
+    .gform_wrapper .gform_fields .gfmc-row {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
     }
 }
