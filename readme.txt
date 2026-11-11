@@ -17,11 +17,7 @@ When activated this plugin allows Gravity Forms elements to be split into column
 
 For each form, in its Form Settings under "Multiple Columns", you can configure the layout engine and whether the plugin's stylesheet is loaded. Newly created forms default to the Modern CSS Grid engine utilising `<div>` containers, whilst historic forms retain the Legacy List (`<ul><li>`) format for complete backwards compatibility. The accompanying JS helper can be toggled on if using conditional logic to tidy up spacing around hidden fields.
 
-**Note: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.**
-
-**Note: If updating from version 3.0.3 or earlier. If the columns are not displaying as expected, first please visit the Form Settings for each form and check the Enable CSS checkbox.**
-
-**Support this plugin by purchasing [Gravity Forms](https://rocketgenius.pxf.io/multicolumns) now, using the affiliate link.  No extra cost to you, and a big help towards supporting this plugin.**
+**Support this plugin by purchasing [Gravity Forms](https://try.gravity.com/y98um7an8nif) now, using the affiliate link.  No extra cost to you, and a big help towards supporting this plugin.**
 
 == Installation ==
 
