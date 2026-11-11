@@ -15,9 +15,9 @@ Introduces new form elements into Gravity Forms which allow for simple column cr
 
 When activated this plugin allows Gravity Forms elements to be split into columns. To implement the columns three new elements (Row Start, Column Break, and Row End) which are introduced into the Gravity Forms administration area in a group labelled as Multiple Columns Fields.
 
-For each form, in its Form Settings under "Multiple Columns", you can configure the layout engine and whether the plugin's stylesheet is loaded. Newly created forms default to the Modern CSS Grid engine utilising <div> containers, whilst historic forms retain the Legacy List (<ul><li>) format for complete backwards compatibility. The accompanying JS helper can be toggled on if using conditional logic to tidy up spacing around hidden fields.
+For each form, in its Form Settings under "Multiple Columns", you can configure the layout engine and whether the plugin's stylesheet is loaded. Newly created forms default to the Modern CSS Grid engine utilising `<div>` containers, whilst historic forms retain the Legacy List (`<ul><li>`) format for complete backwards compatibility. The accompanying JS helper can be toggled on if using conditional logic to tidy up spacing around hidden fields.
 
-** Note: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.**
+**Note: Plugin no longer supports initial column specification using Sections in versions 2 and before. If updating plugin from a version prior to version 3, the form will need to be recreated with the current design definitions.**
 
 **Note: If updating from version 3.0.3 or earlier. If the columns are not displaying as expected, first please visit the Form Settings for each form and check the Enable CSS checkbox.**
 
