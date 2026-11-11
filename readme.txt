@@ -3,8 +3,8 @@ Contributors: webholism
 Tags: gravity forms, multi column, responsive, layout, multicolumn
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JHGDAKZ2YLFLN
 Requires at least: 4.6
-Tested up to: 7.0
-Requires PHP: 7.3
+Tested up to: 7.1
+Requires PHP: 7.4
 Stable tag: 4.1.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -38,7 +38,7 @@ Once installed, the following steps will help provide guidance to introduce colu
 7. Repeat 4-6 as necessary.
 8. Click the Update button to save the changes.
 
-CSS and JS included with the plugin can be toggled on and off in the Form Settings for the individual form.
+CSS and JS included with the plugin can be enabled or disabled in the Form Settings for the individual form.
 
 9. In Settings -> Form Settings once a form has been selected, visit the section titled Multiple Columns.  Here there
 are new options related to the Multiple Columns for Gravity Forms plugin.
@@ -77,7 +77,7 @@ The Row End field will default to ending a given row.
 
 = I am not seeing columns on the front end, after adding Multiple Column elements to my form =
 
-Check the form settings, and ensure that the `Load CSS` or `Load Legacy CSS` has been selected for the specific styling, and save the form.  If the load CSS option has been selected, please try switching to an alternative option, save the form, change it back to the desired, and resave.  Then try again.  If that fials, please create a support ticket.
+Check the form settings, and ensure that the `Load CSS` or `Load Legacy CSS` has been selected for the specific styling, and save the form.  If the load CSS option has been selected, please try switching to an alternative option, save the form, change it back to the desired, and resave.  Then try again.  If that fails, please create a support ticket.
 
 = Can I use this plugin with multisite? =
 
@@ -89,7 +89,7 @@ Yes.
 2. Multiple Columns Fields floating panel close up (expanded).
 3. Form showing new fields (Row Start, Column Break, Row End) added to form.
 4. Example of a completed form, composed of Multiple Columns Fields and generic Gravity Form fields.
-5. Gravity Forms - Form - Settings -> Form Settings showing the Enable CSS and Enable JS checkboxes.
+5. Gravity Forms - Form - Settings -> Form Settings showing the Multiple Columns layout engine options.
 
 == Changelog ==
 
